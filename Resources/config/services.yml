@@ -1,0 +1,6 @@
+parameters:
+    tchoulom.view_counter.class: tchoulom\ViewCounterBundle\Service\ViewCounter
+
+services:
+    tchoulom.view_counter:
+        class: "%core.view_counter.class%"
