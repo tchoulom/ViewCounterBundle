@@ -1,11 +1,9 @@
 <?php
 
-namespace tchoulom\ViewCounterBundle\Model;
+namespace Tchoulom\ViewCounterBundle\Model;
 
 /**
  * Interface ViewCountable
- *
- * @package tchoulom\ViewCounterBundle\Model
  */
 interface ViewCountable
 {
