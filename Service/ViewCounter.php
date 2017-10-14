@@ -1,19 +1,41 @@
 <?php
 
-namespace tchoulom\ViewCounterBundle\Service;
+namespace Tchoulom\ViewCounterBundle\Service;
 
-use tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
-use tchoulom\ViewCounterBundle\Model\ViewCountable;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 
 /**
- * Class ViewCounter
- *
- * @package tchoulom\ViewCounterBundle\Util
+ * Class ViewCounter.
  */
 class ViewCounter
 {
     /**
-     * Determines whether the Visitor view is new.
+     * @var EntityManagerInterface
+     */
+    protected $em;
+
+    /**
+     * @var RequestStack
+     */
+    public $requestStack;
+
+    /**
+     * ViewCounter constructor.
+     *
+     * @param EntityManagerInterface $em
+     * @param RequestStack $requestStack
+     */
+    public function __construct(EntityManagerInterface $em, RequestStack $requestStack)
+    {
+        $this->em = $em;
+        $this->requestStack = $requestStack;
+    }
+
+    /**
+     * Determines whether the view is new.
      *
      * @param ViewCounterInterface $viewCounter
      *
@@ -33,7 +55,7 @@ class ViewCounter
         $currentViewDate = (new \DateTime('now'))->format('Y-m-d H:i:s');
         $currentTimetamp = strtotime($currentViewDate);
 
-        // Tommorow Date Of CourseViewDate
+        // Tommorow Date
         $tommorowDateOfCourseViewDate = $viewCounter->getViewDate()->add(new \DateInterval('P1D'));
         // Sets tomorrow Date at midnight
         $tommorowDateOfCourseViewDate->setTime(0, 0, 0);
@@ -43,19 +65,48 @@ class ViewCounter
     }
 
     /**
-     * Gets Views of Course.
+     * Gets the ViewCounter.
      *
      * @param ViewCountable $page The counted object(a tutorial or course...)
-     * @param ViewCounterInterface $viewCounter The viewCounter object
+     *
+     * @return null|object
+     */
+    public function getViewCounter(ViewCountable $page)
+    {
+        $metadata = $this->em->getClassMetadata(get_class($page));
+        $property = $metadata->getAssociationMappings()['viewCounters']['mappedBy'];
+        $class = $metadata->getAssociationMappings()['viewCounters']['targetEntity'];
+
+        $viewcounter = $this->em->getRepository($class)->findOneBy($criteria = [$property => $page, 'ip' => $this->getRequest()->getClientIp()], $orderBy = null, $limit = null, $offset = null);
+
+        return $viewcounter;
+    }
+
+    /**
+     * Gets the page Views.
+     *
+     * @param ViewCountable $page The counted object(a tutorial or course...)
      *
      * @return int
      */
-    public function getViews(ViewCountable $page, ViewCounterInterface $viewCounter)
+    public function getViews(ViewCountable $page)
     {
-        if ($this->isNewView($viewCounter)) {
+        $viewCounter = $this->getViewCounter($page);
+
+        if (null == $viewCounter || $this->isNewView($viewCounter)) {
             return $page->getViews() + 1;
         }
 
         return $page->getViews();
+    }
+
+    /**
+     * Gets the current Request.
+     *
+     * @return null|\Symfony\Component\HttpFoundation\Request
+     */
+    public function getRequest()
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 }

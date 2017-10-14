@@ -3,7 +3,7 @@
     "license": "MIT",
     "type": "symfony-bundle",
     "description": "The \"View Counter\" bundle",
-    "keywords": ["Count the number of views","view counter", "page views", "view counter interface"],
+    "keywords": ["view counter", "view counter bundle", "Count the number of views of a page", "page views", "view counter interface"],
     "authors": [
         {
             "name": "ernest TCHOULOM",
@@ -12,28 +12,19 @@
         }
     ],
     "autoload": {
-        "psr-4": { "": "src/" },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
-    },
-    "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" },
-        "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
+        "psr-4": {
+            "Tchoulom\\ViewCounterBundle\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "require": {
         "php": ">=5.5.9",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/orm": "^2.5",
-        "incenteev/composer-parameter-handler": "^2.0",
-        "sensio/distribution-bundle": "^5.0.19",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "symfony/monolog-bundle": "^3.1.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.3.*",
-        "twig/twig": "^1.0||^2.0"
+        "symfony/symfony": ">2.7"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
-    }
+        "phpunit/phpunit": ">5.7"
+    },
+    "minimum-stability": "stable"
 }
