@@ -1,6 +1,6 @@
 <?php
 
-namespace tchoulom\ViewCounterBundle\Entity;
+namespace Tchoulom\ViewCounterBundle\Entity;
 
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,14 +31,14 @@ class ViewCounter implements ViewCounterInterface
     protected $ip;
 
     /**
-     * @var string
+     * @var \DateTime
      *
      * @ORM\Column(name="view_date", type="datetime", nullable=false)
      */
     private $viewDate;
 
     /**
-     * Get the ID
+     * Gets the ID
      *
      * @return integer
      */
@@ -48,7 +48,7 @@ class ViewCounter implements ViewCounterInterface
     }
 
     /**
-     * Get the IP
+     * Gets the IP
      *
      * @return text
      */
@@ -58,7 +58,7 @@ class ViewCounter implements ViewCounterInterface
     }
 
     /**
-     * Set viewDate
+     * Sets viewDate
      *
      * @param $ip
      *
@@ -72,7 +72,7 @@ class ViewCounter implements ViewCounterInterface
     }
 
     /**
-     * Get viewDate
+     * Gets viewDate
      *
      * @return \DateTime
      */
@@ -82,7 +82,7 @@ class ViewCounter implements ViewCounterInterface
     }
 
     /**
-     * Set viewDate
+     * Sets viewDate
      *
      * @param \DateTime $viewDate
      *

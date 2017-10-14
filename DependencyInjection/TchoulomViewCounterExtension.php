@@ -1,6 +1,6 @@
 <?php
 
-namespace tchoulom\ViewCounterBundle\DependencyInjection;
+namespace Tchoulom\ViewCounterBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -19,7 +19,7 @@ class TchoulomViewCounterExtension extends Extension
      *
      * @var array
      */
-    protected $supportedInterval = ['day_view', 'hourly_view', 'weekly_view', 'monthly_view'];
+    protected $supportedInterval = ['unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view'];
 
     /**
      * {@inheritdoc}
@@ -28,6 +28,7 @@ class TchoulomViewCounterExtension extends Extension
     {
         $configuration = new Configuration();
         $configs = $this->beforeProcess($configs);
+        $container->setParameter('view_interval', $configs);
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -48,10 +49,13 @@ class TchoulomViewCounterExtension extends Extension
         $viewInterval = $configs[0]['view_interval'];
         $firstInterval = $viewInterval[0];
 
+        if (null == $firstInterval) {
+            throw new \LogicException(vsprintf('You must choose one of the following values: %s, %s, %s, %s.', $this->supportedInterval));
+        }
+
         foreach ($firstInterval as $key => $config) {
             if (!in_array($key, $this->supportedInterval)) {
-                throw new \LogicException(sprintf('The key "%s" is not supported. You must choose
-one of the following values: day_view, hourly_view, weekly_view, monthly_view.', $key));
+                throw new \LogicException(sprintf('The key "%s" is not supported.', $key) . vsprintf('You must choose one of the following values: %s, %s, %s, %s.', $this->supportedInterval));
             }
 
             if (!is_int($config)) {
