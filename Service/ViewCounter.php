@@ -1,14 +1,12 @@
 <?php
 
-namespace tchoulom\ViewCounterBundle\Service;
+namespace Tchoulom\ViewCounterBundle\Service;
 
-use tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
-use tchoulom\ViewCounterBundle\Model\ViewCountable;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 
 /**
- * Class ViewCounter
- *
- * @package tchoulom\ViewCounterBundle\Util
+ * Class ViewCounter.
  */
 class ViewCounter
 {
