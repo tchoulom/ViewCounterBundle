@@ -12,10 +12,12 @@
         }
     ],
     "autoload": {
-        "psr-4": { "": "src/" }
-    },
-    "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" }
+        "psr-4": {
+            "Tchoulom\\ViewCounterBundle\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "require": {
         "php": ">=5.5.9",
