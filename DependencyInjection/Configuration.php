@@ -1,6 +1,6 @@
 <?php
 
-namespace tchoulom\ViewCounterBundle\DependencyInjection;
+namespace Tchoulom\ViewCounterBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_view_counter');
+        $rootNode = $treeBuilder->root('tchoulom_view_counter');
 
         $rootNode
             ->children()

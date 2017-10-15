@@ -1,6 +1,6 @@
 <?php
 
-namespace tchoulom\ViewCounterBundle\Entity;
+namespace Tchoulom\ViewCounterBundle\Entity;
 
 
 /**
