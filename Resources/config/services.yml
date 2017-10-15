@@ -3,4 +3,4 @@ parameters:
 
 services:
     tchoulom.view_counter:
-        class: "%core.view_counter.class%"
+        class: "%tchoulom.view_counter.class%"

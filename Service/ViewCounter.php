@@ -11,7 +11,7 @@ use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 class ViewCounter
 {
     /**
-     * Determines whether the Visitor view is new.
+     * Determines whether the view is new.
      *
      * @param ViewCounterInterface $viewCounter
      *
@@ -31,7 +31,7 @@ class ViewCounter
         $currentViewDate = (new \DateTime('now'))->format('Y-m-d H:i:s');
         $currentTimetamp = strtotime($currentViewDate);
 
-        // Tommorow Date Of CourseViewDate
+        // Tommorow Date
         $tommorowDateOfCourseViewDate = $viewCounter->getViewDate()->add(new \DateInterval('P1D'));
         // Sets tomorrow Date at midnight
         $tommorowDateOfCourseViewDate->setTime(0, 0, 0);
@@ -41,7 +41,7 @@ class ViewCounter
     }
 
     /**
-     * Gets Views of Course.
+     * Gets the page Views.
      *
      * @param ViewCountable $page The counted object(a tutorial or course...)
      * @param ViewCounterInterface $viewCounter The viewCounter object
