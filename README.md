@@ -43,7 +43,7 @@ Installation:
   ```
 ### Step 2: Enable the Bundle
 
-Edit the file **appKernel.php**
+Edit the **appKernel.php** file
 
 ```php
     ...
@@ -197,7 +197,7 @@ Add the following configuration
 
 ```
 * The **day_view** allows to increment **daily** for each **IP** the number of views of an **Article** (the viewership).
-I fact it increment the **$views** property.
+In fact it increments the **$views** property.
 
 * The **hourly_view**, **weekly_view**, **monthly_view** are not yet implemented.
 
