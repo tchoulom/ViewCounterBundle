@@ -285,3 +285,5 @@ In fact it increments the **$views** property.
 ```
 Enjoy!
 
+Need help or found a bug?
+[www.tchoulom.com](http://tchoulom.com)
