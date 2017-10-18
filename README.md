@@ -164,7 +164,7 @@ The **$views** property allows to get the number of views:
 ### Step 4: ViewCounter
 The **ViewCounter** Entity allows to set the **ip** address, the **view_date**, and the **article_id**.
 
-The **ViewCounter** Entity must extend the **BaseViewCounter** interface:
+The **ViewCounter** Entity must extend the **BaseViewCounter**:
 ```php
 
     use Tchoulom\ViewCounterBundle\Entity\ViewCounter as BaseViewCounter;
