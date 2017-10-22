@@ -59,8 +59,6 @@ abstract class AbstractViewCounter
      * Loads the ViewCounter.
      *
      * @param ViewCountable $page The counted object(a tutorial or course...)
-     *
-     * @return null|\Tchoulom\ViewCounterBundle\Entity\ViewCounter
      */
     public function loadViewCounter(ViewCountable $page)
     {

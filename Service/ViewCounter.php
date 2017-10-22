@@ -32,7 +32,9 @@ class ViewCounter extends AbstractViewCounter
             $currentTimestamp = strtotime($currentViewDate);
 
             // Tomorrow Date
-            $tomorrowDate = $viewCounter->getViewDate()->add(new \DateInterval('P1D'));
+            $viewDate = clone $viewCounter->getViewDate();
+            $tomorrowDate = $viewDate->add(new \DateInterval('P1D'));
+            
             // Sets tomorrow Date at midnight
             $tomorrowDate->setTime(0, 0, 0);
             $tomorrowTimestamp = strtotime($tomorrowDate->format('Y-m-d H:i:s'));
