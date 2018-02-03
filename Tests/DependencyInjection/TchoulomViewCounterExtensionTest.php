@@ -44,7 +44,7 @@ class TchoulomViewCounterExtensionTest extends BaseTest
     }
 
     /**
-     * tests getIp
+     * tests beforeProcessSuccess
      *
      * @dataProvider beforeProcessProvider
      */
@@ -56,6 +56,8 @@ class TchoulomViewCounterExtensionTest extends BaseTest
     }
 
     /**
+     * tests beforeProcessError
+     *
      * @expectedException \Tchoulom\ViewCounterBundle\Exception\RuntimeException
      * @expectedExceptionMessage You must choose one of the following values: unique_view, daily_view, hourly_view, weekly_view.
      */

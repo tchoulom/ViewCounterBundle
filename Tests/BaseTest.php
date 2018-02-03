@@ -59,7 +59,7 @@ abstract class BaseTest extends TestCase
     }
 
     /**
-     * tests ViewCounterService
+     * tests viewCounterService
      *
      * @return ViewCounter
      */
@@ -73,6 +73,8 @@ abstract class BaseTest extends TestCase
     }
 
     /**
+     * tests isNewView
+     *
      * @depends testViewCounterService
      */
     public function testIsNewView($viewCounterService)
