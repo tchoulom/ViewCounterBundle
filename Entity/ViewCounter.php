@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * This file is part of the TchoulomViewCounterBundle package.
+ *
+ * @package    TchoulomViewCounterBundle
+ * @author     Original Author <tchoulomernest@yahoo.fr>
+ *
+ * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace Tchoulom\ViewCounterBundle\Entity;
 
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * ViewCounter
@@ -35,7 +44,7 @@ class ViewCounter implements ViewCounterInterface
      *
      * @ORM\Column(name="view_date", type="datetime", nullable=false)
      */
-    private $viewDate;
+    protected $viewDate;
 
     /**
      * Gets the ID

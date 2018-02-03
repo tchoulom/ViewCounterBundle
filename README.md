@@ -182,7 +182,7 @@ The **ViewCounter** Entity must extend the **BaseViewCounter**:
 
 ```
 
-Override The **ViewCounter** Entity with your **Article** Entity:
+Edit The **ViewCounter** Entity with your **Article** Entity:
 
 ```php
 
@@ -293,4 +293,4 @@ Recommendation: You can use the **Symfony kernel terminate listener** to set the
 Enjoy!
 
 Need help or found a bug?
-[www.tchoulom.com](http://tchoulom.com)
+[https://www.tchoulom.com](https://www.tchoulom.com)

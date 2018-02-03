@@ -11,10 +11,11 @@
  * This source file is subject to the MIT license.
  */
 
-namespace Tchoulom\ViewCounterBundle;
+namespace Tchoulom\ViewCounterBundle\Exception;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class TchoulomViewCounterBundle extends Bundle
+/**
+ * Class RuntimeException
+ */
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 }

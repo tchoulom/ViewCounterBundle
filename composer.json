@@ -3,10 +3,10 @@
     "license": "MIT",
     "type": "symfony-bundle",
     "description": "The \"View Counter\" bundle",
-    "keywords": ["view counter", "view counter bundle", "Count the number of views of a page", "page views", "view counter interface"],
+    "keywords": ["view counter", "view counter bundle", "Count the number of views of a page", "pages views counter", "view count", "viewership measurement", "page views", "page view count", "view counter interface"],
     "authors": [
         {
-            "name": "ernest TCHOULOM",
+            "name": "Ernest TCHOULOM",
             "email": "tchoulomernest@yahoo.fr",
             "homepage": "http://www.tchoulom.com"
         }
