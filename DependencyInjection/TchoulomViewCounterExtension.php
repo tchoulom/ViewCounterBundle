@@ -8,7 +8,8 @@
  *
  * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
  *
- * This source file is subject to the MIT license.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Tchoulom\ViewCounterBundle\DependencyInjection;
@@ -18,6 +19,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
+use Tchoulom\ViewCounterBundle\TchoulomViewCounterBundle;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -26,13 +28,6 @@ use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
  */
 class TchoulomViewCounterExtension extends Extension
 {
-    /**
-     * The supported view interval.
-     *
-     * @var array
-     */
-    protected $supportedInterval = ['unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view'];
-
     /**
      * {@inheritdoc}
      */
@@ -62,12 +57,12 @@ class TchoulomViewCounterExtension extends Extension
         $firstInterval = $viewInterval[0];
 
         if (null == $firstInterval) {
-            throw new RuntimeException(vsprintf('You must choose one of the following values: %s, %s, %s, %s.', $this->supportedInterval));
+            throw new RuntimeException(vsprintf('You must choose one of the following values: %s, %s, %s, %s.', TchoulomViewCounterBundle::SUPPORTED_INTERVAL));
         }
 
         foreach ($firstInterval as $key => $config) {
-            if (!in_array($key, $this->supportedInterval)) {
-                throw new RuntimeException(sprintf('The key "%s" is not supported.', $key) . vsprintf('You must choose one of the following values: %s, %s, %s, %s.', $this->supportedInterval));
+            if (!in_array($key, TchoulomViewCounterBundle::SUPPORTED_INTERVAL)) {
+                throw new RuntimeException(sprintf('The key "%s" is not supported.', $key) . vsprintf('You must choose one of the following values: %s, %s, %s, %s.', TchoulomViewCounterBundle::SUPPORTED_INTERVAL));
             }
 
             if (!is_int($config)) {
