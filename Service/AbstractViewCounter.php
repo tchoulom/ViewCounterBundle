@@ -14,10 +14,11 @@
 
 namespace Tchoulom\ViewCounterBundle\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+use Tchoulom\ViewCounterBundle\Persister\PersisterInterface;
+use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
  * Class AbstractViewCounter
@@ -25,9 +26,9 @@ use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 abstract class AbstractViewCounter
 {
     /**
-     * @var EntityManagerInterface
+     * @var PersisterInterface
      */
-    protected $em;
+    protected $persister;
 
     /**
      * @var RequestStack
@@ -46,14 +47,24 @@ abstract class AbstractViewCounter
     protected $viewCounter = null;
 
     /**
+     * The class namespace
+     */
+    protected $class = null;
+
+    /**
+     * The property
+     */
+    protected $property = null;
+
+    /**
      * ViewCounter constructor.
      *
-     * @param EntityManagerInterface $em
+     * @param PersisterInterface $persister
      * @param RequestStack $requestStack
      */
-    public function __construct(EntityManagerInterface $em, RequestStack $requestStack, array $viewInterval)
+    public function __construct(PersisterInterface $persister, RequestStack $requestStack, array $viewInterval)
     {
-        $this->em = $em;
+        $this->persister = $persister;
         $this->requestStack = $requestStack;
         $this->viewInterval = $viewInterval;
     }
@@ -74,11 +85,11 @@ abstract class AbstractViewCounter
      */
     public function loadViewCounter(ViewCountable $page)
     {
-        $metadata = $this->em->getClassMetadata(get_class($page));
-        $property = $metadata->getAssociationMappings()['viewCounters']['mappedBy'];
-        $class = $metadata->getAssociationMappings()['viewCounters']['targetEntity'];
+        $metadata = $this->persister->loadMetadata($page);
+        $this->property = $metadata->getAssociationMappings()['viewCounters']['mappedBy'];
+        $this->class = $metadata->getAssociationMappings()['viewCounters']['targetEntity'];
 
-        $this->viewCounter = $this->em->getRepository($class)->findOneBy($criteria = [$property => $page, 'ip' => $this->getRequest()->getClientIp()], $orderBy = null, $limit = null, $offset = null);
+        $this->viewCounter = $this->persister->findOneBy($this->class, $criteria = [$this->property => $page, 'ip' => $this->getRequest()->getClientIp()], $orderBy = null, $limit = null, $offset = null);
     }
 
     /**
@@ -116,6 +127,36 @@ abstract class AbstractViewCounter
     }
 
     /**
+     * Saves the View
+     *
+     * @param ViewCountable $page
+     *
+     * @return ViewCountable
+     */
+    public function saveView(ViewCountable $page)
+    {
+        $views = $this->getViews($page);
+        $viewcounter = $this->getViewCounter($page);
+        $viewCounterObject = $this->createViewCounterObject();
+
+        $viewcounter = (null != $viewcounter ? $viewcounter : $viewCounterObject);
+
+        if ($this->isNewView($viewcounter)) {
+            $viewcounter->setIp($this->getRequest()->getClientIp());
+            $setPage = 'set' . ucfirst($this->getProperty());
+            $viewcounter->$setPage($page);
+            $viewcounter->setViewDate($this->getNowDate());
+
+            $page->setViews($views);
+
+            $this->persister->save($viewcounter);
+            $this->persister->save($page);
+        }
+
+        return $views;
+    }
+
+    /**
      * Gets the current Request.
      *
      * @return null|\Symfony\Component\HttpFoundation\Request
@@ -139,5 +180,48 @@ abstract class AbstractViewCounter
         }
 
         return $viewIntervalName;
+    }
+
+    /**
+     * Creates the ViewCounter Object from the class namespace.
+     *
+     * @return mixed
+     */
+    public function createViewCounterObject()
+    {
+        $class = $this->getClass();
+        $viewCounterObject = new $class();
+
+        return $viewCounterObject;
+    }
+
+    /**
+     * Gets the class namespace.
+     *
+     * @return null
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * Gets the property.
+     *
+     * @return null
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
+
+    /**
+     * Gets now Date.
+     *
+     * @return \DateTime
+     */
+    protected function getNowDate()
+    {
+        return Date::getNowDate();
     }
 }

@@ -1,16 +1,22 @@
 parameters:
     tchoulom.view_counter.base.class: Tchoulom\ViewCounterBundle\Service\AbstractViewCounter
     tchoulom.view_counter.class: Tchoulom\ViewCounterBundle\Service\ViewCounter
+    tchoulom.view_counter.persister.class: Tchoulom\ViewCounterBundle\Persister\Persister
 
 services:
     tchoulom.view_counter.base:
         class: '%tchoulom.view_counter.base.class%'
         abstract:  true
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@tchoulom.view_counter.persister'
             - '@request_stack'
             - '%view_interval%'
 
     tchoulom.view_counter:
         class: '%tchoulom.view_counter.class%'
         parent: tchoulom.view_counter.base
+
+    tchoulom.view_counter.persister:
+        class: '%tchoulom.view_counter.persister.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'

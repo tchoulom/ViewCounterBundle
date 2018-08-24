@@ -7,7 +7,7 @@
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
  * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
- *  
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -19,6 +19,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounter as ViewCounterEntity;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+use Tchoulom\ViewCounterBundle\Persister\Persister;
+use Tchoulom\ViewCounterBundle\Persister\PersisterInterface;
 use Tchoulom\ViewCounterBundle\Service\ViewCounter;
 
 /**
@@ -40,6 +43,7 @@ abstract class BaseTest extends TestCase
     {
         parent::setUp();
 
+        $this->viewCountableMock = $this->createMock(ViewCountable::class);
         $this->entityManagerMock = $this->createMock(EntityManager::class);
         $this->requestStack = new RequestStack();
         $this->viewCounterEntity = new ViewCounterEntity();
@@ -66,7 +70,8 @@ abstract class BaseTest extends TestCase
      */
     public function testViewCounterService()
     {
-        $viewCounterService = new ViewCounter($this->entityManagerMock, $this->requestStack, $this->viewInterval);
+        $persister = new Persister($this->entityManagerMock);
+        $viewCounterService = new ViewCounter($persister, $this->requestStack, $this->viewInterval);
 
         $this->assertInstanceOf(ViewCounter::class, $viewCounterService);
 
@@ -83,5 +88,19 @@ abstract class BaseTest extends TestCase
         $bool = $viewCounterService->isNewView($this->viewCounterInterfaceMock);
 
         $this->assertTrue(is_bool($bool));
+    }
+
+    /**
+     * tests Persister
+     *
+     * @return Persister
+     */
+    public function testPersister()
+    {
+        $persister = new Persister($this->entityManagerMock);
+
+        $this->assertInstanceOf(PersisterInterface::class, $persister);
+
+        return $persister;
     }
 }

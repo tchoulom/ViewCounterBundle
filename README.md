@@ -256,6 +256,10 @@ In fact it increments the **$views** property.
 
 ### Step 6: The Controller
 
+2 methods are available:
+
+**Method 1 :**
+
 Recommendation: You can use the **Symfony kernel terminate listener** to set the Viewcounter
 
 ```php
@@ -289,6 +293,30 @@ Recommendation: You can use the **Symfony kernel terminate listener** to set the
         $em->flush();
     }
   ...
+```
+
+**Method 2 :**
+
+You only need to save your **Article** Entity via the **'tchoulom.view_counter'** service:
+
+```php
+...
+$views = $this->get('tchoulom.view_counter')->saveView($article);
+...
+```
+
+The second method returns the number of views ($views).
+
+You can choose the method that is most appropriate for your situation.
+
+### Step 7: The View
+
+Finally you can display the number of views
+
+```twig
+...
+<h1>The number of views of this article :</h1> {{ article.views }}
+...
 ```
 Enjoy!
 
