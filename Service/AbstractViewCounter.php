@@ -57,10 +57,11 @@ abstract class AbstractViewCounter
     protected $property = null;
 
     /**
-     * ViewCounter constructor.
+     * AbstractViewCounter constructor.
      *
      * @param PersisterInterface $persister
      * @param RequestStack $requestStack
+     * @param array $viewInterval
      */
     public function __construct(PersisterInterface $persister, RequestStack $requestStack, array $viewInterval)
     {
@@ -95,11 +96,11 @@ abstract class AbstractViewCounter
     /**
      * Gets the ViewCounter.
      *
-     * @param null $page The counted object(a tutorial or course...)
+     * @param ViewCountable null $page The counted object(a tutorial or course...)
      *
      * @return null|\Tchoulom\ViewCounterBundle\Entity\ViewCounter
      */
-    public function getViewCounter($page = null)
+    public function getViewCounter(ViewCountable $page = null)
     {
         if (null == $this->viewCounter) {
             $this->loadViewCounter($page);
@@ -138,8 +139,7 @@ abstract class AbstractViewCounter
         $views = $this->getViews($page);
         $viewcounter = $this->getViewCounter($page);
         $viewCounterObject = $this->createViewCounterObject();
-
-        $viewcounter = (null != $viewcounter ? $viewcounter : $viewCounterObject);
+        $viewcounter = null != $viewcounter ? $viewcounter : $viewCounterObject;
 
         if ($this->isNewView($viewcounter)) {
             $viewcounter->setIp($this->getRequest()->getClientIp());

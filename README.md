@@ -265,15 +265,14 @@ Recommendation: You can use the **Symfony kernel terminate listener** to set the
 ```php
 ...
 /**
-     * Reads an existing article
-     *
-     * @Route("/read/{id}", name="read_article")
-     * @ParamConverter("article", options={"mapping": {"id": "id"}})
-     * @Method({"GET", "POST"})
-     */
-    public function readAction(Request $request, Article $article)
-    {
-
+ * Reads an existing article
+ *
+ * @Route("/read/{id}", name="read_article")
+ * @ParamConverter("article", options={"mapping": {"id": "id"}})
+ * @Method({"GET", "POST"})
+ */
+ public function readAction(Request $request, Article $article)
+ {
     // Viewcounter
     $views = $this->get('tchoulom.view_counter')->getViews($article);
     $viewcounter = $this->get('tchoulom.view_counter')->getViewCounter($article);
@@ -292,7 +291,8 @@ Recommendation: You can use the **Symfony kernel terminate listener** to set the
         $em->persist($article);
         $em->flush();
     }
-  ...
+ }
+...
 ```
 
 **Method 2 :**
@@ -301,7 +301,17 @@ You only need to save your **Article** Entity via the **'tchoulom.view_counter'*
 
 ```php
 ...
-$views = $this->get('tchoulom.view_counter')->saveView($article);
+/**
+ * Reads an existing article
+ *
+ * @Route("/read/{id}", name="read_article")
+ * @ParamConverter("article", options={"mapping": {"id": "id"}})
+ * @Method({"GET", "POST"})
+ */
+public function readAction(Request $request, Article $article)
+{
+    $views = $this->get('tchoulom.view_counter')->saveView($article);
+}
 ...
 ```
 
@@ -311,7 +321,7 @@ You can choose the method that is most appropriate for your situation.
 
 ### Step 7: The View
 
-Finally you can display the number of views
+Finally you can display the number of views:
 
 ```twig
 ...
