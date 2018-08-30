@@ -135,15 +135,12 @@ abstract class AbstractViewCounter
     /**
      * Saves the View
      *
-     * @param ViewCountable $page
+     * @param ViewCountable $page The counted object(a tutorial or course...)
      *
      * @return ViewCountable
      */
     public function saveView(ViewCountable $page)
     {
-        $this->setPage($page);
-        $page = $this->getPage();
-
         $views = $this->getViews($page);
         $viewcounter = $this->getViewCounter($page);
         $viewCounterObject = $this->createViewCounterObject();
@@ -161,7 +158,7 @@ abstract class AbstractViewCounter
             $this->persister->save($page);
         }
 
-        return $views;
+        return $page;
     }
 
     /**
