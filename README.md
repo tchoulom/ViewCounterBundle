@@ -312,7 +312,11 @@ You only need to save your **Article** Entity via the **'tchoulom.view_counter'*
  */
 public function readAction(Request $request, Article $article)
 {
+    // Saves the view
     $views = $this->get('tchoulom.view_counter')->saveView($article);
+    
+    // Gets the current page (article)
+    $page = $this->get('tchoulom.view_counter')->getPage();
 }
 ...
 ```

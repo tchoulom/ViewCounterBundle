@@ -57,6 +57,11 @@ abstract class AbstractViewCounter
     protected $property = null;
 
     /**
+     * The current Page
+     */
+    protected $page = null;
+
+    /**
      * AbstractViewCounter constructor.
      *
      * @param PersisterInterface $persister
@@ -136,6 +141,9 @@ abstract class AbstractViewCounter
      */
     public function saveView(ViewCountable $page)
     {
+        $this->setPage($page);
+        $page = $this->getPage();
+
         $views = $this->getViews($page);
         $viewcounter = $this->getViewCounter($page);
         $viewCounterObject = $this->createViewCounterObject();
@@ -213,6 +221,26 @@ abstract class AbstractViewCounter
     public function getProperty()
     {
         return $this->property;
+    }
+
+    /**
+     * Sets the current Page   The counted object(a tutorial or course...)
+     *
+     * @param ViewCountable $page
+     */
+    public function setPage(ViewCountable $page)
+    {
+        $this->page = $page;
+    }
+
+    /**
+     * Gets the current Page   The counted object(a tutorial or course...)
+     *
+     * @return ViewCountable|null
+     */
+    public function getPage()
+    {
+        return $this->page;
     }
 
     /**
