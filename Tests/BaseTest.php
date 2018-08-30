@@ -22,7 +22,7 @@ use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Persister\Persister;
 use Tchoulom\ViewCounterBundle\Persister\PersisterInterface;
-use Tchoulom\ViewCounterBundle\Service\ViewCounter;
+use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
 
 /**
  * Class BaseTest

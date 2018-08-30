@@ -12,7 +12,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Service;
+namespace Tchoulom\ViewCounterBundle\Counter;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;

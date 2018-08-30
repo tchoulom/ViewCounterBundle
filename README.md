@@ -11,6 +11,8 @@ Features include:
 Documentation:
 --------------
 
+[The ViewCounter documentation](https://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
+
 Installation:
 --------------
 

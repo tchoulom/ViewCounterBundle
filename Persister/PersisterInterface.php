@@ -46,7 +46,7 @@ interface PersisterInterface
     /**
      * Finds One By.
      *
-     * @param $object
+     * @param $class
      * @param $criteria
      * @param null $orderBy
      * @param null $limit
@@ -54,5 +54,5 @@ interface PersisterInterface
      *
      * @return null|object
      */
-    public function findOneBy($object, $criteria, $orderBy = null, $limit = null, $offset = null);
+    public function findOneBy($class, $criteria, $orderBy = null, $limit = null, $offset = null);
 }

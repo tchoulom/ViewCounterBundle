@@ -74,7 +74,7 @@ class Persister implements PersisterInterface
     /**
      * Finds One By.
      *
-     * @param $object
+     * @param $class
      * @param $criteria
      * @param null $orderBy
      * @param null $limit
@@ -82,9 +82,9 @@ class Persister implements PersisterInterface
      *
      * @return null|object
      */
-    public function findOneBy($object, $criteria, $orderBy = null, $limit = null, $offset = null)
+    public function findOneBy($class, $criteria, $orderBy = null, $limit = null, $offset = null)
     {
-        $result = $this->getEntityManager()->getRepository($object)->findOneBy($criteria, $orderBy, $limit, $offset);
+        $result = $this->getEntityManager()->getRepository($class)->findOneBy($criteria, $orderBy, $limit, $offset);
 
         return $result;
     }
