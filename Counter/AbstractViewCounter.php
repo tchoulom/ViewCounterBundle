@@ -141,12 +141,12 @@ abstract class AbstractViewCounter
      */
     public function saveView(ViewCountable $page)
     {
-        $views = $this->getViews($page);
         $viewcounter = $this->getViewCounter($page);
         $viewCounterObject = $this->createViewCounterObject();
         $viewcounter = null != $viewcounter ? $viewcounter : $viewCounterObject;
 
         if ($this->isNewView($viewcounter)) {
+            $views = $this->getViews($page);
             $viewcounter->setIp($this->getRequest()->getClientIp());
             $setPage = 'set' . ucfirst($this->getProperty());
             $viewcounter->$setPage($page);
@@ -247,6 +247,6 @@ abstract class AbstractViewCounter
      */
     protected function getNowDate()
     {
-        return Date::getNowDate();
+        return Date::getNowDate(null);
     }
 }

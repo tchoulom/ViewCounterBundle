@@ -13,8 +13,8 @@ Documentation:
 
 [The ViewCounter documentation](https://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
 
-Installation:
---------------
+Usage:
+------
 
 ### Step 1: Download TchoulomViewCounterBundle using composer
 
@@ -331,6 +331,15 @@ Finally you can display the number of views:
 <h1>The number of views of this article :</h1> {{ article.views }}
 ...
 ```
+
+Licence:
+--------
+
+This bundle is released under the MIT license. See the complete license in the
+bundle:
+
+    LICENSE
+
 Enjoy!
 
 Need help or found a bug?

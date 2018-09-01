@@ -22,39 +22,24 @@ class Date
     const TIME_ZONE = 'Europe/Paris';
 
     /**
-     * Generates now DateTime
+     * Gets the now DateTime
      *
      * @return \DateTime
      */
-    public static function getNowDate()
+    public static function getNowDate($timeZone)
     {
-        return self::getDate('now');
+        return new \DateTime('now', self::getDateTimeZone($timeZone));
     }
 
     /**
-     * Generates date with good configuration
-     *
-     * @param string $date
-     *
-     * @return \DateTime
-     */
-    public static function getDate($date)
-    {
-        return new \DateTime($date, self::getDateTimeZone());
-    }
-
-    /**
-     * Gets DateTimeZone
+     * Gets the DateTimeZone
      *
      * @return \DateTimeZone
      */
-    public static function getDateTimeZone()
+    public static function getDateTimeZone($timeZone = null)
     {
-        static $dateTimeZone = null;
-
-        if (null == $dateTimeZone) {
-            $dateTimeZone = new \DateTimeZone(self::TIME_ZONE);
-        }
+        $timeZone = null == $timeZone ? self::TIME_ZONE : $timeZone;
+        $dateTimeZone = new \DateTimeZone($timeZone);
 
         return $dateTimeZone;
     }
