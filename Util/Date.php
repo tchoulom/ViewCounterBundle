@@ -22,17 +22,21 @@ class Date
     const TIME_ZONE = 'Europe/Paris';
 
     /**
-     * Gets the now DateTime
+     * Gets the now DateTime.
+     *
+     * @param null $timeZone
      *
      * @return \DateTime
      */
-    public static function getNowDate($timeZone)
+    public static function getNowDate($timeZone = null)
     {
         return new \DateTime('now', self::getDateTimeZone($timeZone));
     }
 
     /**
-     * Gets the DateTimeZone
+     * Gets the DateTimeZone.
+     *
+     * @param null $timeZone
      *
      * @return \DateTimeZone
      */

@@ -89,7 +89,7 @@ abstract class AbstractViewCounter
      *
      * @param ViewCountable $page The counted object(a tutorial or course...)
      */
-    public function loadViewCounter(ViewCountable $page)
+    protected function loadViewCounter(ViewCountable $page)
     {
         $metadata = $this->persister->loadMetadata($page);
         $this->property = $metadata->getAssociationMappings()['viewCounters']['mappedBy'];
@@ -105,7 +105,7 @@ abstract class AbstractViewCounter
      *
      * @return null|\Tchoulom\ViewCounterBundle\Entity\ViewCounter
      */
-    public function getViewCounter(ViewCountable $page = null)
+    protected function getViewCounter(ViewCountable $page = null)
     {
         if (null == $this->viewCounter) {
             $this->loadViewCounter($page);
@@ -166,7 +166,7 @@ abstract class AbstractViewCounter
      *
      * @return null|\Symfony\Component\HttpFoundation\Request
      */
-    public function getRequest()
+    protected function getRequest()
     {
         return $this->requestStack->getCurrentRequest();
     }
@@ -176,7 +176,7 @@ abstract class AbstractViewCounter
      *
      * @return int|string
      */
-    public function getViewIntervalName()
+    protected function getViewIntervalName()
     {
         $viewIntervalName = '';
         foreach ($this->viewInterval[0] as $key => $vi) {
@@ -192,7 +192,7 @@ abstract class AbstractViewCounter
      *
      * @return mixed
      */
-    public function createViewCounterObject()
+    protected function createViewCounterObject()
     {
         $class = $this->getClass();
         $viewCounterObject = new $class();
@@ -205,7 +205,7 @@ abstract class AbstractViewCounter
      *
      * @return null
      */
-    public function getClass()
+    protected function getClass()
     {
         return $this->class;
     }
@@ -215,7 +215,7 @@ abstract class AbstractViewCounter
      *
      * @return null
      */
-    public function getProperty()
+    protected function getProperty()
     {
         return $this->property;
     }
@@ -225,7 +225,7 @@ abstract class AbstractViewCounter
      *
      * @param ViewCountable $page
      */
-    public function setPage(ViewCountable $page)
+    protected function setPage(ViewCountable $page)
     {
         $this->page = $page;
     }
@@ -235,7 +235,7 @@ abstract class AbstractViewCounter
      *
      * @return ViewCountable|null
      */
-    public function getPage()
+    protected function getPage()
     {
         return $this->page;
     }
@@ -247,6 +247,6 @@ abstract class AbstractViewCounter
      */
     protected function getNowDate()
     {
-        return Date::getNowDate(null);
+        return Date::getNowDate();
     }
 }

@@ -13,8 +13,8 @@ Documentation:
 
 [The ViewCounter documentation](https://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
 
-Usage:
-------
+Installation:
+-------------
 
 ### Step 1: Download TchoulomViewCounterBundle using composer
 
@@ -56,7 +56,11 @@ Edit the **appKernel.php** file
       );
      ...
 ```
-### Step 3: Interface and Property
+
+Usage:
+------
+
+### Step 1: Interface and Property
 
 Suppose that you have an **Article** Entity.
 
@@ -163,7 +167,7 @@ The **$views** property allows to get the number of views:
     }
 ```
 
-### Step 4: ViewCounter
+### Step 2: ViewCounter
 The **ViewCounter** Entity allows to set the **ip** address, the **view_date**, and the **article_id**.
 
 The **ViewCounter** Entity must extend the **BaseViewCounter**:
@@ -234,7 +238,7 @@ Edit The **ViewCounter** Entity with your **Article** Entity:
     }
 
 ```
-### Step 5: Edit the config.yml file
+### Step 3: Edit the config.yml file
 
 Add the following configuration
 
@@ -256,7 +260,7 @@ In fact it increments the **$views** property.
 
 * The **hourly_view**, **weekly_view**, **monthly_view** features are not yet implemented.
 
-### Step 6: The Controller
+### Step 4: The Controller
 
 2 methods are available:
 
@@ -322,7 +326,7 @@ The second method returns the current page ($article).
 
 You can choose the method that is most appropriate for your situation.
 
-### Step 7: The View
+### Step 5: The View
 
 Finally you can display the number of views:
 
@@ -338,7 +342,9 @@ Licence:
 This bundle is released under the MIT license. See the complete license in the
 bundle:
 
-    LICENSE
+```text
+LICENSE
+```
 
 Enjoy!
 
