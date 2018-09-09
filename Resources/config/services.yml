@@ -1,6 +1,7 @@
 parameters:
     tchoulom.view_counter.base.class: Tchoulom\ViewCounterBundle\Counter\AbstractViewCounter
     tchoulom.view_counter.class: Tchoulom\ViewCounterBundle\Counter\ViewCounter
+    tchoulom.view_counter.persister.base.class: Tchoulom\ViewCounterBundle\Persister\AbstractPersister
     tchoulom.view_counter.persister.class: Tchoulom\ViewCounterBundle\Persister\Persister
 
 services:
@@ -16,7 +17,12 @@ services:
         class: '%tchoulom.view_counter.class%'
         parent: tchoulom.view_counter.base
 
+    tchoulom.view_counter.persister.base:
+            class: '%tchoulom.view_counter.persister.base.class%'
+            abstract:  true
+            arguments:
+                - '@doctrine.orm.entity_manager'
+
     tchoulom.view_counter.persister:
         class: '%tchoulom.view_counter.persister.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
+        parent: tchoulom.view_counter.persister.base

@@ -14,28 +14,12 @@
 
 namespace Tchoulom\ViewCounterBundle\Persister;
 
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class Persister
  */
-class Persister implements PersisterInterface
+class Persister extends AbstractPersister
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-
-    /**
-     * ViewCounter constructor.
-     *
-     * @param EntityManagerInterface $em
-     */
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
     /**
      * Saves the object.
      *
@@ -45,30 +29,6 @@ class Persister implements PersisterInterface
     {
         $this->em->persist($object);
         $this->em->flush();
-    }
-
-    /**
-     * Gets the EntityManager.
-     *
-     * @return EntityManagerInterface
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
-    }
-
-    /**
-     * Loads the Metadata.
-     *
-     * @param $object
-     *
-     * @return \Doctrine\ORM\Mapping\ClassMetadata
-     */
-    public function loadMetadata($object)
-    {
-        $metadata = $this->getEntityManager()->getClassMetadata(get_class($object));
-
-        return $metadata;
     }
 
     /**

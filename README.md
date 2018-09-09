@@ -336,7 +336,12 @@ Finally you can display the number of views:
 ...
 ```
 
-Licence:
+Original Credits
+----------------
+
+Created by [Ernest TCHOULOM](https://tchoulom.com) for [tchoulom.com](https://tchoulom.com).
+
+License:
 --------
 
 This bundle is released under the MIT license. See the complete license in the

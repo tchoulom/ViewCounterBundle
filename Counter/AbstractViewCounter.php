@@ -91,11 +91,13 @@ abstract class AbstractViewCounter
      */
     protected function loadViewCounter(ViewCountable $page)
     {
-        $metadata = $this->persister->loadMetadata($page);
-        $this->property = $metadata->getAssociationMappings()['viewCounters']['mappedBy'];
-        $this->class = $metadata->getAssociationMappings()['viewCounters']['targetEntity'];
+        $this->persister->loadMetadata($page);
+        $this->property = $this->persister->getProperty();
+        $this->class = $this->persister->getClass();
 
         $this->viewCounter = $this->persister->findOneBy($this->class, $criteria = [$this->property => $page, 'ip' => $this->getRequest()->getClientIp()], $orderBy = null, $limit = null, $offset = null);
+
+        return $this;
     }
 
     /**
