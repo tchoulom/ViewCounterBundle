@@ -34,27 +34,28 @@ class TchoulomViewCounterExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $configs = $this->beforeProcess($configs);
-        $container->setParameter('view_interval', $configs);
+
         $config = $this->processConfiguration($configuration, $configs);
+        $configs = $this->postProcess($configs);
+        $container->setParameter('view_interval', $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+
         $loader->load('services.yml');
     }
 
     /**
-     * Before processing the configuration
+     * Post processing the configuration
      * Gets the first choice.
      *
      * @param $configs
      *
      * @return array
      */
-    public function beforeProcess($configs)
+    public function postProcess($configs)
     {
         $uniqueElt = [];
-        $viewInterval = $configs[0]['view_interval'];
-        $firstInterval = $viewInterval[0];
+        $firstInterval = $configs[0]['view_interval'];
 
         if (null == $firstInterval) {
             throw new RuntimeException(vsprintf('You must choose one of the following values: %s, %s, %s, %s.', TchoulomViewCounterBundle::SUPPORTED_INTERVAL));
@@ -73,6 +74,6 @@ class TchoulomViewCounterExtension extends Extension
             break;
         }
 
-        return [$uniqueElt];
+        return $uniqueElt;
     }
 }

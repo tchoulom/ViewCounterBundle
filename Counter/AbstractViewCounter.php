@@ -82,7 +82,7 @@ abstract class AbstractViewCounter
      *
      * @return mixed
      */
-    abstract protected function isNewView(ViewCounterInterface $viewCounter);
+    abstract public function isNewView(ViewCounterInterface $viewCounter);
 
     /**
      * Loads the ViewCounter.
@@ -107,7 +107,7 @@ abstract class AbstractViewCounter
      *
      * @return null|\Tchoulom\ViewCounterBundle\Entity\ViewCounter
      */
-    protected function getViewCounter(ViewCountable $page = null)
+    public function getViewCounter(ViewCountable $page = null)
     {
         if (null == $this->viewCounter) {
             $this->loadViewCounter($page);
@@ -181,7 +181,7 @@ abstract class AbstractViewCounter
     protected function getViewIntervalName()
     {
         $viewIntervalName = '';
-        foreach ($this->viewInterval[0] as $key => $vi) {
+        foreach ($this->viewInterval as $key => $vi) {
             $viewIntervalName = $key;
             break;
         }

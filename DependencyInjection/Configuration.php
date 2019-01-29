@@ -34,21 +34,15 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->integerNode('unique_view')->defaultValue(1)
-                    ->info('Unique view.')
-                ->end()
-                ->integerNode('daily_view')->defaultValue(1)
-                    ->info('Dayly view.')
-                ->end()
-                ->integerNode('hourly_view')->defaultValue(1)
-                    ->info('Hourly view.')
-                ->end()
-                ->integerNode('weekly_view')->defaultValue(1)
-                    ->info('Weekly view.')
-                ->end()
-                ->integerNode('monthly_view')->defaultValue(1)
-                    ->info('Monthly view.')
-                ->end()
+                ->arrayNode('view_interval')
+                    ->children()
+                        ->integerNode('unique_view')->defaultValue(1)->info('Unique view.')->end()
+                        ->integerNode('daily_view')->defaultValue(1)->info('Dayly view.')->end()
+                        ->integerNode('hourly_view')->defaultValue(1)->info('Hourly view.')->end()
+                        ->integerNode('weekly_view')->defaultValue(1)->info('Weekly view.')->end()
+                        ->integerNode('monthly_view')->defaultValue(1)->info('Monthly view.')->end()
+                    ->end()
+                 ->end()
             ->end();
 
         return $treeBuilder;

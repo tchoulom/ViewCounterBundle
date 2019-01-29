@@ -28,7 +28,7 @@ class ViewCounter extends AbstractViewCounter
      *
      * @return bool
      */
-    protected function isNewView(ViewCounterInterface $viewCounter)
+    public function isNewView(ViewCounterInterface $viewCounter)
     {
         if (null == $viewCounter->getViewDate()) {
             return true;

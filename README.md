@@ -38,7 +38,7 @@ Installation:
   {
       "require": {
           ...
-          "tchoulom/view-counter-bundle": "^1.0"
+          "tchoulom/view-counter-bundle": "^2.0"
           ...
       }
   }
@@ -238,7 +238,7 @@ Edit The **ViewCounter** Entity with your **Article** Entity:
     }
 
 ```
-### Step 3: Edit the config.yml file
+### Step 3: Edit the configuration file
 
 Add the following configuration
 
@@ -246,11 +246,11 @@ Add the following configuration
 
     tchoulom_view_counter:
         view_interval:
-            - unique_view: 1
-    #       - daily_view: 1
-    #       - hourly_view: 1
-    #       - weekly_view: 1
-    #       - monthly_view: 1
+            daily_view: 1
+    #       unique_view: 1
+    #       hourly_view: 1
+    #       weekly_view: 1
+    #       monthly_view: 1
 
 ```
 * The **unique_view** allows to set to **1**, for a given **IP**, the number of view of an article
@@ -269,7 +269,9 @@ In fact it increments the **$views** property.
 Recommendation: You can use the **Symfony kernel terminate listener** to set the Viewcounter
 
 ```php
+use App\Entity\ViewCounter;
 ...
+
 /**
  * Reads an existing article
  *
