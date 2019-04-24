@@ -12,39 +12,47 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Persister;
+namespace Tchoulom\ViewCounterBundle\Repository;
 
 
 /**
- * Class Persister
+ * Class CounterRepository
  */
-class Persister extends AbstractPersister
+class CounterRepository extends AbstractRepository
 {
     /**
      * Saves the object.
      *
      * @param $object
+     *
+     * @return mixed
+     * @throws \Exception
      */
     public function save($object)
     {
-        $this->em->persist($object);
-        $this->em->flush();
+        try {
+            $this->em->persist($object);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+        return $object;
     }
 
     /**
      * Finds One By.
      *
-     * @param $class
-     * @param $criteria
+     * @param array $criteria
      * @param null $orderBy
      * @param null $limit
      * @param null $offset
      *
-     * @return null|object
+     * @return mixed
      */
-    public function findOneBy($class, $criteria, $orderBy = null, $limit = null, $offset = null)
+    public function findOneBy(array $criteria, $orderBy = null, $limit = null, $offset = null)
     {
-        $result = $this->getEntityManager()->getRepository($class)->findOneBy($criteria, $orderBy, $limit, $offset);
+        $result = $this->getClassRepository()->findOneBy($criteria, $orderBy, $limit, $offset);
 
         return $result;
     }

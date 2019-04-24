@@ -12,13 +12,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Persister;
+namespace Tchoulom\ViewCounterBundle\Repository;
 
 
 /**
- * Class AbstractPersister
+ * Class RepositoryInterface.
  */
-interface PersisterInterface
+interface RepositoryInterface
 {
     /**
      * Saves the object.
@@ -32,15 +32,14 @@ interface PersisterInterface
     /**
      * Finds One By.
      *
-     * @param $class
-     * @param $criteria
+     * @param array $criteria
      * @param null $orderBy
      * @param null $limit
      * @param null $offset
      *
      * @return mixed
      */
-    public function findOneBy($class, $criteria, $orderBy = null, $limit = null, $offset = null);
+    public function findOneBy(array $criteria, $orderBy = null, $limit = null, $offset = null);
 
     /**
      * Gets the EntityManager.
@@ -85,4 +84,11 @@ interface PersisterInterface
      * @return mixed
      */
     public function getClass();
+
+    /**
+     * Gets the class Repository.
+     *
+     * @return mixed
+     */
+    public function getClassRepository();
 }

@@ -45,37 +45,37 @@ class TchoulomViewCounterExtensionTest extends BaseTest
     }
 
     /**
-     * tests beforeProcessSuccess
+     * tests postProcessSuccess
      *
-     * @dataProvider beforeProcessProvider
+     * @dataProvider postProcessProvider
      */
-    public function testBeforeProcessSuccess($configs)
+    public function testPostProcessSuccess($configs)
     {
-        $uniqueElt = $this->viewCounterExtension->beforeProcess($configs);
+        $uniqueElt = $this->viewCounterExtension->postProcess($configs);
 
         $this->assertTrue(is_array($uniqueElt));
     }
 
     /**
-     * tests beforeProcessError
-     * 
+     * tests postProcessError
+     *
      * @expectedException \Tchoulom\ViewCounterBundle\Exception\RuntimeException
-     * @expectedExceptionMessage You must choose one of the following values: unique_view, daily_view, hourly_view, weekly_view.
+     * @expectedExceptionMessage You must choose one of the following values: increment_each_view, unique_view, daily_view, hourly_view, weekly_view.
      */
-    public function testBeforeProcessError($configs = null)
+    public function testPostProcessError($configs = null)
     {
-        $this->viewCounterExtension->beforeProcess($configs);
+        $this->viewCounterExtension->postProcess($configs);
     }
 
     /**
      * @return array
      */
-    public function beforeProcessProvider()
+    public function postProcessProvider()
     {
         return [
             [
                 [
-                    ['view_interval' => [0 => ['daily_view' => 1]]]
+                    ['view_interval' => ['daily_view' => 1]]
                 ]
             ]
         ];

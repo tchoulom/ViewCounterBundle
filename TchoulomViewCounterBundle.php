@@ -23,5 +23,5 @@ class TchoulomViewCounterBundle extends Bundle
      *
      * @var array
      */
-    const SUPPORTED_INTERVAL = ['unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view'];
+    const SUPPORTED_INTERVAL = ['increment_each_view', 'unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view'];
 }

@@ -1,16 +1,18 @@
 parameters:
     tchoulom.view_counter.base.class: Tchoulom\ViewCounterBundle\Counter\AbstractViewCounter
     tchoulom.view_counter.class: Tchoulom\ViewCounterBundle\Counter\ViewCounter
-    tchoulom.view_counter.persister.base.class: Tchoulom\ViewCounterBundle\Persister\AbstractPersister
-    tchoulom.view_counter.persister.class: Tchoulom\ViewCounterBundle\Persister\Persister
+    tchoulom.view_counter.repository.base.class: Tchoulom\ViewCounterBundle\Repository\AbstractRepository
+    tchoulom.view_counter.repository.class: Tchoulom\ViewCounterBundle\Repository\CounterRepository
+    tchoulom.view_counter.manager.class: Tchoulom\ViewCounterBundle\Manager\CounterManager
 
 services:
+    # Counter
     tchoulom.view_counter.base:
         class: '%tchoulom.view_counter.base.class%'
         abstract:  true
         public: true
         arguments:
-            - '@tchoulom.view_counter.persister'
+            - '@tchoulom.view_counter.manager'
             - '@request_stack'
             - '%view_interval%'
 
@@ -19,14 +21,22 @@ services:
         public: true
         parent: tchoulom.view_counter.base
 
-    tchoulom.view_counter.persister.base:
-        class: '%tchoulom.view_counter.persister.base.class%'
+    # Repository
+    tchoulom.view_counter.repository.base:
+        class: '%tchoulom.view_counter.repository.base.class%'
         abstract:  true
         public: true
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    tchoulom.view_counter.persister:
-        class: '%tchoulom.view_counter.persister.class%'
+    tchoulom.view_counter.repository:
+        class: '%tchoulom.view_counter.repository.class%'
         public: true
-        parent: tchoulom.view_counter.persister.base
+        parent: tchoulom.view_counter.repository.base
+
+    # Manager
+    tchoulom.view_counter.manager:
+        class: '%tchoulom.view_counter.manager.class%'
+        public: true
+        arguments:
+            - '@tchoulom.view_counter.repository'

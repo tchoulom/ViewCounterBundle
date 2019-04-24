@@ -19,10 +19,11 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounter as ViewCounterEntity;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Manager\CounterManager;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
-use Tchoulom\ViewCounterBundle\Persister\Persister;
-use Tchoulom\ViewCounterBundle\Persister\PersisterInterface;
 use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
+use Tchoulom\ViewCounterBundle\Repository\CounterRepository;
+use Tchoulom\ViewCounterBundle\Repository\RepositoryInterface;
 
 /**
  * Class BaseTest
@@ -70,8 +71,9 @@ abstract class BaseTest extends TestCase
      */
     public function testViewCounterService()
     {
-        $persister = new Persister($this->entityManagerMock);
-        $viewCounterService = new ViewCounter($persister, $this->requestStack, $this->viewInterval);
+        $counterRepository = new CounterRepository($this->entityManagerMock);
+        $counterManager = new CounterManager($counterRepository);
+        $viewCounterService = new ViewCounter($counterManager, $this->requestStack, $this->viewInterval);
 
         $this->assertInstanceOf(ViewCounter::class, $viewCounterService);
 
@@ -91,16 +93,16 @@ abstract class BaseTest extends TestCase
     }
 
     /**
-     * tests Persister
+     * Tests CounterRepository.
      *
-     * @return Persister
+     * @return CounterRepository
      */
-    public function testPersister()
+    public function testCounterRepository()
     {
-        $persister = new Persister($this->entityManagerMock);
+        $counterRepository = new CounterRepository($this->entityManagerMock);
 
-        $this->assertInstanceOf(PersisterInterface::class, $persister);
+        $this->assertInstanceOf(RepositoryInterface::class, $counterRepository);
 
-        return $persister;
+        return $counterRepository;
     }
 }

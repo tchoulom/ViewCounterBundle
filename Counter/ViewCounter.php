@@ -34,11 +34,15 @@ class ViewCounter extends AbstractViewCounter
             return true;
         }
 
-        if ('unique_view' === $this->getViewIntervalName()) {
+        if (self::INCREMENT_EACH_VIEW === $this->getViewIntervalName()) {
+            return true;
+        }
+
+        if (self::UNIQUE_VIEW === $this->getViewIntervalName()) {
             return false;
         }
 
-        if ('daily_view' === $this->getViewIntervalName()) {
+        if (self::DAILY_VIEW === $this->getViewIntervalName()) {
             return $this->isNewDailyView($viewCounter);
         }
 

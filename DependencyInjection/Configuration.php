@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('view_interval')
                     ->children()
+                        ->integerNode('increment_each_view')->defaultValue(1)->info('Increment each view.')->end()
                         ->integerNode('unique_view')->defaultValue(1)->info('Unique view.')->end()
                         ->integerNode('daily_view')->defaultValue(1)->info('Dayly view.')->end()
                         ->integerNode('hourly_view')->defaultValue(1)->info('Hourly view.')->end()

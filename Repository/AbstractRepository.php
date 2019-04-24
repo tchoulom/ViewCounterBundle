@@ -12,12 +12,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Persister;
+namespace Tchoulom\ViewCounterBundle\Repository;
 
 /**
- * Class AbstractPersister
+ * Class AbstractRepository.
  */
-abstract class AbstractPersister implements PersisterInterface
+abstract class AbstractRepository implements RepositoryInterface
 {
     /**
      * The EntityManager
@@ -51,15 +51,14 @@ abstract class AbstractPersister implements PersisterInterface
     /**
      * Finds One By.
      *
-     * @param $class
-     * @param $criteria
+     * @param array $criteria
      * @param null $orderBy
      * @param null $limit
      * @param null $offset
      *
      * @return mixed
      */
-    abstract public function findOneBy($class, $criteria, $orderBy = null, $limit = null, $offset = null);
+    abstract public function findOneBy(array $criteria, $orderBy = null, $limit = null, $offset = null);
 
     /**
      * Gets the EntityManager.
@@ -76,7 +75,7 @@ abstract class AbstractPersister implements PersisterInterface
      *
      * @param $object
      *
-     * @return \Doctrine\ORM\Mapping\ClassMetadata
+     * @return $this
      */
     public function loadMetadata($object)
     {
@@ -123,5 +122,17 @@ abstract class AbstractPersister implements PersisterInterface
     public function getClass()
     {
         return $this->getMappings()['viewCounters']['targetEntity'];
+    }
+
+    /**
+     * Gets the class Repository.
+     *
+     * @return mixed
+     */
+    public function getClassRepository()
+    {
+        $class = $this->getClass();
+
+        return $this->getEntityManager()->getRepository($class);
     }
 }

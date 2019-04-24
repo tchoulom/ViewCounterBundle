@@ -247,6 +247,7 @@ Add the following configuration
     tchoulom_view_counter:
         view_interval:
             daily_view: 1
+    #       increment_each_view: 1
     #       unique_view: 1
     #       hourly_view: 1
     #       weekly_view: 1
@@ -257,6 +258,8 @@ Add the following configuration
 
 * The **daily_view** allows to increment **daily** for each **IP** the number of views of an **Article** (the viewership).
 In fact it increments the **$views** property.
+
+* The **increment_each_view** allows to increment the number of views of an **Article** every time the user will refresh the page
 
 * The **hourly_view**, **weekly_view**, **monthly_view** features are not yet implemented.
 

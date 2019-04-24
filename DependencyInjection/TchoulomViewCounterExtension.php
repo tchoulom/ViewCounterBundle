@@ -58,12 +58,12 @@ class TchoulomViewCounterExtension extends Extension
         $firstInterval = $configs[0]['view_interval'];
 
         if (null == $firstInterval) {
-            throw new RuntimeException(vsprintf('You must choose one of the following values: %s, %s, %s, %s.', TchoulomViewCounterBundle::SUPPORTED_INTERVAL));
+            throw new RuntimeException(vsprintf('You must choose one of the following values: %s, %s, %s, %s, %s.', TchoulomViewCounterBundle::SUPPORTED_INTERVAL));
         }
 
         foreach ($firstInterval as $key => $config) {
             if (!in_array($key, TchoulomViewCounterBundle::SUPPORTED_INTERVAL)) {
-                throw new RuntimeException(sprintf('The key "%s" is not supported.', $key) . vsprintf('You must choose one of the following values: %s, %s, %s, %s.', TchoulomViewCounterBundle::SUPPORTED_INTERVAL));
+                throw new RuntimeException(sprintf('The key "%s" is not supported.', $key) . vsprintf('You must choose one of the following values: %s, %s, %s, %s, %s.', TchoulomViewCounterBundle::SUPPORTED_INTERVAL));
             }
 
             if (!is_int($config)) {

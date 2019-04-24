@@ -17,7 +17,7 @@ namespace Tchoulom\ViewCounterBundle\Counter;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
-use Tchoulom\ViewCounterBundle\Persister\PersisterInterface;
+use Tchoulom\ViewCounterBundle\Manager\CounterManager;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -26,9 +26,9 @@ use Tchoulom\ViewCounterBundle\Util\Date;
 abstract class AbstractViewCounter
 {
     /**
-     * @var PersisterInterface
+     * CounterManager
      */
-    protected $persister;
+    protected $counterManager;
 
     /**
      * @var RequestStack
@@ -61,16 +61,23 @@ abstract class AbstractViewCounter
      */
     protected $page = null;
 
+    const INCREMENT_EACH_VIEW = 'increment_each_view';
+    const DAILY_VIEW = 'daily_view';
+    const UNIQUE_VIEW = 'unique_view';
+    const HOURLY_VIEW = 'hourly_view';
+    const WEEKLY_VIEW = 'weekly_view';
+    const MONTHLY_VIEW = 'monthly_view';
+
     /**
      * AbstractViewCounter constructor.
      *
-     * @param PersisterInterface $persister
+     * @param CounterManager $counterManager
      * @param RequestStack $requestStack
      * @param array $viewInterval
      */
-    public function __construct(PersisterInterface $persister, RequestStack $requestStack, array $viewInterval)
+    public function __construct(CounterManager $counterManager, RequestStack $requestStack, array $viewInterval)
     {
-        $this->persister = $persister;
+        $this->counterManager = $counterManager;
         $this->requestStack = $requestStack;
         $this->viewInterval = $viewInterval;
     }
@@ -88,14 +95,15 @@ abstract class AbstractViewCounter
      * Loads the ViewCounter.
      *
      * @param ViewCountable $page The counted object(a tutorial or course...)
+     * @return $this
      */
     protected function loadViewCounter(ViewCountable $page)
     {
-        $this->persister->loadMetadata($page);
-        $this->property = $this->persister->getProperty();
-        $this->class = $this->persister->getClass();
+        $this->counterManager->loadMetadata($page);
+        $this->property = $this->counterManager->getProperty();
+        $this->class = $this->counterManager->getClass();
 
-        $this->viewCounter = $this->persister->findOneBy($this->class, $criteria = [$this->property => $page, 'ip' => $this->getRequest()->getClientIp()], $orderBy = null, $limit = null, $offset = null);
+        $this->viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $this->getIp()], $orderBy = null, $limit = null, $offset = null);
 
         return $this;
     }
@@ -149,15 +157,15 @@ abstract class AbstractViewCounter
 
         if ($this->isNewView($viewcounter)) {
             $views = $this->getViews($page);
-            $viewcounter->setIp($this->getRequest()->getClientIp());
+            $viewcounter->setIp($this->getIp());
             $setPage = 'set' . ucfirst($this->getProperty());
             $viewcounter->$setPage($page);
             $viewcounter->setViewDate($this->getNowDate());
 
             $page->setViews($views);
 
-            $this->persister->save($viewcounter);
-            $this->persister->save($page);
+            $this->counterManager->save($viewcounter);
+            $this->counterManager->save($page);
         }
 
         return $page;
@@ -250,5 +258,15 @@ abstract class AbstractViewCounter
     protected function getNowDate()
     {
         return Date::getNowDate();
+    }
+
+    /**
+     * Gets the user IP.
+     *
+     * @return null|string
+     */
+    public function getIp()
+    {
+        return $this->getRequest()->getClientIp();
     }
 }
