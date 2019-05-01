@@ -103,7 +103,7 @@ abstract class AbstractViewCounter
         $this->property = $this->counterManager->getProperty();
         $this->class = $this->counterManager->getClass();
 
-        $this->viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $this->getIp()], $orderBy = null, $limit = null, $offset = null);
+        $this->viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $this->getClientIp()], $orderBy = null, $limit = null, $offset = null);
 
         return $this;
     }
@@ -157,7 +157,7 @@ abstract class AbstractViewCounter
 
         if ($this->isNewView($viewcounter)) {
             $views = $this->getViews($page);
-            $viewcounter->setIp($this->getIp());
+            $viewcounter->setIp($this->getClientIp());
             $setPage = 'set' . ucfirst($this->getProperty());
             $viewcounter->$setPage($page);
             $viewcounter->setViewDate($this->getNowDate());
@@ -261,11 +261,11 @@ abstract class AbstractViewCounter
     }
 
     /**
-     * Gets the user IP.
+     * Gets the client IP.
      *
      * @return null|string
      */
-    public function getIp()
+    public function getClientIp()
     {
         return $this->getRequest()->getClientIp();
     }

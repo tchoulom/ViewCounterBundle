@@ -256,12 +256,16 @@ Add the following configuration
 ```
 * The **unique_view** allows to set to **1**, for a given **IP**, the number of view of an article
 
-* The **daily_view** allows to increment **daily** for each **IP** the number of views of an **Article** (the viewership).
+* The **daily_view** allows to increment **daily**, for a given **IP**, the number of views of an **Article** (the viewership).
 In fact it increments the **$views** property.
 
 * The **increment_each_view** allows to increment the number of views of an **Article** every time the user will refresh the page
 
-* The **hourly_view**, **weekly_view**, **monthly_view** features are not yet implemented.
+* The **hourly_view** allows to increment **hourly**, for a given **IP**, the number of views of an **Article** (the viewership).
+
+* The **weekly_view** allows to increment **weekly**, for a given **IP**, the number of views of an **Article** (the viewership).
+
+* The **monthly_view** allows to increment **monthly**, for a given **IP**, the number of views of an **Article** (the viewership).
 
 ### Step 4: The Controller
 
