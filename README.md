@@ -6,7 +6,7 @@ Welcome to the "**TchoulomViewCounterBundle**".
 This bundle is used to count the number of views of a page (the viewership).
 This bundle can also be used to draw a graphical representation of statistical data of the web pages.
 
-<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="right" />
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
 
 Features include:
 --------------
