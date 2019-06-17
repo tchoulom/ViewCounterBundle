@@ -400,7 +400,7 @@ The statistical data of the entity **article** are recorded over 12 months.
 
 So you can exploit this statistical data to build a graph, as shown in the following figure:
 
-**Statistics of monthly views in 2019**
+**Statistics of monthly views in 2018**
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
 
