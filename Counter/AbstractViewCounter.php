@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
+use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
+use Tchoulom\ViewCounterBundle\Statistics\Statistics;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -36,10 +38,16 @@ abstract class AbstractViewCounter
     protected $requestStack;
 
     /**
-     * The View interval.
-     * @var array
+     * @var Statistics
      */
-    protected $viewInterval;
+    protected $statistics;
+
+    /**
+     * The View counter configs.
+     *
+     * @var ViewcounterConfig
+     */
+    protected $viewcounterConfig;
 
     /**
      * The viewCounter
@@ -73,13 +81,13 @@ abstract class AbstractViewCounter
      *
      * @param CounterManager $counterManager
      * @param RequestStack $requestStack
-     * @param array $viewInterval
+     * @param ViewcounterConfig $viewcounterConfig
      */
-    public function __construct(CounterManager $counterManager, RequestStack $requestStack, array $viewInterval)
+    public function __construct(CounterManager $counterManager, RequestStack $requestStack, ViewcounterConfig $viewcounterConfig)
     {
         $this->counterManager = $counterManager;
         $this->requestStack = $requestStack;
-        $this->viewInterval = $viewInterval;
+        $this->viewcounterConfig = $viewcounterConfig;
     }
 
     /**
@@ -166,6 +174,14 @@ abstract class AbstractViewCounter
 
             $this->counterManager->save($viewcounter);
             $this->counterManager->save($page);
+
+            // Statistics
+            if (true === $this->getUseStats()) {
+                $getPage = 'get' . ucfirst($this->getProperty());
+                $page = $viewcounter->$getPage();
+
+                $this->statistics->register($page);
+            }
         }
 
         return $page;
@@ -182,19 +198,33 @@ abstract class AbstractViewCounter
     }
 
     /**
-     * Gets view interval name.
+     * Gets the view interval name.
      *
      * @return int|string
      */
     protected function getViewIntervalName()
     {
-        $viewIntervalName = '';
-        foreach ($this->viewInterval as $key => $vi) {
-            $viewIntervalName = $key;
-            break;
-        }
+        return $this->viewcounterConfig->getViewIntervalName();
+    }
 
-        return $viewIntervalName;
+    /**
+     * Gets the view interval value.
+     *
+     * @return boolean
+     */
+    protected function getViewIntervalValue()
+    {
+        return true;
+    }
+
+    /**
+     * Gets the use_stats value.
+     *
+     * @return boolean
+     */
+    protected function getUseStats()
+    {
+        return $this->viewcounterConfig->getUseStats();
     }
 
     /**
@@ -268,5 +298,19 @@ abstract class AbstractViewCounter
     public function getClientIp()
     {
         return $this->getRequest()->getClientIp();
+    }
+
+    /**
+     * Sets the statistics.
+     *
+     * @param Statistics $statistics
+     *
+     * @return $this
+     */
+    public function setStatistics(Statistics $statistics)
+    {
+        $this->statistics = $statistics;
+
+        return $this;
     }
 }

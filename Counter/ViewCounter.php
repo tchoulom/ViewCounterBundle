@@ -30,6 +30,10 @@ class ViewCounter extends AbstractViewCounter
      */
     public function isNewView(ViewCounterInterface $viewCounter)
     {
+        if (true !== $this->getViewIntervalValue()) {
+            return false;
+        }
+
         if (null == $viewCounter->getViewDate()) {
             return true;
         }

@@ -22,6 +22,46 @@ class Date
     const TIME_ZONE = 'Europe/Paris';
 
     /**
+     * Gets now year.
+     *
+     * @return int
+     */
+    public static function getNowYear()
+    {
+        return intval(date('Y'));
+    }
+
+    /**
+     * Gets now month.
+     *
+     * @return int
+     */
+    public static function getNowMonth()
+    {
+        return intval(date('m'));
+    }
+
+    /**
+     * Gets now week.
+     *
+     * @return int
+     */
+    public static function getNowWeek()
+    {
+        return intval(date('W'));
+    }
+
+    /**
+     * Gets day name.
+     *
+     * @return false|string
+     */
+    public static function getDayName()
+    {
+        return date('l');
+    }
+
+    /**
      * Gets the now DateTime.
      *
      * @param null $timeZone
@@ -42,7 +82,7 @@ class Date
      */
     public static function getDateTimeZone($timeZone = null)
     {
-        $timeZone = null == $timeZone ? self::TIME_ZONE : $timeZone;
+        $timeZone = (null == $timeZone) ? self::TIME_ZONE : $timeZone;
         $dateTimeZone = new \DateTimeZone($timeZone);
 
         return $dateTimeZone;

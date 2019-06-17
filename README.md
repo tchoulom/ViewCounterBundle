@@ -4,14 +4,18 @@ The View Counter Bundle
 Welcome to the "**TchoulomViewCounterBundle**".
 
 This bundle is used to count the number of views of a page (the viewership).
+This bundle can also be used to draw a graphical representation of statistical data of the web pages.
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="right" />
 
 Features include:
 --------------
-
+    - Viewcounter
+    - Statistics
 Documentation:
 --------------
 
-[The ViewCounter documentation](https://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
+[The ViewCounter documentation](http://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
 
 Installation:
 -------------
@@ -38,7 +42,7 @@ Installation:
   {
       "require": {
           ...
-          "tchoulom/view-counter-bundle": "^2.0"
+          "tchoulom/view-counter-bundle": "^3.0"
           ...
       }
   }
@@ -65,7 +69,6 @@ Usage:
 Suppose that you have an **Article** Entity.
 
 This Entity must implement the **ViewCountable** interface:
-
 
 ```php
    use Tchoulom\ViewCounterBundle\Model\ViewCountable;
@@ -168,9 +171,10 @@ The **$views** property allows to get the number of views:
 ```
 
 ### Step 2: ViewCounter
-The **ViewCounter** Entity allows to set the **ip** address, the **view_date**, and the **article_id**.
 
+The **ViewCounter** Entity allows to set the **ip** address, the **view_date**, and the **article_id**.
 The **ViewCounter** Entity must extend the **BaseViewCounter**:
+
 ```php
 
     use Tchoulom\ViewCounterBundle\Entity\ViewCounter as BaseViewCounter;
@@ -252,8 +256,13 @@ Add the following configuration
     #       hourly_view: 1
     #       weekly_view: 1
     #       monthly_view: 1
+        statistics:
+            use_stats: false
+            stats_extension:
 
 ```
+### The "view_interval"
+
 * The **unique_view** allows to set to **1**, for a given **IP**, the number of view of an article
 
 * The **daily_view** allows to increment **daily**, for a given **IP**, the number of views of an **Article** (the viewership).
@@ -266,6 +275,20 @@ In fact it increments the **$views** property.
 * The **weekly_view** allows to increment **weekly**, for a given **IP**, the number of views of an **Article** (the viewership).
 
 * The **monthly_view** allows to increment **monthly**, for a given **IP**, the number of views of an **Article** (the viewership).
+
+### The "statistics"
+
+The **use_stats** allows to indicate if you want to use statistics.
+If **use_stats** is set to ***true***, the statistical functionality will be used (confers the ***Step 6***).
+
+The **stats_extension** allows to define the extension of the statistics file.
+
+**Example :**
+
+If **stats_extension: txt**, then the name of the statistics file will be ***stats.txt***
+If **stats_extension:**, then the name of the statistics file will be ***stats***
+
+The full path of the statistics file is ***var/viewcounter*** of your project.
 
 ### Step 4: The Controller
 
@@ -289,13 +312,13 @@ use App\Entity\ViewCounter;
  public function readAction(Request $request, Article $article)
  {
     // Viewcounter
-    $views = $this->get('tchoulom.view_counter')->getViews($article);
-    $viewcounter = $this->get('tchoulom.view_counter')->getViewCounter($article);
+    $viewcounter = $this->get('tchoulom.viewcounter')->getViewCounter($article);
     $viewcounter = (null != $viewcounter ? $viewcounter : new ViewCounter());
     
     $em = $this->getDoctrine()->getEntityManager();
     
-    if ($this->get('tchoulom.view_counter')->isNewView($viewcounter)) {
+    if ($this->get('tchoulom.viewcounter')->isNewView($viewcounter)) {
+        $views = $this->get('tchoulom.viewcounter')->getViews($article);
         $viewcounter->setIp($request->getClientIp());
         $viewcounter->setArticle($article);
         $viewcounter->setViewDate(new \DateTime('now'));
@@ -312,7 +335,7 @@ use App\Entity\ViewCounter;
 
 **Method 2 :**
 
-You only need to save your **Article** Entity via the **'tchoulom.view_counter'** service:
+You only need to save your **Article** Entity via the **'tchoulom.viewcounter'** service:
 
 ```php
 ...
@@ -326,7 +349,7 @@ You only need to save your **Article** Entity via the **'tchoulom.view_counter'*
 public function readAction(Request $request, Article $article)
 {
     // Saves the view
-    $page = $this->get('tchoulom.view_counter')->saveView($article);
+    $page = $this->get('tchoulom.viewcounter')->saveView($article);
 }
 ...
 ```
@@ -345,10 +368,45 @@ Finally you can display the number of views:
 ...
 ```
 
+### Step 6: Exploitation of statistical data
+
+Use the **StatsFinder** service to retrieve statistics of a web page :
+
+```php
+   // The "statsFinder" service
+   $statsFinder = $this->get('tchoulom.viewcounter.stats_finder');
+   
+   // Retrieve all statistical data
+   $contents = $statsFinder->loadContents();
+   
+   // Finds statistics by page
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Page
+   $page = $statsFinder->findByPage($article);
+    
+   // Retrieves statistics
+   $stats = $statsFinder->getStats();
+    ...
+```
+
+The data in the stats file represents the view statistics, as shown in the following figure:
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-2018.png" alt="Statistical data in 2018" align="center" />
+
+The figure above shows that the statistical data contain two viewcountavle entities: **article** and **news**.
+The statistical data of the entity **article** are recorded over 12 months.
+
+So you can exploit this statistical data to build a graph, as shown in the following figure:
+
+**Statistics of monthly views in 2019**
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
+
+If you wish, you can also build the graph on statistics of  **daily view**, **hourly view**, **weekly view**... according to the data in the statistics file.
+
 Original Credits
 ----------------
 
-Created by [Ernest TCHOULOM](https://tchoulom.com) for [tchoulom.com](https://tchoulom.com).
+Created by [Ernest TCHOULOM](http://tchoulom.com) for [tchoulom.com](https://tchoulom.com).
 
 License:
 --------
@@ -363,4 +421,4 @@ LICENSE
 Enjoy!
 
 Need help or found a bug?
-[https://www.tchoulom.com](https://www.tchoulom.com)
+[http://www.tchoulom.com](http://www.tchoulom.com)

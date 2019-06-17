@@ -1,0 +1,50 @@
+parameters:
+    tchoulom.viewcounter.base.class: Tchoulom\ViewCounterBundle\Counter\AbstractViewCounter
+    tchoulom.viewcounter.class: Tchoulom\ViewCounterBundle\Counter\ViewCounter
+    tchoulom.viewcounter.repository.base.class: Tchoulom\ViewCounterBundle\Repository\AbstractRepository
+    tchoulom.viewcounter.repository.class: Tchoulom\ViewCounterBundle\Repository\CounterRepository
+    tchoulom.viewcounter.manager.class: Tchoulom\ViewCounterBundle\Manager\CounterManager
+    tchoulom.viewcounter_config.class: Tchoulom\ViewCounterBundle\Model\ViewcounterConfig
+
+services:
+    # Counter
+    tchoulom.viewcounter.base:
+        class: '%tchoulom.viewcounter.base.class%'
+        abstract:  true
+        public: true
+        arguments:
+            - '@tchoulom.viewcounter.manager'
+            - '@request_stack'
+            - '@tchoulom.viewcounter_config'
+        calls:
+            - [setStatistics, ['@tchoulom.viewcounter.statistics']]
+
+    tchoulom.viewcounter:
+        class: '%tchoulom.viewcounter.class%'
+        public: true
+        parent: tchoulom.viewcounter.base
+
+    # Repository
+    tchoulom.viewcounter.repository.base:
+        class: '%tchoulom.viewcounter.repository.base.class%'
+        abstract:  true
+        public: true
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    tchoulom.viewcounter.repository:
+        class: '%tchoulom.viewcounter.repository.class%'
+        public: true
+        parent: tchoulom.viewcounter.repository.base
+
+    # Manager
+    tchoulom.viewcounter.manager:
+        class: '%tchoulom.viewcounter.manager.class%'
+        public: true
+        arguments:
+            - '@tchoulom.viewcounter.repository'
+
+    # Configuration
+    tchoulom.viewcounter_config:
+        class: '%tchoulom.viewcounter_config.class%'
+        public: true
