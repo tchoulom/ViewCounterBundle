@@ -279,6 +279,7 @@ In fact it increments the **$views** property.
 ### The "statistics"
 
 The **use_stats** allows to indicate if you want to use statistics.
+
 If **use_stats** is set to ***true***, the statistical functionality will be used (confers the ***Step 6***).
 
 The **stats_extension** allows to define the extension of the statistics file.
@@ -286,6 +287,7 @@ The **stats_extension** allows to define the extension of the statistics file.
 **Example :**
 
 If **stats_extension: txt**, then the name of the statistics file will be ***stats.txt***
+
 If **stats_extension:**, then the name of the statistics file will be ***stats***
 
 The full path of the statistics file is ***var/viewcounter*** of your project.
@@ -393,6 +395,7 @@ The data in the stats file represents the view statistics, as shown in the follo
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-2018.png" alt="Statistical data in 2018" align="center" />
 
 The figure above shows that the statistical data contain two viewcountavle entities: **article** and **news**.
+
 The statistical data of the entity **article** are recorded over 12 months.
 
 So you can exploit this statistical data to build a graph, as shown in the following figure:
