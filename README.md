@@ -4,6 +4,7 @@ The View Counter Bundle
 Welcome to the "**TchoulomViewCounterBundle**".
 
 This bundle is used to count the number of views of a page (the viewership).
+
 This bundle can also be used to draw a graphical representation of statistical data of the web pages.
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
@@ -394,7 +395,7 @@ The data in the stats file represents the view statistics, as shown in the follo
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-2018.png" alt="Statistical data in 2018" align="center" />
 
-The figure above shows that the statistical data contain two viewcountavle entities: **article** and **news**.
+The figure above shows that the statistical data contain 2 "viewcountable" entities: **article** and **news**.
 
 The statistical data of the entity **article** are recorded over 12 months.
 
