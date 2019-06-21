@@ -251,12 +251,12 @@ Add the following configuration
 
     tchoulom_view_counter:
         view_interval:
-            daily_view: 1
-    #       increment_each_view: 1
-    #       unique_view: 1
-    #       hourly_view: 1
-    #       weekly_view: 1
-    #       monthly_view: 1
+            daily_view: true
+    #       increment_each_view: false
+    #       unique_view: false
+    #       hourly_view: false
+    #       weekly_view: false
+    #       monthly_view: false
         statistics:
             use_stats: false
             stats_extension:
