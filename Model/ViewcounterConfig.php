@@ -19,6 +19,8 @@ namespace Tchoulom\ViewCounterBundle\Model;
  */
 class ViewcounterConfig
 {
+    protected $viewIntervalNode;
+    protected $statsNode;
     protected $viewIntervalName;
     protected $useStats;
     protected $statsExtension;
@@ -26,15 +28,63 @@ class ViewcounterConfig
     /**
      * ViewcounterConfig constructor.
      *
-     * @param $viewIntervalName
-     * @param $useStats
-     * @param $statsExtension
+     * @param array $viewIntervalNode
+     * @param array $statsNode
      */
-    public function __construct($viewIntervalName, $useStats, $statsExtension)
+    public function __construct(array $viewIntervalNode, array $statsNode)
     {
-        $this->viewIntervalName = $viewIntervalName;
-        $this->useStats = $useStats;
-        $this->statsExtension = $statsExtension;
+        $this->viewIntervalNode = $viewIntervalNode;
+        $this->statsNode = $statsNode;
+
+        $this->setConfiguration($this->viewIntervalNode, $this->statsNode);
+    }
+
+    /**
+     * Gets the view interval node.
+     *
+     * @return array
+     */
+    public function getViewIntervalNode()
+    {
+        return $this->viewIntervalNode;
+    }
+
+    /**
+     * Sets the view interval node.
+     *
+     * @param array $viewIntervalNode
+     *
+     * @return $this
+     */
+    public function setViewIntervalNode(array $viewIntervalNode)
+    {
+        $this->viewIntervalNode = $viewIntervalNode;
+
+        return $this;
+    }
+
+    /**
+     * Gets the stats node.
+     *
+     * @return array
+     */
+    public function getStatsNode()
+    {
+        return $this->statsNode;
+    }
+
+    /**
+     * Sets the stats node.
+     *
+     * @param array $statsNode
+     *
+     * @return $this
+     */
+    public function setStatsNode(array $statsNode)
+    {
+        $this->statsNode = $statsNode;
+
+        return $this;
     }
 
     /**
@@ -105,6 +155,24 @@ class ViewcounterConfig
     public function setStatsExtension($statsExtension)
     {
         $this->statsExtension = $statsExtension;
+
+        return $this;
+    }
+
+    /**
+     * Sets the configuration.
+     *
+     * @param array $viewIntervalNode
+     * @param array $statsNode
+     *
+     * @return $this
+     */
+    public function setConfiguration(array $viewIntervalNode, array $statsNode)
+    {
+        $viewIntervalName = array_search(true, $viewIntervalNode, true);
+        $this->viewIntervalName = $viewIntervalName;
+        $this->useStats = $statsNode['use_stats'];
+        $this->statsExtension = $statsNode['stats_extension'];
 
         return $this;
     }
