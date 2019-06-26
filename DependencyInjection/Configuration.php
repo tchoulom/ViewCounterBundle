@@ -16,6 +16,7 @@ namespace Tchoulom\ViewCounterBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Tchoulom\ViewCounterBundle\TchoulomViewCounterBundle;
 
 /**
  * This is the class that validates and merges configuration from your app/config files.
@@ -24,6 +25,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+//    const VARY = 'increment_each_view, unique_view, daily_view, hourly_view, weekly_view, monthly_view.';
+
     /**
      * {@inheritdoc}
      */
@@ -31,23 +34,24 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('tchoulom_view_counter');
+        $supportedInterval = implode(', ', TchoulomViewCounterBundle::SUPPORTED_STRATEGY);
 
         $rootNode
             ->children()
                 ->arrayNode('statistics')
                     ->children()
                         ->booleanNode('use_stats')->isRequired()->defaultValue(false)->info('indicates whether to use statistics.')->end()
-                        ->scalarNode('stats_extension')->isRequired()->info('indicates the extension of the statistics file.')->end()
+                        ->scalarNode('stats_file_name')->isRequired()->info('indicates the name of the statistics file.')->end()
+                        ->scalarNode('stats_file_extension')->isRequired()->info('indicates the extension of the statistics file.')->end()
                     ->end()
                 ->end()
                 ->arrayNode('view_interval')
                     ->children()
-                        ->booleanNode('increment_each_view')->defaultValue(false)->info('Increment each view.')->end()
-                        ->booleanNode('unique_view')->defaultValue(false)->info('Unique view.')->end()
-                        ->booleanNode('daily_view')->defaultValue(true)->info('Dayly view.')->end()
-                        ->booleanNode('hourly_view')->defaultValue(false)->info('Hourly view.')->end()
-                        ->booleanNode('weekly_view')->defaultValue(false)->info('Weekly view.')->end()
-                        ->booleanNode('monthly_view')->defaultValue(false)->info('Monthly view.')->end()
+                        ->scalarNode('view_strategy')->defaultValue('daily_view')->info('indicates the view strategy.')
+                         ->validate()
+                            ->ifNotInArray(TchoulomViewCounterBundle::SUPPORTED_STRATEGY)
+                            ->thenInvalid('Invalid view strategy name %s. You must choose one of the following values: '. $supportedInterval)
+                         ->end()
                     ->end()
                  ->end()
             ->end();

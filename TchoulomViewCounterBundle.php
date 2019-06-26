@@ -31,16 +31,16 @@ class TchoulomViewCounterBundle extends Bundle
     }
 
     /**
-     * The supported view interval.
+     * The supported view strategy.
      *
      * @var array
      */
-    const SUPPORTED_INTERVAL = ['increment_each_view', 'unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view'];
+    const SUPPORTED_STRATEGY = ['increment_each_view', 'unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view'];
 
     /**
      * The supported statistics keys.
      *
      * @var array
      */
-    const SUPPORTED_STATS = ['use_stats', 'stats_extension'];
+    const SUPPORTED_STATS = ['use_stats', 'stats_file_extension'];
 }

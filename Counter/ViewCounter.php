@@ -30,37 +30,33 @@ class ViewCounter extends AbstractViewCounter
      */
     public function isNewView(ViewCounterInterface $viewCounter)
     {
-        if (true !== $this->getViewIntervalValue()) {
-            return false;
-        }
-
         if (null == $viewCounter->getViewDate()) {
             return true;
         }
 
-        $viewIntervalName = $this->getViewIntervalName();
+        $viewStrategy = $this->getViewStrategy();
 
-        if (self::INCREMENT_EACH_VIEW === $viewIntervalName) {
+        if (self::INCREMENT_EACH_VIEW === $viewStrategy) {
             return true;
         }
 
-        if (self::UNIQUE_VIEW === $viewIntervalName) {
+        if (self::UNIQUE_VIEW === $viewStrategy) {
             return false;
         }
 
-        if (self::DAILY_VIEW === $viewIntervalName) {
+        if (self::DAILY_VIEW === $viewStrategy) {
             return $this->isNewDailyView($viewCounter);
         }
 
-        if (self::HOURLY_VIEW === $viewIntervalName) {
+        if (self::HOURLY_VIEW === $viewStrategy) {
             return $this->isNewHourlyView($viewCounter);
         }
 
-        if (self::WEEKLY_VIEW === $viewIntervalName) {
+        if (self::WEEKLY_VIEW === $viewStrategy) {
             return $this->isNewWeeklyView($viewCounter);
         }
 
-        if (self::MONTHLY_VIEW === $viewIntervalName) {
+        if (self::MONTHLY_VIEW === $viewStrategy) {
             return $this->isNewMonthlyView($viewCounter);
         }
 

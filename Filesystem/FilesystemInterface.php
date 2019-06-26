@@ -14,7 +14,6 @@
 
 namespace Tchoulom\ViewCounterBundle\Filesystem;
 
-
 /**
  * Class Filesystem is used to manipulate the file system.
  */
@@ -83,9 +82,16 @@ interface FilesystemInterface
     public function fclose($file);
 
     /**
-     * Gets the stats extension.
+     * Gets the stats file name.
+     *
+     * @return mixed|string
+     */
+    public function getStatsFileName();
+
+    /**
+     * Gets the stats file extension.
      *
      * @return mixed
      */
-    public function getStatsExtension();
+    public function getStatsFileExtension();
 }

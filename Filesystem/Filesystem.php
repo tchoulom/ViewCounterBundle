@@ -99,10 +99,10 @@ class Filesystem implements FilesystemInterface
      */
     public function getViewcounterFile()
     {
-        $ext = $this->getStatsExtension();
+        $ext = $this->getStatsFileExtension();
         $extension = null != $ext ? '.' . $ext : '';
 
-        return $this->getViewcounterDir() . '/' . $this->filename . $extension;
+        return $this->getViewcounterDir() . '/' . $this->getStatsFileName() . $extension;
     }
 
     /**
@@ -180,12 +180,25 @@ class Filesystem implements FilesystemInterface
     }
 
     /**
-     * Gets the stats extension.
+     * Gets the stats file name.
+     *
+     * @return mixed|string
+     */
+    public function getStatsFileName()
+    {
+        $filename = $this->viewcounterConfig->getStatsFileName();
+        $filename = (null != $filename) ? $filename : $this->filename;
+
+        return $filename;
+    }
+
+    /**
+     * Gets the stats file extension.
      *
      * @return mixed
      */
-    public function getStatsExtension()
+    public function getStatsFileExtension()
     {
-        return $this->viewcounterConfig->getStatsExtension();
+        return $this->viewcounterConfig->getStatsFileExtension();
     }
 }

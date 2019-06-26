@@ -251,23 +251,21 @@ Add the following configuration
 
     tchoulom_view_counter:
         view_interval:
-            daily_view: true
-    #       increment_each_view: false
-    #       unique_view: false
-    #       hourly_view: false
-    #       weekly_view: false
-    #       monthly_view: false
+            view_strategy: daily_view
         statistics:
             use_stats: false
-            stats_extension:
+            stats_file_name: stats
+            stats_file_extension:
 
 ```
 ### The "view_interval"
 
-* The **unique_view** allows to set to **1**, for a given **IP**, the number of view of an article
+The different values of ***view_strategy*** are : daily_view, unique_view, increment_each_view, hourly_view, weekly_view, monthly_view.
 
 * The **daily_view** allows to increment **daily**, for a given **IP**, the number of views of an **Article** (the viewership).
 In fact it increments the **$views** property.
+
+* The **unique_view** allows to set to **1**, for a given **IP**, the number of view of an article
 
 * The **increment_each_view** allows to increment the number of views of an **Article** every time the user will refresh the page
 
@@ -283,13 +281,17 @@ The **use_stats** allows to indicate if you want to use statistics.
 
 If **use_stats** is set to ***true***, the statistical functionality will be used (confers the ***Step 6***).
 
-The **stats_extension** allows to define the extension of the statistics file.
+The **stats_file_name** allows to define the name of the statistics file.
+
+The default name of **stats_file_name** is **stats**
+
+The **stats_file_extension** allows to define the extension of the statistics file.
 
 **Example :**
 
-If **stats_extension: txt**, then the name of the statistics file will be ***stats.txt***
+If **stats_file_extension: txt**, then the name of the statistics file will be ***stats.txt***
 
-If **stats_extension:**, then the name of the statistics file will be ***stats***
+If **stats_file_extension:**, then the name of the statistics file will be ***stats***
 
 The full path of the statistics file is ***var/viewcounter*** of your project.
 

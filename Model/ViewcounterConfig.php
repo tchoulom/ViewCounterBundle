@@ -21,9 +21,10 @@ class ViewcounterConfig
 {
     protected $viewIntervalNode;
     protected $statsNode;
-    protected $viewIntervalName;
+    protected $viewStrategy;
     protected $useStats;
-    protected $statsExtension;
+    protected $statsFileName;
+    protected $statsFileExtension;
 
     /**
      * ViewcounterConfig constructor.
@@ -88,25 +89,25 @@ class ViewcounterConfig
     }
 
     /**
-     * Gets the view interval name.
+     * Gets the view strategy.
      *
      * @return mixed
      */
-    public function getViewIntervalName()
+    public function getViewStrategy()
     {
-        return $this->viewIntervalName;
+        return $this->viewStrategy;
     }
 
     /**
-     * Sets the view interval name.
+     * Sets the view strategy.
      *
-     * @param mixed $viewIntervalName
+     * @param mixed $viewStrategy
      *
      * @return ViewcounterConfig
      */
-    public function setViewIntervalName($viewIntervalName)
+    public function setViewStrategy($viewStrategy)
     {
-        $this->viewIntervalName = $viewIntervalName;
+        $this->viewStrategy = $viewStrategy;
 
         return $this;
     }
@@ -136,25 +137,49 @@ class ViewcounterConfig
     }
 
     /**
-     * Gets the stats_extension value
+     * Gets the stats file extension.
      *
      * @return mixed
      */
-    public function getStatsExtension()
+    public function getStatsFileExtension()
     {
-        return $this->statsExtension;
+        return $this->statsFileExtension;
     }
 
     /**
-     * Sets the stats_extension value
+     * Sets the stats file extension.
      *
-     * @param mixed $statsExtension
+     * @param mixed $statsFileExtension
      *
      * @return ViewcounterConfig
      */
-    public function setStatsExtension($statsExtension)
+    public function setStatsFileExtension($statsFileExtension)
     {
-        $this->statsExtension = $statsExtension;
+        $this->statsFileExtension = $statsFileExtension;
+
+        return $this;
+    }
+
+    /**
+     * Gets the stats file name.
+     *
+     * @return mixed
+     */
+    public function getStatsFileName()
+    {
+        return $this->statsFileName;
+    }
+
+    /**
+     * Sets the stats file name.
+     *
+     * @param mixed $statsFileName
+     *
+     * @return ViewcounterConfig
+     */
+    public function setStatsFileName($statsFileName)
+    {
+        $this->statsFileName = $statsFileName;
 
         return $this;
     }
@@ -169,10 +194,10 @@ class ViewcounterConfig
      */
     public function setConfiguration(array $viewIntervalNode, array $statsNode)
     {
-        $viewIntervalName = array_search(true, $viewIntervalNode, true);
-        $this->viewIntervalName = $viewIntervalName;
+        $this->viewStrategy = $viewIntervalNode['view_strategy'];
         $this->useStats = $statsNode['use_stats'];
-        $this->statsExtension = $statsNode['stats_extension'];
+        $this->statsFileName = $statsNode['stats_file_name'];
+        $this->statsFileExtension = $statsNode['stats_file_extension'];
 
         return $this;
     }

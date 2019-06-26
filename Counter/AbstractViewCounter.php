@@ -198,23 +198,13 @@ abstract class AbstractViewCounter
     }
 
     /**
-     * Gets the view interval name.
+     * Gets the view strategy.
      *
      * @return int|string
      */
-    protected function getViewIntervalName()
+    protected function getViewStrategy()
     {
-        return $this->viewcounterConfig->getViewIntervalName();
-    }
-
-    /**
-     * Gets the view interval value.
-     *
-     * @return boolean
-     */
-    protected function getViewIntervalValue()
-    {
-        return true;
+        return $this->viewcounterConfig->getViewStrategy();
     }
 
     /**
