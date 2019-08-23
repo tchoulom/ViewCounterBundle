@@ -17,15 +17,13 @@ namespace Tchoulom\ViewCounterBundle\Statistics;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
- * Class Day
+ * Class Hour
  */
-class Day
+class Hour
 {
     protected $name;
+    protected $fullHour;
     protected $total = 0;
-    protected $date;
-
-    use HourTrait;
 
     /**
      * Day constructor.
@@ -64,28 +62,29 @@ class Day
     }
 
     /**
-     * Gets the date.
+     * Gets the full hour.
      *
-     * @return \DateTime
+     * @return false|string
      */
-    public function getDate()
+    public function getFullHour()
     {
-        return $this->date;
+        return $this->fullHour;
     }
 
     /**
-     * Sets the date.
+     * Sets the full hour.
      *
-     * @param \DateTimeInterface $date
+     * @param false|string $fullHour
      *
-     * @return $this
+     * @return Hour
      */
-    public function setDate(\DateTimeInterface $date)
+    public function setFullHour($fullHour)
     {
-        $this->date = $date;
+        $this->fullHour = $fullHour;
 
         return $this;
     }
+
 
     /**
      * Gets the total.
@@ -112,41 +111,15 @@ class Day
     }
 
     /**
-     * Builds the day.
+     * Builds the hour.
      *
      * @return $this
      */
     public function build()
     {
         $this->total++;
-        $this->date = Date::getNowDate();
-        $hour = $this->getHour();
-        $hourName = strtolower($hour->getName());
-        $this->$hourName = $hour->build();
+        $this->fullHour = Date::getFullHour();
 
         return $this;
-    }
-
-    /**
-     * Gets the hour.
-     *
-     * @param null $hourName
-     *
-     * @return Hour
-     */
-    public function getHour($hourName = null)
-    {
-        if (null == $hourName) {
-            $hourName = 'h' . Date::getHour();
-        }
-
-        $getHour = 'get' . ucfirst($hourName);
-        $hour = $this->$getHour();
-
-        if (!$hour instanceof Hour) {
-            $hour = new Hour($hourName, 0);
-        }
-
-        return $hour;
     }
 }

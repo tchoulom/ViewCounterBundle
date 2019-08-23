@@ -25,8 +25,6 @@ use Tchoulom\ViewCounterBundle\TchoulomViewCounterBundle;
  */
 class Configuration implements ConfigurationInterface
 {
-//    const VARY = 'increment_each_view, unique_view, daily_view, hourly_view, weekly_view, monthly_view.';
-
     /**
      * {@inheritdoc}
      */

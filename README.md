@@ -3,7 +3,7 @@ The View Counter Bundle
 
 Welcome to the "**TchoulomViewCounterBundle**".
 
-This bundle is used to count the number of views of a page (the viewership).
+This bundle is used to count the number of views of a web page (the viewership).
 
 This bundle can also be used to draw a graphical representation of statistical data of the web pages.
 
@@ -93,7 +93,7 @@ The **$views** property allows to get the number of views:
     {
       ...
       /**
-       * @ORM\OneToMany(targetEntity="ViewCounter", mappedBy="article")
+       * @ORM\OneToMany(targetEntity="Entity\ViewCounter", mappedBy="article")
        */
       protected $viewCounters;
           
@@ -174,6 +174,7 @@ The **$views** property allows to get the number of views:
 ### Step 2: ViewCounter
 
 The **ViewCounter** Entity allows to set the **ip** address, the **view_date**, and the **article_id**.
+
 The **ViewCounter** Entity must extend the **BaseViewCounter**:
 
 ```php
@@ -193,7 +194,7 @@ The **ViewCounter** Entity must extend the **BaseViewCounter**:
 
 ```
 
-Edit The **ViewCounter** Entity with your **Article** Entity:
+Update the doctrine relationship between the **ViewCounter** Entity and your **Article** Entity:
 
 ```php
 
@@ -260,7 +261,7 @@ Add the following configuration
 ```
 ### The "view_interval"
 
-The different values of ***view_strategy*** are : daily_view, unique_view, increment_each_view, hourly_view, weekly_view, monthly_view.
+The different values of ***view_strategy*** are : daily_view, unique_view, increment_each_view, hourly_view, weekly_view, monthly_view, yearly_view.
 
 * The **daily_view** allows to increment **daily**, for a given **IP**, the number of views of an **Article** (the viewership).
 In fact it increments the **$views** property.
@@ -275,11 +276,13 @@ In fact it increments the **$views** property.
 
 * The **monthly_view** allows to increment **monthly**, for a given **IP**, the number of views of an **Article** (the viewership).
 
+* The **yearly_view** allows to increment **yearly**, for a given **IP**, the number of views of an **Article** (the viewership).
+
 ### The "statistics"
 
 The **use_stats** allows to indicate if you want to use statistics.
 
-If **use_stats** is set to ***true***, the statistical functionality will be used (confers the ***Step 6***).
+If **use_stats** is set to ***true***, statistics functionality will be used (confers the ***Step 6***).
 
 The **stats_file_name** allows to define the name of the statistics file.
 
@@ -289,9 +292,9 @@ The **stats_file_extension** allows to define the extension of the statistics fi
 
 **Example :**
 
-If **stats_file_extension: txt**, then the name of the statistics file will be ***stats.txt***
+If **stats_file_extension: txt**, then the default name of the statistics file will be ***stats.txt***
 
-If **stats_file_extension:**, then the name of the statistics file will be ***stats***
+If **stats_file_extension:**, then the default name of the statistics file will be ***stats***
 
 The full path of the statistics file is ***var/viewcounter*** of your project.
 
@@ -318,8 +321,6 @@ use App\Entity\ViewCounter;
  {
     // Viewcounter
     $viewcounter = $this->get('tchoulom.viewcounter')->getViewCounter($article);
-    $viewcounter = (null != $viewcounter ? $viewcounter : new ViewCounter());
-    
     $em = $this->getDoctrine()->getEntityManager();
     
     if ($this->get('tchoulom.viewcounter')->isNewView($viewcounter)) {
@@ -375,23 +376,151 @@ Finally you can display the number of views:
 
 ### Step 6: Exploitation of statistical data
 
-Use the **StatsFinder** service to retrieve statistics of a web page :
+- Use the **StatsFinder** service to get statistics of a web page :
 
 ```php
    // The "statsFinder" service
    $statsFinder = $this->get('tchoulom.viewcounter.stats_finder');
    
-   // Retrieve all statistical data
+   // Get all statistical data
    $contents = $statsFinder->loadContents();
    
    // Finds statistics by page
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Page
    $page = $statsFinder->findByPage($article);
     
-   // Retrieves statistics
-   $stats = $statsFinder->getStats();
+   // Finds statistics by year (year number: 2019)
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Year
+   $year = $statsFinder->findByYear($article, 2019);
+     
+   // Finds statistics by month (month number: 1)
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Month
+   $month = $statsFinder->findByMonth($article, 2019, 1);
+   
+   // Finds statistics by week (week number: 3)
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Week
+   $week = $statsFinder->findByWeek($article, 2019, 1, 3);
+   
+   // Finds statistics by day (name of the day: 'thursday')
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Day
+   $day = $statsFinder->findByDay($article, 2019, 1, 3, 'thursday');
+   
+   // Finds statistics by hour (time name: 'h17' => between 17:00 and 17:59)
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Hour
+   $hour = $statsFinder->findByHour($article, 2019, 1, 3, 'thursday', 'h17');
+   
     ...
 ```
+- Get statistical data of a web page by **year**, **month**, **week**, **day** and **hour**
+
+##### By *year*
+
+```php
+   // Get the yearly statistics
+   $yearlyStats = $statsFinder->getYearlyStats($article); 
+```
+
+Result:
+```php
+   [
+        [2019,98537215], [2018,95548144], [2017,47882376]
+   ]
+```
+
+In 2019, there were 98537215 views.
+
+In 2018, there were 95548144 views.
+
+In 2017, there were 47882376 views.
+
+##### By *month*
+
+```php
+   // Get the monthly statistics in 2019
+   $monthlyStats = $statsFinder->getMonthlyStats($article, 2019);
+```
+
+Result:
+```php
+   [
+      [8,951224], [7,921548], [6,845479]
+   ]
+```
+
+In the month of August (month number 8) 2019, there were 951224 views.
+
+In the month of July (month number 7) 2019, there were 921548 views.
+
+In the month of June (month number 6) 2019, there were 845479 views.
+
+##### By *week*
+
+```php
+   // Get the weekly statistics of the month of August (month number 8) in 2019
+   $weeklyStats = $statsFinder->getWeeklylyStats($article, 2019, 8);
+```
+
+Result:
+```php
+   [
+      [34,494214], [33,117649], [32,183254]
+   ]
+```
+
+In the week number 34 in august (month number 8) 2019, there were 494214 views.
+
+In the week number 33 in august 2019, there were 117649 views.
+
+In the week number 32 in august 2019, there were 183254 views.
+
+##### By *day*
+
+```php
+   // Get the daily statistics of the week number 33 in august 2019
+   $dailyStats = $statsFinder->getDailyStats($article, 2019, 8, 33);
+```
+
+Result:
+```php
+   [
+      ['Monday',16810],['Tuesday',16804],['Wednesday',16807],['Thursday',16807],['Friday',16807],['Saturday',16807],['Sunday',16807]
+   ]
+```
+
+On Monday of the week number 33 in august (month number 8) 2019, there were 16810 views.
+
+On Tuesday of the week number 33 in august 2019, there were 16804 views.
+
+On Wednesday of the week number 33 in august 2019, there were 16807 views.
+
+...
+
+#### By *hour*
+
+```php
+   // Get the hourly statistics for Thursday of the week number 33 in august 2019
+   $hourlyStats = $statsFinder->getHourlyStats($article, 2019, 8, 33, 'Thursday');
+```
+
+Result:
+```php
+   [
+        ['00',650],['01',750],['02',500],['03',900],['04',700],['05',700],['06',700],['07',700],['08',700],['09',700],['10',700],['11',720],['12',680],['13',700],['14',200],['15',1200],['16',700],['17',700],['18',700],['19',700],['20',100],['21',1300],['22',700],['23',700]
+   ]
+```
+
+On Thursday of the week number 33 of August (month number 8) 2019:
+
+* At midnight, there were 650 views.
+
+* At 1 hour, there were 750 views.
+
+* At 2 hour, there were 500 views.
+
+* At 3 hour, there were 900 views.
+
+* ...
+
 
 The data in the stats file represents the view statistics, as shown in the following figure:
 
@@ -401,13 +530,17 @@ The figure above shows that the statistical data contain 2 "viewcountable" entit
 
 The statistical data of the entity **article** are recorded over 12 months.
 
+Let's zoom in on the statistics for the first week of January:
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-first-week-january-2018.png" alt="the statistical data of the first week of January 2018" align="center" />
+
 So you can exploit this statistical data to build a graph, as shown in the following figure:
 
 **Statistics of monthly views in 2018**
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
 
-If you wish, you can also build the graph on statistics of  **daily view**, **hourly view**, **weekly view**... according to the data in the statistics file.
+If you wish, you can also build the graph on statistics of  **daily view**, **hourly view**, **weekly view** and **yearly view** according to the data in the statistics file.
 
 Original Credits
 ----------------

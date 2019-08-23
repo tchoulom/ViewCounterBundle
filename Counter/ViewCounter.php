@@ -15,6 +15,7 @@
 namespace Tchoulom\ViewCounterBundle\Counter;
 
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
  * Class ViewCounter
@@ -60,6 +61,10 @@ class ViewCounter extends AbstractViewCounter
             return $this->isNewMonthlyView($viewCounter);
         }
 
+        if (self::YEARLY_VIEW === $viewStrategy) {
+            return $this->isNewYearlyView($viewCounter);
+        }
+
         return false;
     }
 
@@ -74,7 +79,7 @@ class ViewCounter extends AbstractViewCounter
     {
         // Next day
         $viewDate = clone $viewCounter->getViewDate();
-        $nextDay = $this->getNextDay($viewDate);
+        $nextDay = Date::getNextDay($viewDate);
         $nextDayTimestamp = strtotime($nextDay->format('Y-m-d H:i:s'));
 
         // Current Timestamp
@@ -94,7 +99,8 @@ class ViewCounter extends AbstractViewCounter
     {
         // Next hour
         $viewDate = clone $viewCounter->getViewDate();
-        $nextHour = $this->getNextHour($viewDate);
+        $nextHour = Date::getNextHour($viewDate);
+
         $nextHourTimestamp = strtotime($nextHour->format('Y-m-d H:i:s'));
 
         // Current Timestamp
@@ -114,7 +120,7 @@ class ViewCounter extends AbstractViewCounter
     {
         // Next week
         $viewDate = clone $viewCounter->getViewDate();
-        $nextWeek = $this->getNextWeek($viewDate);
+        $nextWeek = Date::getNextWeek($viewDate);
         $nextWeekTimestamp = strtotime($nextWeek->format('Y-m-d H:i:s'));
 
         // Current Timestamp
@@ -134,7 +140,7 @@ class ViewCounter extends AbstractViewCounter
     {
         // Next month
         $viewDate = clone $viewCounter->getViewDate();
-        $nextMonth = $this->getNextMonth($viewDate);
+        $nextMonth = Date::getNextMonth($viewDate);
         $nextMonthTimestamp = strtotime($nextMonth->format('Y-m-d H:i:s'));
 
         // Current Timestamp
@@ -144,78 +150,22 @@ class ViewCounter extends AbstractViewCounter
     }
 
     /**
-     * Gets the next day.
+     * Checks whether this is a new yearly view.
      *
-     * @param \DateTimeInterface $viewDate
+     * @param ViewCounterInterface $viewCounter
      *
-     * @return static
+     * @return bool
      */
-    public function getNextDay(\DateTimeInterface $viewDate)
+    public function isNewYearlyView(ViewCounterInterface $viewCounter)
     {
-        $nextDay = $viewDate->add(new \DateInterval('P1D'));
+        // Next month
+        $viewDate = clone $viewCounter->getViewDate();
+        $nextYear = Date::getNextYear($viewDate);
+        $nextYearTimestamp = strtotime($nextYear->format('Y-m-d H:i:s'));
 
-        // Sets the next day at midnight
-        $nextDay->setTime(0, 0, 0);
+        // Current Timestamp
+        $currentTimestamp = time();
 
-        return $nextDay;
-    }
-
-    /**
-     * Gets the next hour.
-     *
-     * @param \DateTimeInterface $viewDate
-     *
-     * @return static
-     */
-    public function getNextHour(\DateTimeInterface $viewDate)
-    {
-        // Sets Minutes and Second to zero
-        $viewDateHour = intval($viewDate->format('H'));
-        $viewDate->setTime($viewDateHour, 0, 0);
-
-        $nextHour = $viewDate->add(new \DateInterval('PT1H'));
-
-        return $nextHour;
-    }
-
-    /**
-     * Gets the next week.
-     *
-     * @param \DateTimeInterface $viewDate
-     *
-     * @return static
-     */
-    public function getNextWeek(\DateTimeInterface $viewDate)
-    {
-        // Sets to first day of week
-        $viewDate->setISODate($viewDate->format("Y"), $viewDate->format("W"), 1);
-
-        // Next Week
-        $nextWeek = $viewDate->add(new \DateInterval("P7D"));
-
-        return $nextWeek;
-    }
-
-    /**
-     * Gets the next month.
-     *
-     * @param \DateTimeInterface $viewDate
-     *
-     * @return static
-     */
-    public function getNextMonth(\DateTimeInterface $viewDate)
-    {
-        // Sets Date and Minutes...
-        $viewDateYear = intval($viewDate->format("Y"));
-        $viewDateMonth = intval($viewDate->format("m"));
-
-        // Sets to first day of month
-        $viewDate->setDate($viewDateYear, $viewDateMonth, 1);
-        $viewDate->setTime(0, 0, 0);
-
-        // Next Month
-        $nextMonth = $viewDate->add(new \DateInterval("P1M"));
-
-        return $nextMonth;
+        return $currentTimestamp >= $nextYearTimestamp;
     }
 }

@@ -17,7 +17,7 @@ namespace Tchoulom\ViewCounterBundle\Exception;
 /**
  * Class IOException
  */
-class IOException extends \RuntimeException implements IOExceptionInterface
+class IOException extends RuntimeException implements IOExceptionInterface
 {
     /**
      * The path

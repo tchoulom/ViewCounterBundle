@@ -28,7 +28,7 @@ class Date
      */
     public static function getNowYear()
     {
-        return intval(date('Y'));
+        return (int)date('Y');
     }
 
     /**
@@ -38,7 +38,7 @@ class Date
      */
     public static function getNowMonth()
     {
-        return intval(date('m'));
+        return (int)date('m');
     }
 
     /**
@@ -48,7 +48,7 @@ class Date
      */
     public static function getNowWeek()
     {
-        return intval(date('W'));
+        return (int)date('W');
     }
 
     /**
@@ -59,6 +59,46 @@ class Date
     public static function getDayName()
     {
         return date('l');
+    }
+
+    /**
+     * Gets the hour.
+     *
+     * @return false|string
+     */
+    public static function getHour()
+    {
+        return date('H');
+    }
+
+    /**
+     * Gets the full hour.
+     *
+     * @return false|string
+     */
+    public static function getFullHour()
+    {
+        return date('H:i:s');
+    }
+
+    /**
+     * Gets the week days name.
+     *
+     * @return array
+     */
+    public static function getWeekDaysName()
+    {
+        return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    }
+
+    /**
+     * Gets the day hours.
+     *
+     * @return array
+     */
+    public static function getDayHours()
+    {
+        return ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
     }
 
     /**
@@ -86,5 +126,103 @@ class Date
         $dateTimeZone = new \DateTimeZone($timeZone);
 
         return $dateTimeZone;
+    }
+
+    /**
+     * Gets the next year.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getNextYear(\DateTimeInterface $date)
+    {
+        // Sets Date and Minutes...
+        $dateYear = intval($date->format("Y"));
+
+        // Sets to first day of month
+        $date->setDate($dateYear, 1, 1);
+        $date->setTime(0, 0, 0);
+
+        // Next Year
+        $nextYear = $date->add(new \DateInterval("P1Y"));
+
+        return $nextYear;
+    }
+
+    /**
+     * Gets the next day.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getNextDay(\DateTimeInterface $date)
+    {
+        $nextDay = $date->add(new \DateInterval('P1D'));
+
+        // Sets the next day at midnight
+        $nextDay->setTime(0, 0, 0);
+
+        return $nextDay;
+    }
+
+    /**
+     * Gets the next hour.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getNextHour(\DateTimeInterface $date)
+    {
+        // Sets Minutes and Second to zero
+        $dateHour = intval($date->format('H'));
+        $date->setTime($dateHour, 0, 0);
+
+        $nextHour = $date->add(new \DateInterval('PT1H'));
+
+        return $nextHour;
+    }
+
+    /**
+     * Gets the next week.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getNextWeek(\DateTimeInterface $date)
+    {
+        // Sets to first day of week
+        $date->setISODate($date->format("Y"), $date->format("W"), 1);
+
+        // Next Week
+        $nextWeek = $date->add(new \DateInterval("P7D"));
+
+        return $nextWeek;
+    }
+
+    /**
+     * Gets the next month.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getNextMonth(\DateTimeInterface $date)
+    {
+        // Sets Date and Minutes...
+        $dateYear = intval($date->format("Y"));
+        $dateMonth = intval($date->format("m"));
+
+        // Sets to first day of month
+        $date->setDate($dateYear, $dateMonth, 1);
+        $date->setTime(0, 0, 0);
+
+        // Next Month
+        $nextMonth = $date->add(new \DateInterval("P1M"));
+
+        return $nextMonth;
     }
 }

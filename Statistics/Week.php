@@ -277,15 +277,20 @@ class Week
     /**
      * Gets the day.
      *
+     * @param null $dayName
+     *
      * @return Day
      */
-    public function getDay()
+    public function getDay($dayName = null)
     {
-        $dayName = Date::getDayName();
+        if (null == $dayName) {
+            $dayName = Date::getDayName();
+        }
+
         $getDay = 'get' . ucfirst($dayName);
         $day = $this->$getDay();
 
-        if (null == $day) {
+        if (!$day instanceof Day) {
             $day = new Day($dayName, 0);
         }
 

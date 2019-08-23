@@ -29,10 +29,10 @@ class StatsBuilder
     /**
      * StatsBuilder constructor.
      *
-     * @param $contents The stats contents
+     * @param array $contents The stats contents
      * @param $class
      */
-    public function __construct($contents, $class)
+    public function __construct(array $contents, $class)
     {
         $this->contents = $contents;
         $this->class = $class;

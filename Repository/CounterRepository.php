@@ -14,7 +14,6 @@
 
 namespace Tchoulom\ViewCounterBundle\Repository;
 
-
 /**
  * Class CounterRepository
  */

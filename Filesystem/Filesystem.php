@@ -55,7 +55,7 @@ class Filesystem implements FilesystemInterface
     public function save($stats)
     {
         $dirname = $this->getViewcounterDir();
-        $filename = $this->getViewcounterFile();
+        $filename = $this->getFullStatsFileName();
 
         if (!file_exists($dirname) && !is_dir($dirname)) {
             $this->mkdir($dirname);
@@ -76,7 +76,7 @@ class Filesystem implements FilesystemInterface
      */
     public function loadContents()
     {
-        $filename = $this->getViewcounterFile();
+        $filename = $this->getFullStatsFileName();
         $contents = [];
 
         if (!file_exists($filename)) {
@@ -86,18 +86,43 @@ class Filesystem implements FilesystemInterface
         try {
             $contents = file_get_contents($filename);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while loading the stats file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getViewcounterFile(), $exception->getMessage()));
+            throw new IOException(sprintf('An error occurred while loading the stats file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getFullStatsFileName(), $exception->getMessage()));
         }
 
-        return unserialize($contents);
+        $contents = empty($contents) ? [] : unserialize($contents);
+
+        return $contents;
     }
 
     /**
-     * Gets the viewcounter file.
+     * Gets the stats file name.
+     *
+     * @return mixed|string
+     */
+    public function getStatsFileName()
+    {
+        $filename = $this->viewcounterConfig->getStatsFileName();
+        $filename = (null != $filename) ? $filename : $this->filename;
+
+        return $filename;
+    }
+
+    /**
+     * Gets the stats file extension.
+     *
+     * @return mixed
+     */
+    public function getStatsFileExtension()
+    {
+        return $this->viewcounterConfig->getStatsFileExtension();
+    }
+
+    /**
+     * Gets the full stats file name.
      *
      * @return string
      */
-    public function getViewcounterFile()
+    public function getFullStatsFileName()
     {
         $ext = $this->getStatsFileExtension();
         $extension = null != $ext ? '.' . $ext : '';
@@ -144,7 +169,7 @@ class Filesystem implements FilesystemInterface
         try {
             $file = fopen($filename, $mode);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while attempting to open the file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getViewcounterFile(), $exception->getMessage()));
+            throw new IOException(sprintf('An error occurred while attempting to open the file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getFullStatsFileName(), $exception->getMessage()));
         }
 
         return $file;
@@ -161,7 +186,7 @@ class Filesystem implements FilesystemInterface
         try {
             fwrite($file, $stats);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while attempting to write to file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getViewcounterFile(), $exception->getMessage()));
+            throw new IOException(sprintf('An error occurred while attempting to write to file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getFullStatsFileName(), $exception->getMessage()));
         }
     }
 
@@ -175,30 +200,7 @@ class Filesystem implements FilesystemInterface
         try {
             fclose($file);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while attempting to close output file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getViewcounterFile(), $exception->getMessage()));
+            throw new IOException(sprintf('An error occurred while attempting to close output file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"', $this->getFullStatsFileName(), $exception->getMessage()));
         }
-    }
-
-    /**
-     * Gets the stats file name.
-     *
-     * @return mixed|string
-     */
-    public function getStatsFileName()
-    {
-        $filename = $this->viewcounterConfig->getStatsFileName();
-        $filename = (null != $filename) ? $filename : $this->filename;
-
-        return $filename;
-    }
-
-    /**
-     * Gets the stats file extension.
-     *
-     * @return mixed
-     */
-    public function getStatsFileExtension()
-    {
-        return $this->viewcounterConfig->getStatsFileExtension();
     }
 }

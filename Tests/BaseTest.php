@@ -35,7 +35,7 @@ abstract class BaseTest extends TestCase
     protected $viewCountableMock;
     protected $entityManagerMock;
     protected $requestStack;
-    protected $viewInterval = ['increment_each_view', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view'];
+    protected $viewInterval = ['increment_each_view', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view'];
 
     /**
      * Setup the fixtures.

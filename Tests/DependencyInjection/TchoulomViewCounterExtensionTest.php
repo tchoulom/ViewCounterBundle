@@ -60,7 +60,7 @@ class TchoulomViewCounterExtensionTest extends BaseTest
      * tests postProcessError
      *
      * @expectedException \Tchoulom\ViewCounterBundle\Exception\RuntimeException
-     * @expectedExceptionMessage You must choose one of the following values: increment_each_view, unique_view, daily_view, hourly_view, weekly_view, monthly_view.
+     * @expectedExceptionMessage You must choose one of the following values: increment_each_view, unique_view, daily_view, hourly_view, weekly_view, monthly_view, yearly_view.
      */
     public function testPostProcessError($configs = null)
     {

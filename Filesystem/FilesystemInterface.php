@@ -34,11 +34,25 @@ interface FilesystemInterface
     public function loadContents();
 
     /**
-     * Gets the viewcounter file.
+     * Gets the stats file name.
+     *
+     * @return mixed|string
+     */
+    public function getStatsFileName();
+
+    /**
+     * Gets the stats file extension.
+     *
+     * @return mixed
+     */
+    public function getStatsFileExtension();
+
+    /**
+     * Gets the full stats file name.
      *
      * @return string
      */
-    public function getViewcounterFile();
+    public function getFullStatsFileName();
 
     /**
      * Gets the viewcounter directory.
@@ -80,18 +94,4 @@ interface FilesystemInterface
      * @param $file
      */
     public function fclose($file);
-
-    /**
-     * Gets the stats file name.
-     *
-     * @return mixed|string
-     */
-    public function getStatsFileName();
-
-    /**
-     * Gets the stats file extension.
-     *
-     * @return mixed
-     */
-    public function getStatsFileExtension();
 }

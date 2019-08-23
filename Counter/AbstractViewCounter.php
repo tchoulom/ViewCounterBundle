@@ -75,6 +75,7 @@ abstract class AbstractViewCounter
     const HOURLY_VIEW = 'hourly_view';
     const WEEKLY_VIEW = 'weekly_view';
     const MONTHLY_VIEW = 'monthly_view';
+    const YEARLY_VIEW = 'yearly_view';
 
     /**
      * AbstractViewCounter constructor.
@@ -111,7 +112,13 @@ abstract class AbstractViewCounter
         $this->property = $this->counterManager->getProperty();
         $this->class = $this->counterManager->getClass();
 
-        $this->viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $this->getClientIp()], $orderBy = null, $limit = null, $offset = null);
+        $viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $this->getClientIp()], $orderBy = null, $limit = null, $offset = null);
+
+        if ($viewCounter instanceof ViewCounterInterface) {
+            $this->viewCounter = $viewCounter;
+        } else {
+            $this->viewCounter = $this->createViewCounterObject();
+        }
 
         return $this;
     }
@@ -121,11 +128,11 @@ abstract class AbstractViewCounter
      *
      * @param ViewCountable null $page The counted object(a tutorial or course...)
      *
-     * @return null|\Tchoulom\ViewCounterBundle\Entity\ViewCounter
+     * @return ViewCounterInterface
      */
     public function getViewCounter(ViewCountable $page = null)
     {
-        if (null == $this->viewCounter) {
+        if (!$this->viewCounter instanceof ViewCounterInterface) {
             $this->loadViewCounter($page);
         }
 
@@ -160,8 +167,6 @@ abstract class AbstractViewCounter
     public function saveView(ViewCountable $page)
     {
         $viewcounter = $this->getViewCounter($page);
-        $viewCounterObject = $this->createViewCounterObject();
-        $viewcounter = null != $viewcounter ? $viewcounter : $viewCounterObject;
 
         if ($this->isNewView($viewcounter)) {
             $views = $this->getViews($page);
@@ -177,14 +182,24 @@ abstract class AbstractViewCounter
 
             // Statistics
             if (true === $this->getUseStats()) {
-                $getPage = 'get' . ucfirst($this->getProperty());
-                $page = $viewcounter->$getPage();
-
-                $this->statistics->register($page);
+                $this->handleStatistics($viewcounter);
             }
         }
 
         return $page;
+    }
+
+    /**
+     * Handles statistics.
+     *
+     * @param ViewCounterInterface $viewcounter
+     */
+    public function handleStatistics(ViewCounterInterface $viewcounter)
+    {
+        $getPage = 'get' . ucfirst($this->getProperty());
+        $page = $viewcounter->$getPage();
+
+        $this->statistics->register($page);
     }
 
     /**
@@ -220,7 +235,7 @@ abstract class AbstractViewCounter
     /**
      * Creates the ViewCounter Object from the class namespace.
      *
-     * @return mixed
+     * @return ViewCounterInterface
      */
     protected function createViewCounterObject()
     {
