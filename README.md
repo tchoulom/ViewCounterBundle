@@ -251,7 +251,7 @@ Add the following configuration
 ```yaml
 
     tchoulom_view_counter:
-        view_interval:
+        view_counter:
             view_strategy: daily_view
         statistics:
             use_stats: false
@@ -259,7 +259,7 @@ Add the following configuration
             stats_file_extension:
 
 ```
-### The "view_interval"
+### The "view_counter"
 
 The different values of ***view_strategy*** are : daily_view, unique_view, increment_each_view, hourly_view, weekly_view, monthly_view, yearly_view.
 
@@ -423,7 +423,7 @@ Finally you can display the number of views:
 Result:
 ```php
    [
-        [2019,98537215], [2018,95548144], [2017,47882376]
+      [2019,98537215], [2018,95548144], [2017,47882376]
    ]
 ```
 
@@ -505,7 +505,7 @@ On Wednesday of the week number 33 in august 2019, there were 16807 views.
 Result:
 ```php
    [
-        ['00',650],['01',750],['02',500],['03',900],['04',700],['05',700],['06',700],['07',700],['08',700],['09',700],['10',700],['11',720],['12',680],['13',700],['14',200],['15',1200],['16',700],['17',700],['18',700],['19',700],['20',100],['21',1300],['22',700],['23',700]
+      ['00',650],['01',750],['02',500],['03',900],['04',700],['05',700],['06',700],['07',700],['08',700],['09',700],['10',700],['11',720],['12',680],['13',700],['14',200],['15',1200],['16',700],['17',700],['18',700],['19',700],['20',100],['21',1300],['22',700],['23',700]
    ]
 ```
 
@@ -522,6 +522,15 @@ On Thursday of the week number 33 of August (month number 8) 2019:
 * ...
 
 
+So you can exploit these statistical data to build a graph, as shown in the following figure:
+
+**Statistics of monthly views in 2018**
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
+
+You can also build the graph on statistics of  **daily view**, **hourly view**, **weekly view** and **yearly view** according to the data in the statistics file.
+
+
 The data in the stats file represents the view statistics, as shown in the following figure:
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-2018.png" alt="Statistical data in 2018" align="center" />
@@ -533,14 +542,6 @@ The statistical data of the entity **article** are recorded over 12 months.
 Let's zoom in on the statistics for the first week of January:
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-first-week-january-2018.png" alt="the statistical data of the first week of January 2018" align="center" />
-
-So you can exploit this statistical data to build a graph, as shown in the following figure:
-
-**Statistics of monthly views in 2018**
-
-<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
-
-If you wish, you can also build the graph on statistics of  **daily view**, **hourly view**, **weekly view** and **yearly view** according to the data in the statistics file.
 
 Original Credits
 ----------------

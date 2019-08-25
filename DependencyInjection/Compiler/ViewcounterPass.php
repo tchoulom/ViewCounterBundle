@@ -41,25 +41,25 @@ class ViewcounterPass implements CompilerPassInterface
      */
     public function buildViewcounterConfigArguments(array $configs)
     {
-        $viewIntervalNode = $this->getViewIntervalNode($configs);
+        $viewcounterNode = $this->getViewCounterNode($configs);
         $statsNode = $this->getStatsNode($configs);
 
-        return [$viewIntervalNode, $statsNode];
+        return [$viewcounterNode, $statsNode];
     }
 
     /**
-     * Gets the view interval node
+     * Gets the view counter node
      *
      * @param array $configs
      *
      * @return array
      */
-    public function getViewIntervalNode(array $configs)
+    public function getViewCounterNode(array $configs)
     {
         $configs = $configs[0];
-        $viewIntervalNode = $configs['view_interval'];
+        $viewcounterNode = $configs['view_counter'];
 
-        return $viewIntervalNode;
+        return $viewcounterNode;
     }
 
     /**

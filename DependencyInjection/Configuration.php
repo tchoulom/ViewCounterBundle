@@ -43,7 +43,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('stats_file_extension')->isRequired()->info('indicates the extension of the statistics file.')->end()
                     ->end()
                 ->end()
-                ->arrayNode('view_interval')
+                ->arrayNode('view_counter')
                     ->children()
                         ->scalarNode('view_strategy')->defaultValue('daily_view')->info('indicates the view strategy.')
                          ->validate()

@@ -75,7 +75,7 @@ class TchoulomViewCounterExtensionTest extends BaseTest
         return [
             [
                 [
-                    ['view_interval' => ['daily_view' => 1]]
+                    ['view_counter' => ['daily_view' => 1]]
                 ]
             ]
         ];

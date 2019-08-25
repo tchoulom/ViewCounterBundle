@@ -19,7 +19,7 @@ namespace Tchoulom\ViewCounterBundle\Model;
  */
 class ViewcounterConfig
 {
-    protected $viewIntervalNode;
+    protected $viewcounterNode;
     protected $statsNode;
     protected $viewStrategy;
     protected $useStats;
@@ -29,37 +29,37 @@ class ViewcounterConfig
     /**
      * ViewcounterConfig constructor.
      *
-     * @param array $viewIntervalNode
+     * @param array $viewcounterNode
      * @param array $statsNode
      */
-    public function __construct(array $viewIntervalNode, array $statsNode)
+    public function __construct(array $viewcounterNode, array $statsNode)
     {
-        $this->viewIntervalNode = $viewIntervalNode;
+        $this->viewcounterNode = $viewcounterNode;
         $this->statsNode = $statsNode;
 
-        $this->setConfiguration($this->viewIntervalNode, $this->statsNode);
+        $this->setConfiguration($this->viewcounterNode, $this->statsNode);
     }
 
     /**
-     * Gets the view interval node.
+     * Gets the view counter node.
      *
      * @return array
      */
-    public function getViewIntervalNode()
+    public function getViewCounterNode()
     {
-        return $this->viewIntervalNode;
+        return $this->viewcounterNode;
     }
 
     /**
-     * Sets the view interval node.
+     * Sets the view counter node.
      *
-     * @param array $viewIntervalNode
+     * @param array $viewcounterNode
      *
      * @return $this
      */
-    public function setViewIntervalNode(array $viewIntervalNode)
+    public function setViewCounterNode(array $viewcounterNode)
     {
-        $this->viewIntervalNode = $viewIntervalNode;
+        $this->viewcounterNode = $viewcounterNode;
 
         return $this;
     }
@@ -187,14 +187,14 @@ class ViewcounterConfig
     /**
      * Sets the configuration.
      *
-     * @param array $viewIntervalNode
+     * @param array $viewcounterNode
      * @param array $statsNode
      *
      * @return $this
      */
-    public function setConfiguration(array $viewIntervalNode, array $statsNode)
+    public function setConfiguration(array $viewcounterNode, array $statsNode)
     {
-        $this->viewStrategy = $viewIntervalNode['view_strategy'];
+        $this->viewStrategy = $viewcounterNode['view_strategy'];
         $this->useStats = $statsNode['use_stats'];
         $this->statsFileName = $statsNode['stats_file_name'];
         $this->statsFileExtension = $statsNode['stats_file_extension'];
