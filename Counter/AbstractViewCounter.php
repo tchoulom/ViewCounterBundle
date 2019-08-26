@@ -215,11 +215,11 @@ abstract class AbstractViewCounter
     /**
      * Gets the view strategy.
      *
-     * @return int|string
+     * @return mixed
      */
     protected function getViewStrategy()
     {
-        return $this->viewcounterConfig->getViewStrategy();
+        return $this->viewcounterConfig->getViewcounterNodeConfig()->getViewStrategy();
     }
 
     /**
@@ -229,7 +229,7 @@ abstract class AbstractViewCounter
      */
     protected function getUseStats()
     {
-        return $this->viewcounterConfig->getUseStats();
+        return $this->viewcounterConfig->getStatisticsNodeConfig()->getUseStats();
     }
 
     /**

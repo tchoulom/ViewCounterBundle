@@ -19,185 +19,72 @@ namespace Tchoulom\ViewCounterBundle\Model;
  */
 class ViewcounterConfig
 {
-    protected $viewcounterNode;
-    protected $statsNode;
-    protected $viewStrategy;
-    protected $useStats;
-    protected $statsFileName;
-    protected $statsFileExtension;
+    /**
+     * @var ViewcounterNodeConfig
+     */
+    protected $viewcounterNodeConfig;
+
+    /**
+     * @var StatisticsNodeConfig
+     */
+    protected $statisticsNodeConfig;
 
     /**
      * ViewcounterConfig constructor.
      *
-     * @param array $viewcounterNode
-     * @param array $statsNode
+     * @param ViewcounterNodeConfig $viewcounterNodeConfig
+     * @param StatisticsNodeConfig $statisticsNodeConfig
      */
-    public function __construct(array $viewcounterNode, array $statsNode)
+    public function __construct(ViewcounterNodeConfig $viewcounterNodeConfig, StatisticsNodeConfig $statisticsNodeConfig)
     {
-        $this->viewcounterNode = $viewcounterNode;
-        $this->statsNode = $statsNode;
-
-        $this->setConfiguration($this->viewcounterNode, $this->statsNode);
+        $this->viewcounterNodeConfig = $viewcounterNodeConfig;
+        $this->statisticsNodeConfig = $statisticsNodeConfig;
     }
 
     /**
-     * Gets the view counter node.
+     * Gets the viewcounter node configuration.
      *
-     * @return array
+     * @return ViewcounterNodeConfig
      */
-    public function getViewCounterNode()
+    public function getViewcounterNodeConfig()
     {
-        return $this->viewcounterNode;
+        return $this->viewcounterNodeConfig;
     }
 
     /**
-     * Sets the view counter node.
+     * Sets the viewcounter node configuration.
      *
-     * @param array $viewcounterNode
-     *
-     * @return $this
-     */
-    public function setViewCounterNode(array $viewcounterNode)
-    {
-        $this->viewcounterNode = $viewcounterNode;
-
-        return $this;
-    }
-
-    /**
-     * Gets the stats node.
-     *
-     * @return array
-     */
-    public function getStatsNode()
-    {
-        return $this->statsNode;
-    }
-
-    /**
-     * Sets the stats node.
-     *
-     * @param array $statsNode
-     *
-     * @return $this
-     */
-    public function setStatsNode(array $statsNode)
-    {
-        $this->statsNode = $statsNode;
-
-        return $this;
-    }
-
-    /**
-     * Gets the view strategy.
-     *
-     * @return mixed
-     */
-    public function getViewStrategy()
-    {
-        return $this->viewStrategy;
-    }
-
-    /**
-     * Sets the view strategy.
-     *
-     * @param mixed $viewStrategy
+     * @param ViewcounterNodeConfig $viewcounterNodeConfig
      *
      * @return ViewcounterConfig
      */
-    public function setViewStrategy($viewStrategy)
+    public function setViewcounterNodeConfig($viewcounterNodeConfig)
     {
-        $this->viewStrategy = $viewStrategy;
+        $this->viewcounterNodeConfig = $viewcounterNodeConfig;
 
         return $this;
     }
 
     /**
-     * Gets the use_stats boolean value.
+     * Gets the statistics node configuration.
      *
-     * @return boolean
+     * @return StatisticsNodeConfig
      */
-    public function getUseStats()
+    public function getStatisticsNodeConfig()
     {
-        return $this->useStats;
+        return $this->statisticsNodeConfig;
     }
 
     /**
-     * Sets the use_stats value.
+     * Sets the statistics node configuration.
      *
-     * @param boolean $useStats
+     * @param StatisticsNodeConfig $statisticsNodeConfig
      *
      * @return ViewcounterConfig
      */
-    public function setUseStats($useStats)
+    public function setStatisticsNodeConfig($statisticsNodeConfig)
     {
-        $this->useStats = $useStats;
-
-        return $this;
-    }
-
-    /**
-     * Gets the stats file extension.
-     *
-     * @return mixed
-     */
-    public function getStatsFileExtension()
-    {
-        return $this->statsFileExtension;
-    }
-
-    /**
-     * Sets the stats file extension.
-     *
-     * @param mixed $statsFileExtension
-     *
-     * @return ViewcounterConfig
-     */
-    public function setStatsFileExtension($statsFileExtension)
-    {
-        $this->statsFileExtension = $statsFileExtension;
-
-        return $this;
-    }
-
-    /**
-     * Gets the stats file name.
-     *
-     * @return mixed
-     */
-    public function getStatsFileName()
-    {
-        return $this->statsFileName;
-    }
-
-    /**
-     * Sets the stats file name.
-     *
-     * @param mixed $statsFileName
-     *
-     * @return ViewcounterConfig
-     */
-    public function setStatsFileName($statsFileName)
-    {
-        $this->statsFileName = $statsFileName;
-
-        return $this;
-    }
-
-    /**
-     * Sets the configuration.
-     *
-     * @param array $viewcounterNode
-     * @param array $statsNode
-     *
-     * @return $this
-     */
-    public function setConfiguration(array $viewcounterNode, array $statsNode)
-    {
-        $this->viewStrategy = $viewcounterNode['view_strategy'];
-        $this->useStats = $statsNode['use_stats'];
-        $this->statsFileName = $statsNode['stats_file_name'];
-        $this->statsFileExtension = $statsNode['stats_file_extension'];
+        $this->statisticsNodeConfig = $statisticsNodeConfig;
 
         return $this;
     }

@@ -28,33 +28,28 @@ class ViewcounterPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $configs = $container->getExtensionConfig('tchoulom_view_counter');
-        $arguments = $this->buildViewcounterConfigArguments($configs);
-        $container->getDefinition('tchoulom.viewcounter_config')->setArguments($arguments);
+
+        $viewcounterNodeConfig = $this->getViewCounterNodeConfig($configs);
+        $statsNodeConfig = $this->getStatsNodeConfig($configs);
+
+        $viewcounterConfigDefinition = $container->getDefinition('tchoulom.viewcounter_config');
+        $viewcounterNodeConfigDefinition = $container->getDefinition('tchoulom.viewcounter_node_config');
+        $statisticsNodeConfigDefinition = $container->getDefinition('tchoulom.statistics_node_config');
+
+        $viewcounterNodeConfigDefinition->replaceArgument(0, $viewcounterNodeConfig);
+        $statisticsNodeConfigDefinition->replaceArgument(0, $statsNodeConfig);
+        $viewcounterConfigDefinition->setArguments([$viewcounterNodeConfigDefinition, $statisticsNodeConfigDefinition]);
+
     }
 
     /**
-     * Builds the viewcounter configuration arguments.
+     * Gets the view counter node configuration
      *
      * @param array $configs
      *
      * @return array
      */
-    public function buildViewcounterConfigArguments(array $configs)
-    {
-        $viewcounterNode = $this->getViewCounterNode($configs);
-        $statsNode = $this->getStatsNode($configs);
-
-        return [$viewcounterNode, $statsNode];
-    }
-
-    /**
-     * Gets the view counter node
-     *
-     * @param array $configs
-     *
-     * @return array
-     */
-    public function getViewCounterNode(array $configs)
+    public function getViewCounterNodeConfig(array $configs)
     {
         $configs = $configs[0];
         $viewcounterNode = $configs['view_counter'];
@@ -63,13 +58,13 @@ class ViewcounterPass implements CompilerPassInterface
     }
 
     /**
-     * Gets the stats node
+     * Gets the stats node configuration
      *
      * @param array $configs
      *
      * @return array
      */
-    public function getStatsNode(array $configs)
+    public function getStatsNodeConfig(array $configs)
     {
         $configs = $configs[0];
         $statsNode = $configs['statistics'];

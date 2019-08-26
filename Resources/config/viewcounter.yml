@@ -5,6 +5,8 @@ parameters:
     tchoulom.viewcounter.repository.class: Tchoulom\ViewCounterBundle\Repository\CounterRepository
     tchoulom.viewcounter.manager.class: Tchoulom\ViewCounterBundle\Manager\CounterManager
     tchoulom.viewcounter_config.class: Tchoulom\ViewCounterBundle\Model\ViewcounterConfig
+    tchoulom.viewcounter_node_config.class: Tchoulom\ViewCounterBundle\Model\ViewcounterNodeConfig
+    tchoulom.statistics_node_config.class: Tchoulom\ViewCounterBundle\Model\StatisticsNodeConfig
 
 services:
     # Counter
@@ -44,7 +46,22 @@ services:
         arguments:
             - '@tchoulom.viewcounter.repository'
 
-    # Configuration
+    # Viewcounter configuration
     tchoulom.viewcounter_config:
         class: '%tchoulom.viewcounter_config.class%'
         public: true
+        arguments:
+            - '@tchoulom.viewcounter_node_config'
+            - '@tchoulom.statistics_node_config'
+
+    # Viewcounter node configuration
+    tchoulom.viewcounter_node_config:
+        class: '%tchoulom.viewcounter_node_config.class%'
+        public: true
+        arguments: [~]
+
+    # Statistics node configuration
+    tchoulom.statistics_node_config:
+        class: '%tchoulom.statistics_node_config.class%'
+        public: true
+        arguments: [~]

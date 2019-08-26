@@ -101,7 +101,7 @@ class Filesystem implements FilesystemInterface
      */
     public function getStatsFileName()
     {
-        $filename = $this->viewcounterConfig->getStatsFileName();
+        $filename = $this->viewcounterConfig->getStatisticsNodeConfig()->getStatsFileName();
         $filename = (null != $filename) ? $filename : $this->filename;
 
         return $filename;
@@ -114,7 +114,7 @@ class Filesystem implements FilesystemInterface
      */
     public function getStatsFileExtension()
     {
-        return $this->viewcounterConfig->getStatsFileExtension();
+        return $this->viewcounterConfig->getStatisticsNodeConfig()->getStatsFileExtension();
     }
 
     /**
