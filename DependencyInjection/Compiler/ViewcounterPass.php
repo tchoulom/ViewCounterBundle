@@ -32,14 +32,11 @@ class ViewcounterPass implements CompilerPassInterface
         $viewcounterNodeConfig = $this->getViewCounterNodeConfig($configs);
         $statsNodeConfig = $this->getStatsNodeConfig($configs);
 
-        $viewcounterConfigDefinition = $container->getDefinition('tchoulom.viewcounter_config');
         $viewcounterNodeConfigDefinition = $container->getDefinition('tchoulom.viewcounter_node_config');
         $statisticsNodeConfigDefinition = $container->getDefinition('tchoulom.statistics_node_config');
 
         $viewcounterNodeConfigDefinition->replaceArgument(0, $viewcounterNodeConfig);
         $statisticsNodeConfigDefinition->replaceArgument(0, $statsNodeConfig);
-        $viewcounterConfigDefinition->setArguments([$viewcounterNodeConfigDefinition, $statisticsNodeConfigDefinition]);
-
     }
 
     /**
