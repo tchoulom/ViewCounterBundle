@@ -18,12 +18,14 @@ use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Statistics\Day;
 use Tchoulom\ViewCounterBundle\Statistics\Hour;
+use Tchoulom\ViewCounterBundle\Statistics\Minute;
 use Tchoulom\ViewCounterBundle\Statistics\Month;
 use Tchoulom\ViewCounterBundle\Statistics\Page;
 use Tchoulom\ViewCounterBundle\Statistics\Week;
 use Tchoulom\ViewCounterBundle\Statistics\Year;
 use Tchoulom\ViewCounterBundle\Util\Date;
 use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
+use Tchoulom\ViewCounterBundle\Statistics\Second;
 
 /**
  * Class StatsFinder
@@ -74,17 +76,17 @@ class StatsFinder
      * Finds the stats contents by year.
      *
      * @param ViewCountable $page
-     * @param $year
+     * @param $yearNumber
      *
      * @return Year|null
      */
-    public function findByYear(ViewCountable $page, $year)
+    public function findByYear(ViewCountable $page, $yearNumber)
     {
         $page = $this->findByPage($page);
 
         if ($page instanceof Page) {
-            if (isset($page->getYears()[$year])) {
-                return $page->getYears()[$year];
+            if (isset($page->getYears()[$yearNumber])) {
+                return $page->getYears()[$yearNumber];
             }
         }
 
@@ -95,18 +97,18 @@ class StatsFinder
      * Finds the stats contents by month.
      *
      * @param ViewCountable $page
-     * @param $year
-     * @param $month
+     * @param $yearNumber
+     * @param $monthNumber
      *
      * @return Month|null
      */
-    public function findByMonth(ViewCountable $page, $year, $month)
+    public function findByMonth(ViewCountable $page, $yearNumber, $monthNumber)
     {
-        $year = $this->findByYear($page, $year);
+        $year = $this->findByYear($page, $yearNumber);
 
         if ($year instanceof Year) {
-            if (isset($year->getMonths()[$month])) {
-                return $year->getMonths()[$month];
+            if (isset($year->getMonths()[$monthNumber])) {
+                return $year->getMonths()[$monthNumber];
             }
         }
 
@@ -117,19 +119,19 @@ class StatsFinder
      * Finds the stats contents by week.
      *
      * @param ViewCountable $page
-     * @param $year
-     * @param $month
-     * @param $week
+     * @param $yearNumber
+     * @param $monthNumber
+     * @param $weekNumber
      *
      * @return Week|null
      */
-    public function findByWeek(ViewCountable $page, $year, $month, $week)
+    public function findByWeek(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber)
     {
-        $month = $this->findByMonth($page, $year, $month);
+        $month = $this->findByMonth($page, $yearNumber, $monthNumber);
 
         if ($month instanceof Month) {
-            if (isset($month->getWeeks()[$week])) {
-                return $month->getWeeks()[$week];
+            if (isset($month->getWeeks()[$weekNumber])) {
+                return $month->getWeeks()[$weekNumber];
             }
         }
 
@@ -140,19 +142,19 @@ class StatsFinder
      * Finds the stats contents by day.
      *
      * @param ViewCountable $page
-     * @param $year
-     * @param $month
-     * @param $week
-     * @param $day
+     * @param $yearNumber
+     * @param $monthNumber
+     * @param $weekNumber
+     * @param $dayName
      *
      * @return Day|null
      */
-    public function findByDay(ViewCountable $page, $year, $month, $week, $day)
+    public function findByDay(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName)
     {
-        $week = $this->findByWeek($page, $year, $month, $week);
+        $week = $this->findByWeek($page, $yearNumber, $monthNumber, $weekNumber);
 
         if ($week instanceof Week) {
-            $getDay = 'get' . ucfirst(strtolower($day));
+            $getDay = 'get' . ucfirst(strtolower($dayName));
             return $week->$getDay();
         }
 
@@ -163,20 +165,69 @@ class StatsFinder
      * Finds the stats contents by hour.
      *
      * @param ViewCountable $page
-     * @param $year
-     * @param $month
-     * @param $week
-     * @param $day
-     * @param $hour
+     * @param $yearNumber
+     * @param $monthNumber
+     * @param $weekNumber
+     * @param $dayName
+     * @param $hourName
      *
      * @return Hour|null
      */
-    public function findByHour(ViewCountable $page, $year, $month, $week, $day, $hour)
+    public function findByHour(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName)
     {
-        $day = $this->findByDay($page, $year, $month, $week, $day);
+        $day = $this->findByDay($page, $yearNumber, $monthNumber, $weekNumber, $dayName);
 
         if ($day instanceof Day) {
-            return $day->getHour($hour);
+            return $day->getHour($hourName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds the stats contents by minute.
+     *
+     * @param ViewCountable $page
+     * @param $yearNumber
+     * @param $monthNumber
+     * @param $weekNumber
+     * @param $dayName
+     * @param $hourName
+     * @param $minuteName
+     *
+     * @return Minute|null
+     */
+    public function findByMinute(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName)
+    {
+        $hour = $this->findByHour($page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName);
+
+        if ($hour instanceof Hour) {
+            return $hour->getMinute($minuteName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds the stats contents by second.
+     *
+     * @param ViewCountable $page
+     * @param $yearNumber
+     * @param $monthNumber
+     * @param $weekNumber
+     * @param $dayName
+     * @param $hourName
+     * @param $minuteName
+     * @param $secondName
+     *
+     * @return Second|null
+     */
+    public function findBySecond(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName, $secondName)
+    {
+        $minute = $this->findByMinute($page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName);
+
+        if ($minute instanceof Minute) {
+            return $minute->getSecond($secondName);
         }
 
         return null;
@@ -317,11 +368,11 @@ class StatsFinder
                     if (isset($month->getWeeks()[$weekNumber])) {
                         $week = $month->getWeeks()[$weekNumber];
                         $day = $week->getDay($dayName);
-                        $dayHours = Date::getDayHours();
-                        foreach ($dayHours as $dayHour) {
-                            $hourName = 'h' . $dayHour;
+                        $hoursRange = Date::buildTimeRange(0, 23);
+                        foreach ($hoursRange as $hourRangeName) {
+                            $hourName = 'h' . $hourRangeName;
                             $hour = $day->getHour($hourName);
-                            $hourlyStats[] = [$dayHour, $hour->getTotal()];
+                            $hourlyStats[] = [$hourRangeName, $hour->getTotal()];
                         }
                     }
                 }
@@ -329,6 +380,88 @@ class StatsFinder
         }
 
         return $hourlyStats;
+    }
+
+    /**
+     * Gets the stats per minute.
+     *
+     * @param ViewCountable $page
+     * @param $yearNumber
+     * @param $monthNumber
+     * @param $weekNumber
+     * @param $dayName
+     * @param $hourName
+     *
+     * @return array
+     */
+    public function getStatsPerMinute(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName)
+    {
+        $statsPerMinute = [];
+        $page = $this->findByPage($page);
+
+        if ($page instanceof Page) {
+            if (isset($page->getYears()[$yearNumber])) {
+                $year = $page->getYears()[$yearNumber];
+                if (isset($year->getMonths()[$monthNumber])) {
+                    $month = $year->getMonths()[$monthNumber];
+                    if (isset($month->getWeeks()[$weekNumber])) {
+                        $week = $month->getWeeks()[$weekNumber];
+                        $day = $week->getDay($dayName);
+                        $hour = $day->getHour($hourName);
+                        $minutesRange = Date::buildTimeRange(0, 59);
+                        foreach ($minutesRange as $minuteRangeName) {
+                            $minuteName = 'm' . $minuteRangeName;
+                            $minute = $hour->getMinute($minuteName);
+                            $statsPerMinute[] = [$minuteRangeName, $minute->getTotal()];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $statsPerMinute;
+    }
+
+    /**
+     * Gets the stats per second.
+     *
+     * @param ViewCountable $page
+     * @param $yearNumber
+     * @param $monthNumber
+     * @param $weekNumber
+     * @param $dayName
+     * @param $hourName
+     * @param $minuteName
+     *
+     * @return array
+     */
+    public function getStatsPerSecond(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName)
+    {
+        $statsPerSecond = [];
+        $page = $this->findByPage($page);
+
+        if ($page instanceof Page) {
+            if (isset($page->getYears()[$yearNumber])) {
+                $year = $page->getYears()[$yearNumber];
+                if (isset($year->getMonths()[$monthNumber])) {
+                    $month = $year->getMonths()[$monthNumber];
+                    if (isset($month->getWeeks()[$weekNumber])) {
+                        $week = $month->getWeeks()[$weekNumber];
+                        $day = $week->getDay($dayName);
+                        $hour = $day->getHour($hourName);
+                        $minute = $hour->getMinute($minuteName);
+                        $secondsRange = Date::buildTimeRange(0, 59);
+                        foreach ($secondsRange as $secondRangeName) {
+                            $secondName = 's' . $secondRangeName;
+                            $second = $minute->getSecond($secondName);
+                            $statsPerSecond[] = [$secondRangeName, $second->getTotal()];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $statsPerSecond;
     }
 
     /**

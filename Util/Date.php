@@ -72,6 +72,26 @@ class Date
     }
 
     /**
+     * Gets the minute.
+     *
+     * @return false|string
+     */
+    public static function getMinute()
+    {
+        return date('i');
+    }
+
+    /**
+     * Gets the second.
+     *
+     * @return false|string
+     */
+    public static function getSecond()
+    {
+        return date('s');
+    }
+
+    /**
      * Gets the full hour.
      *
      * @return false|string
@@ -89,16 +109,6 @@ class Date
     public static function getWeekDaysName()
     {
         return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    }
-
-    /**
-     * Gets the day hours.
-     *
-     * @return array
-     */
-    public static function getDayHours()
-    {
-        return ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
     }
 
     /**
@@ -151,6 +161,47 @@ class Date
     }
 
     /**
+     * Gets the next month.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getNextMonth(\DateTimeInterface $date)
+    {
+        // Sets Date and Minutes...
+        $dateYear = intval($date->format("Y"));
+        $dateMonth = intval($date->format("m"));
+
+        // Sets to first day of month
+        $date->setDate($dateYear, $dateMonth, 1);
+        $date->setTime(0, 0, 0);
+
+        // Next Month
+        $nextMonth = $date->add(new \DateInterval("P1M"));
+
+        return $nextMonth;
+    }
+
+    /**
+     * Gets the next week.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getNextWeek(\DateTimeInterface $date)
+    {
+        // Sets to first day of week
+        $date->setISODate($date->format("Y"), $date->format("W"), 1);
+
+        // Next Week
+        $nextWeek = $date->add(new \DateInterval("P7D"));
+
+        return $nextWeek;
+    }
+
+    /**
      * Gets the next day.
      *
      * @param \DateTimeInterface $date
@@ -186,43 +237,59 @@ class Date
     }
 
     /**
-     * Gets the next week.
+     * Gets the next minute.
      *
      * @param \DateTimeInterface $date
      *
      * @return mixed
      */
-    public static function getNextWeek(\DateTimeInterface $date)
+    public static function getNextMinute(\DateTimeInterface $date)
     {
-        // Sets to first day of week
-        $date->setISODate($date->format("Y"), $date->format("W"), 1);
+        // Sets Second to zero
+        $dateHour = intval($date->format('H'));
+        $dateMinute = intval($date->format('i'));
+        $date->setTime($dateHour, $dateMinute, 0);
 
-        // Next Week
-        $nextWeek = $date->add(new \DateInterval("P7D"));
+        $nextMinute = $date->add(new \DateInterval('PT1M'));
 
-        return $nextWeek;
+        return $nextMinute;
     }
 
     /**
-     * Gets the next month.
+     * Gets the next second.
      *
      * @param \DateTimeInterface $date
      *
      * @return mixed
      */
-    public static function getNextMonth(\DateTimeInterface $date)
+    public static function getNextSecond(\DateTimeInterface $date)
     {
-        // Sets Date and Minutes...
-        $dateYear = intval($date->format("Y"));
-        $dateMonth = intval($date->format("m"));
+        $nextSecond = $date->add(new \DateInterval('PT1S'));
 
-        // Sets to first day of month
-        $date->setDate($dateYear, $dateMonth, 1);
-        $date->setTime(0, 0, 0);
+        return $nextSecond;
+    }
 
-        // Next Month
-        $nextMonth = $date->add(new \DateInterval("P1M"));
+    /**
+     * Builds time range.
+     *
+     * @param int $start
+     * @param int $end
+     *
+     * @return array
+     */
+    public static function buildTimeRange($start = 0, $end = 23)
+    {
+        $range = [];
 
-        return $nextMonth;
+        foreach (range($start, $end) as $i) {
+            $i = (string)$i;
+            if (strlen($i) < 2) {
+                $i = '0' . $i;
+            }
+
+            $range[] = $i;
+        }
+
+        return $range;
     }
 }

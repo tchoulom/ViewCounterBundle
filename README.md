@@ -173,7 +173,7 @@ The **$views** property allows to get the number of views:
 
 ### Step 2: ViewCounter
 
-The **ViewCounter** Entity allows to set the **ip** address, the **view_date**, and the **article_id**.
+The **ViewCounter** Entity allows to set the IP address, the **view_date**, and the **article_id**.
 
 The **ViewCounter** Entity must extend the **BaseViewCounter**:
 
@@ -261,22 +261,26 @@ Add the following configuration
 ```
 ### The "view_counter"
 
-The different values of ***view_strategy*** are : daily_view, unique_view, increment_each_view, hourly_view, weekly_view, monthly_view, yearly_view.
+The different values of ***view_strategy*** are : daily_view, unique_view, increment_each_view, hourly_view, weekly_view, monthly_view, yearly_view, view_per_minute, view_per_second.
 
-* The **daily_view** allows to increment **daily**, for a given **IP**, the number of views of an **Article** (the viewership).
+* The **daily_view** allows to increment **daily**, for a given **IP** address, the number of views of an **Article** (the viewership).
 In fact it increments the **$views** property.
 
-* The **unique_view** allows to set to **1**, for a given **IP**, the number of view of an article
+* The **unique_view** allows to set to **1**, for a given **IP** address, the number of view of an article
 
 * The **increment_each_view** allows to increment the number of views of an **Article** every time the user will refresh the page
 
-* The **hourly_view** allows to increment **hourly**, for a given **IP**, the number of views of an **Article** (the viewership).
+* The **hourly_view** allows to increment **hourly**, for a given **IP** address, the number of views of an **Article** (the viewership).
 
-* The **weekly_view** allows to increment **weekly**, for a given **IP**, the number of views of an **Article** (the viewership).
+* The **weekly_view** allows to increment **weekly**, for a given **IP** address, the number of views of an **Article** (the viewership).
 
-* The **monthly_view** allows to increment **monthly**, for a given **IP**, the number of views of an **Article** (the viewership).
+* The **monthly_view** allows to increment **monthly**, for a given **IP** address, the number of views of an **Article** (the viewership).
 
-* The **yearly_view** allows to increment **yearly**, for a given **IP**, the number of views of an **Article** (the viewership).
+* The **yearly_view** allows to increment **yearly**, for a given **IP** address, the number of views of an **Article** (the viewership).
+
+* The **view_per_minute** allows to increment **every minute**, for a given **IP** address, the number of views of an **Article** (the viewership).
+
+* The **view_per_second** allows to increment **every second**, for a given **IP** address, the number of views of an **Article** (the viewership).
 
 ### The "statistics"
 
@@ -409,6 +413,14 @@ Finally you can display the number of views:
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Hour
    $hour = $statsFinder->findByHour($article, 2019, 1, 3, 'thursday', 'h17');
    
+   // Finds statistics by minute (the name of the minute: 'm49' => in the 49th minute)
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Minute
+   $minute = $statsFinder->findByMinute($course, 2019, 1, 3, 'thursday', 'h17', 'm49');
+   
+   // Finds statistics by second (the name of the second: 's19' => in the 19th second)
+   // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Second
+   $second = $statsFinder->findBySecond($course, 2019, 1, 3, 'thursday', 'h17', 'm49', 's19');
+   
     ...
 ```
 - Get statistical data of a web page by **year**, **month**, **week**, **day** and **hour**
@@ -521,6 +533,57 @@ On Thursday of the week number 33 of August (month number 8) 2019:
 
 * ...
 
+#### By *minute*
+
+```php
+   // Get the statistics per minute on Saturday of the week number 33 in august 2019 at 15h ('h15')
+   $statsPerMinute = $this->get('tchoulom.viewcounter.stats_finder')->getStatsPerMinute($article, 2019, 8, 33, 'Saturday', 'h15');
+```
+
+Result:
+```php
+   [
+      ['00',650],['01',740],['02',520],['03',752],['04',700],['05',700],['06',400],['07',400],['08',800],['09',700],['10',700],['11',720],['12',680],['13',700],['14',200],['15',100],['16',105],['17',700],['18',700],['19',700],['20',100],['21',130],['22',700],['23',700],['24',110],['25',210],['26',110],['27',10],['28',110],['29',10],['30',141],['31',148],['32',181],['33',141],['34',141],['35',171],['36',141],['37',181],['38',141],['39',141],['40',191],['41',193],['42',194],['43',194],['44',191],['45',191],['46',148],['47',191],['48',191],['49',191],['50',191],['51',151],['52',131],['53',191],['54',171],['55',191],['56',111],['57',191],['58',254],['59',91]
+   ]
+```
+
+On Saturday  of the week number 33 of August (month number 8) 2019 at 15h ('h15') :
+
+* At the minute 0, there were 650 views.
+
+* At the minute 1, there were 740 views.
+
+* At the minute 2, there were 520 views.
+
+* At the minute 3, there were 752 views.
+
+* ...
+
+#### By *second*
+
+```php
+   // Get the statistics per second on Saturday of the week number 33 in august 2019 at 15H49
+   $statsPerSecond = $this->get('tchoulom.viewcounter.stats_finder')->getStatsPerSecond($article, 2019, 8, 33, 'Saturday', 'h15', 'm49');
+```
+
+Result:
+```php
+   [
+      ['00',60],['01',40],['02',21],['03',72],['04',70],['05',70],['06',50],['07',20],['08',80],['09',70],['10',70],['11',72],['12',68],['13',70],['14',20],['15',10],['16',15],['17',70],['18',70],['19',70],['20',10],['21',13],['22',70],['23',7],['24',11],['25',21],['26',11],['27',10],['28',110],['29',10],['30',14],['31',14],['32',18],['33',14],['34',14],['35',17],['36',14],['37',18],['38',14],['39',14],['40',19],['41',19],['42',19],['43',19],['44',19],['45',19],['46',18],['47',19],['48',19],['49',19],['50',19],['51',15],['52',13],['53',19],['54',17],['55',19],['56',11],['57',19],['58',25],['59',71]
+   ]
+```
+
+On Saturday  of the week number 33 of August (month number 8) 2019 at 15H49:
+
+* At the second 0, there were 60 views.
+
+* At the second 1, there were 40 views.
+
+* At the second 2, there were 21 views.
+
+* At the second 3, there were 72 views.
+
+* ...
 
 So you can exploit these statistical data to build a graph, as shown in the following figure:
 

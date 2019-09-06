@@ -76,6 +76,8 @@ abstract class AbstractViewCounter
     const WEEKLY_VIEW = 'weekly_view';
     const MONTHLY_VIEW = 'monthly_view';
     const YEARLY_VIEW = 'yearly_view';
+    const VIEW_PER_MINUTE = 'view_per_minute';
+    const VIEW_PER_SECOND = 'view_per_second';
 
     /**
      * AbstractViewCounter constructor.

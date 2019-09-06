@@ -25,14 +25,27 @@ class Filesystem implements FilesystemInterface
 {
     const CHECK_PERMISSIONS_MSG = '(Please check User and Group permissions)';
 
+    /**
+     * The project directory.
+     *
+     */
     protected $projectDir;
+
     /**
      * The View counter configs.
      *
      * @var ViewcounterConfig
      */
     protected $viewcounterConfig;
+
+    /**
+     * @var string The viewcounter directory.
+     */
     protected $viewcounterDir = 'viewcounter';
+
+    /**
+     * @var string The stats file name.
+     */
     protected $filename = 'stats';
 
     /**

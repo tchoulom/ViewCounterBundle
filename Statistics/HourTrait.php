@@ -59,7 +59,7 @@ trait HourTrait
      *
      * @param Hour $h00
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH00(Hour $h00)
     {
@@ -83,7 +83,7 @@ trait HourTrait
      *
      * @param Hour $h01
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH01(Hour $h01)
     {
@@ -107,7 +107,7 @@ trait HourTrait
      *
      * @param Hour $h02
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH02(Hour $h02)
     {
@@ -131,7 +131,7 @@ trait HourTrait
      *
      * @param Hour $h03 .
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH03(Hour $h03)
     {
@@ -155,7 +155,7 @@ trait HourTrait
      *
      * @param Hour $h04
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH04(Hour $h04)
     {
@@ -179,7 +179,7 @@ trait HourTrait
      *
      * @param Hour $h05
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH05(Hour $h05)
     {
@@ -203,7 +203,7 @@ trait HourTrait
      *
      * @param Hour $h06
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH06(Hour $h06)
     {
@@ -227,7 +227,7 @@ trait HourTrait
      *
      * @param Hour $h07
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH07(Hour $h07)
     {
@@ -251,7 +251,7 @@ trait HourTrait
      *
      * @param Hour $h08
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH08(Hour $h08)
     {
@@ -275,7 +275,7 @@ trait HourTrait
      *
      * @param Hour $h09
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH09(Hour $h09)
     {
@@ -299,7 +299,7 @@ trait HourTrait
      *
      * @param Hour $h10
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH10(Hour $h10)
     {
@@ -323,7 +323,7 @@ trait HourTrait
      *
      * @param Hour $h11
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH11(Hour $h11)
     {
@@ -347,7 +347,7 @@ trait HourTrait
      *
      * @param Hour $h12
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH12(Hour $h12)
     {
@@ -371,7 +371,7 @@ trait HourTrait
      *
      * @param Hour $h13
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH13(Hour $h13)
     {
@@ -395,7 +395,7 @@ trait HourTrait
      *
      * @param Hour $h14
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH14(Hour $h14)
     {
@@ -419,7 +419,7 @@ trait HourTrait
      *
      * @param Hour $h15
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH15(Hour $h15)
     {
@@ -443,7 +443,7 @@ trait HourTrait
      *
      * @param Hour $h16
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH16(Hour $h16)
     {
@@ -467,7 +467,7 @@ trait HourTrait
      *
      * @param Hour $h17
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH17(Hour $h17)
     {
@@ -491,7 +491,7 @@ trait HourTrait
      *
      * @param Hour $h18
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH18(Hour $h18)
     {
@@ -515,7 +515,7 @@ trait HourTrait
      *
      * @param Hour $h19
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH19(Hour $h19)
     {
@@ -539,7 +539,7 @@ trait HourTrait
      *
      * @param Hour $h20
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH20(Hour $h20)
     {
@@ -563,7 +563,7 @@ trait HourTrait
      *
      * @param Hour $h21
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH21(Hour $h21)
     {
@@ -587,7 +587,7 @@ trait HourTrait
      *
      * @param Hour $h22
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH22(Hour $h22)
     {
@@ -611,7 +611,7 @@ trait HourTrait
      *
      * @param Hour $h23
      *
-     * @return HourTrait
+     * @return $this
      */
     public function setH23(Hour $h23)
     {

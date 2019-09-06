@@ -17,18 +17,17 @@ namespace Tchoulom\ViewCounterBundle\Statistics;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
- * Class Hour
+ * Class Minute
  */
-class Hour
+class Minute
 {
     protected $name;
-    protected $fullHour;
     protected $total = 0;
 
-    use MinuteTrait;
+    use SecondTrait;
 
     /**
-     * Day constructor.
+     * Minute constructor.
      *
      * @param $name
      * @param $total
@@ -64,31 +63,6 @@ class Hour
     }
 
     /**
-     * Gets the full hour.
-     *
-     * @return false|string
-     */
-    public function getFullHour()
-    {
-        return $this->fullHour;
-    }
-
-    /**
-     * Sets the full hour.
-     *
-     * @param false|string $fullHour
-     *
-     * @return Hour
-     */
-    public function setFullHour($fullHour)
-    {
-        $this->fullHour = $fullHour;
-
-        return $this;
-    }
-
-
-    /**
      * Gets the total.
      *
      * @return integer
@@ -113,42 +87,41 @@ class Hour
     }
 
     /**
-     * Builds the hour.
+     * Builds the minute.
      *
      * @return $this
      */
     public function build()
     {
         $this->total++;
-        $this->fullHour = Date::getFullHour();
 
-        $minute = $this->getMinute();
-        $minuteName = strtolower($minute->getName());
-        $this->$minuteName = $minute->build();
+        $second = $this->getSecond();
+        $secondName = strtolower($second->getName());
+        $this->$secondName = $second->build();
 
         return $this;
     }
 
     /**
-     * Gets the minute.
+     * Gets the second.
      *
-     * @param null $minuteName
+     * @param null $secondName
      *
-     * @return Minute
+     * @return Second
      */
-    public function getMinute($minuteName = null)
+    public function getSecond($secondName = null)
     {
-        if (null == $minuteName) {
-            $minuteName = 'm' . Date::getMinute();
+        if (null == $secondName) {
+            $secondName = 's' . Date::getSecond();
         }
 
-        $getMinute = 'get' . ucfirst($minuteName);
-        $minute = $this->$getMinute();
+        $getSecond = 'get' . ucfirst($secondName);
+        $second = $this->$getSecond();
 
-        if (!$minute instanceof Minute) {
-            $minute = new Minute($minuteName, 0);
+        if (!$second instanceof Second) {
+            $second = new Second($secondName, 0);
         }
 
-        return $minute;
+        return $second;
     }
 }

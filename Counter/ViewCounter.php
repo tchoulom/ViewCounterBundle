@@ -65,6 +65,14 @@ class ViewCounter extends AbstractViewCounter
             return $this->isNewYearlyView($viewCounter);
         }
 
+        if (self::VIEW_PER_MINUTE === $viewStrategy) {
+            return $this->isViewPerMinute($viewCounter);
+        }
+
+        if (self::VIEW_PER_SECOND === $viewStrategy) {
+            return $this->isViewPerSecond($viewCounter);
+        }
+
         return false;
     }
 
@@ -167,5 +175,47 @@ class ViewCounter extends AbstractViewCounter
         $currentTimestamp = time();
 
         return $currentTimestamp >= $nextYearTimestamp;
+    }
+
+    /**
+     * Checks whether this is a new "view per minute".
+     *
+     * @param ViewCounterInterface $viewCounter
+     *
+     * @return bool
+     */
+    public function isViewPerMinute(ViewCounterInterface $viewCounter)
+    {
+        // Next minute
+        $viewDate = clone $viewCounter->getViewDate();
+        $nextMinute = Date::getNextMinute($viewDate);
+
+        $nextMinuteTimestamp = strtotime($nextMinute->format('Y-m-d H:i:s'));
+
+        // Current Timestamp
+        $currentTimestamp = time();
+
+        return $currentTimestamp >= $nextMinuteTimestamp;
+    }
+
+    /**
+     * Checks whether this is a new "view per second".
+     *
+     * @param ViewCounterInterface $viewCounter
+     *
+     * @return bool
+     */
+    public function isViewPerSecond(ViewCounterInterface $viewCounter)
+    {
+        // Next minute
+        $viewDate = clone $viewCounter->getViewDate();
+        $nextSecond = Date::getNextSecond($viewDate);
+
+        $nextSecondTimestamp = strtotime($nextSecond->format('Y-m-d H:i:s'));
+
+        // Current Timestamp
+        $currentTimestamp = time();
+
+        return $currentTimestamp >= $nextSecondTimestamp;
     }
 }

@@ -35,12 +35,12 @@ class TchoulomViewCounterBundle extends Bundle
      *
      * @var array
      */
-    const SUPPORTED_STRATEGY = ['increment_each_view', 'unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view'];
+    const SUPPORTED_STRATEGY = ['increment_each_view', 'unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
 
     /**
      * The supported statistics keys.
      *
      * @var array
      */
-    const SUPPORTED_STATS = ['use_stats', 'stats_file_extension'];
+    const SUPPORTED_STATS_KEYS = ['use_stats', 'stats_file_name', 'stats_file_extension'];
 }

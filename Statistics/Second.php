@@ -14,21 +14,16 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
-use Tchoulom\ViewCounterBundle\Util\Date;
-
 /**
- * Class Hour
+ * Class Second
  */
-class Hour
+class Second
 {
     protected $name;
-    protected $fullHour;
     protected $total = 0;
 
-    use MinuteTrait;
-
     /**
-     * Day constructor.
+     * Minute constructor.
      *
      * @param $name
      * @param $total
@@ -64,31 +59,6 @@ class Hour
     }
 
     /**
-     * Gets the full hour.
-     *
-     * @return false|string
-     */
-    public function getFullHour()
-    {
-        return $this->fullHour;
-    }
-
-    /**
-     * Sets the full hour.
-     *
-     * @param false|string $fullHour
-     *
-     * @return Hour
-     */
-    public function setFullHour($fullHour)
-    {
-        $this->fullHour = $fullHour;
-
-        return $this;
-    }
-
-
-    /**
      * Gets the total.
      *
      * @return integer
@@ -113,42 +83,14 @@ class Hour
     }
 
     /**
-     * Builds the hour.
+     * Builds the minute.
      *
      * @return $this
      */
     public function build()
     {
         $this->total++;
-        $this->fullHour = Date::getFullHour();
-
-        $minute = $this->getMinute();
-        $minuteName = strtolower($minute->getName());
-        $this->$minuteName = $minute->build();
 
         return $this;
-    }
-
-    /**
-     * Gets the minute.
-     *
-     * @param null $minuteName
-     *
-     * @return Minute
-     */
-    public function getMinute($minuteName = null)
-    {
-        if (null == $minuteName) {
-            $minuteName = 'm' . Date::getMinute();
-        }
-
-        $getMinute = 'get' . ucfirst($minuteName);
-        $minute = $this->$getMinute();
-
-        if (!$minute instanceof Minute) {
-            $minute = new Minute($minuteName, 0);
-        }
-
-        return $minute;
     }
 }
