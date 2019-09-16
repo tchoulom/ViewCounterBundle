@@ -9,19 +9,54 @@ This bundle can also be used to draw a graphical representation of statistical d
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
 
-Features include:
---------------
+# Summary
+
+- [Features include](#features-includes)
+- [Documentation](#documentation)
+- [Installation](#installation)
+  - [Step 1: Download TchoulomViewCounterBundle using composer](#Step-1:-Download-TchoulomViewCounterBundle-using-composer)
+  - [Step 2: Enable the Bundle](#Step-2:-Enable-the-Bundle)
+- [Usage](#usage)
+  - [Step 1: Interface and Property](#Step-1:-Interface-and-Property)
+  - [Step 2: ViewCounter](#Step-2:-ViewCounter)
+  - [Step 3: Configuration](#Step-3:-Configuration)
+    - [The "view_counter"](#The-"view_counter")
+    - [The "statistics"](#The-"statistics")
+  - [Step 4: The Controller](#Step 4:-The Controller)
+    - [Method 1](#Method-1)
+    - [Method 2](#Method-2)
+  - [Step 5: The View](#Step-5:-The-View)
+  - [Step 6: Exploitation of statistical data](#Step-6:-Exploitation-of-statistical-data)
+    - [The *StatsFinder* service](#The-*StatsFinder*-service)
+      - [Get the *yearly* statistics](#Get-the-*yearly*-statistics)
+      - [Get the *monthly* statistics](#Get-the-*monthly*-statistics)
+      - [Get the *weekly* statistics](#Get-the-*weekly*-statistics)
+      - [Get the *daily* statistics](#Get-the-*daily*-statistics)
+      - [Get the *hourly* statistics](#Get-the-*hourly*-statistics)
+      - [Get the statistics *per minute*](#Get-the-statistics-per-minute)
+      - [Get the statistics *per second*](#Get-the-statistics-per-second)
+    - [The *StatsComputer* service](#The-*StatsComputer*-service)
+      - [Calculates the *min value*](#Calculates-the-*min-value*)
+      - [Calculates the *max value*](#Calculates-the-*max-value*)
+      - [Calculates the *average*](#Calculates-the-*average*)
+      - [Calculates the *range*](#Calculates-the-*range*)
+      - [Calculates the *mode*](#Calculates-the-*mode*)
+      - [Calculates the *median*](#Calculates-the-*median*)
+      - [Count the number of values ​​in the statistical series](#Count-the-number-of-values-in-the-statistical-series)
+- [Original Credits](#Original-Credits)
+- [License](#License)
+
+# Features include
+
     - Viewcounter
     - Statistics
-Documentation:
---------------
+# Documentation
 
 [The ViewCounter documentation](http://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
 
-Installation:
--------------
+# Installation
 
-### Step 1: Download TchoulomViewCounterBundle using composer
+## Step 1: Download TchoulomViewCounterBundle using composer
 
  You can install it via Composer:
 
@@ -48,7 +83,7 @@ Installation:
       }
   }
   ```
-### Step 2: Enable the Bundle
+## Step 2: Enable the Bundle
 
 Edit the **appKernel.php** file
 
@@ -62,10 +97,9 @@ Edit the **appKernel.php** file
      ...
 ```
 
-Usage:
-------
+# Usage
 
-### Step 1: Interface and Property
+## Step 1: Interface and Property
 
 Suppose that you have an **Article** Entity.
 
@@ -171,7 +205,7 @@ The **$views** property allows to get the number of views:
     }
 ```
 
-### Step 2: ViewCounter
+## Step 2: ViewCounter
 
 The **ViewCounter** Entity allows to set the IP address, the **view_date**, and the **article_id**.
 
@@ -244,9 +278,9 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
     }
 
 ```
-### Step 3: Edit the configuration file
+## Step 3: Configuration
 
-Add the following configuration
+Add the following configuration in the configuration file:
 
 ```yaml
 
@@ -302,11 +336,11 @@ If **stats_file_extension:**, then the default name of the statistics file will 
 
 The full path of the statistics file is ***var/viewcounter*** of your project.
 
-### Step 4: The Controller
+## Step 4: The Controller
 
 2 methods are available:
 
-**Method 1 :**
+### Method 1
 
 Recommendation: You can use the **Symfony kernel terminate listener** to set the Viewcounter
 
@@ -343,7 +377,7 @@ use App\Entity\ViewCounter;
 ...
 ```
 
-**Method 2 :**
+### Method 2
 
 You only need to save your **Article** Entity via the **'tchoulom.viewcounter'** service:
 
@@ -368,7 +402,7 @@ The second method returns the current page ($article).
 
 You can choose the method that is most appropriate for your situation.
 
-### Step 5: The View
+## Step 5: The View
 
 Finally you can display the number of views:
 
@@ -378,9 +412,11 @@ Finally you can display the number of views:
 ...
 ```
 
-### Step 6: Exploitation of statistical data
+## Step 6: Exploitation of statistical data
 
-- Use the **StatsFinder** service to get statistics of a web page :
+### The *StatsFinder* service
+
+Use the **StatsFinder** service to get statistics of a web page :
 
 ```php
    // The "statsFinder" service
@@ -421,11 +457,11 @@ Finally you can display the number of views:
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Second
    $second = $statsFinder->findBySecond($course, 2019, 1, 3, 'thursday', 'h17', 'm49', 's19');
    
-    ...
 ```
-- Get statistical data of a web page by **year**, **month**, **week**, **day** and **hour**
 
-##### By *year*
+You can also get statistical data of a web page by **year**, **month**, **week**, **day**, **hour**, **minute** and **second**
+
+#### Get the *yearly* statistics
 
 ```php
    // Get the yearly statistics
@@ -445,7 +481,7 @@ In 2018, there were 95548144 views.
 
 In 2017, there were 47882376 views.
 
-##### By *month*
+#### Get the *monthly* statistics
 
 ```php
    // Get the monthly statistics in 2019
@@ -465,7 +501,7 @@ In the month of July (month number 7) 2019, there were 921548 views.
 
 In the month of June (month number 6) 2019, there were 845479 views.
 
-##### By *week*
+#### Get the *weekly* statistics
 
 ```php
    // Get the weekly statistics of the month of August (month number 8) in 2019
@@ -485,7 +521,7 @@ In the week number 33 in august 2019, there were 117649 views.
 
 In the week number 32 in august 2019, there were 183254 views.
 
-##### By *day*
+#### Get the *daily* statistics
 
 ```php
    // Get the daily statistics of the week number 33 in august 2019
@@ -507,7 +543,7 @@ On Wednesday of the week number 33 in august 2019, there were 16807 views.
 
 ...
 
-#### By *hour*
+#### Get the *hourly* statistics
 
 ```php
    // Get the hourly statistics for Thursday of the week number 33 in august 2019
@@ -533,7 +569,7 @@ On Thursday of the week number 33 of August (month number 8) 2019:
 
 * ...
 
-#### By *minute*
+#### Get the statistics *per minute*
 
 ```php
    // Get the statistics per minute on Saturday of the week number 33 in august 2019 at 15h ('h15')
@@ -559,7 +595,7 @@ On Saturday  of the week number 33 of August (month number 8) 2019 at 15h ('h15'
 
 * ...
 
-#### By *second*
+#### Get the statistics *per second*
 
 ```php
    // Get the statistics per second on Saturday of the week number 33 in august 2019 at 15H49
@@ -606,13 +642,116 @@ Let's zoom in on the statistics for the first week of January:
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-first-week-january-2018.png" alt="the statistical data of the first week of January 2018" align="center" />
 
-Original Credits
-----------------
+
+### The *StatsComputer* service
+
+Use the **StatsComputer** service to calculate the min value, max value, average value, range value, mode value, median value and the number of occurrences of the statistics :
+
+First of all, get the stats computer service
+
+```php
+   $statsComputer = $this->get('tchoulom.viewcounter.stats_computer');
+```
+
+The functions of the service **statsComputer** can take as argument the *$yearlyStats*, *$monthlyStats*, *$weeklyStats*, *$daylyStats*, *$hourlyStats*, *$statsPerMinute*, *$statsPerSecond*
+
+#### Calculates the *min value*
+
+```php
+   // Get the min value of the yearly statistics
+   $minValue = $statsComputer->computeMinValue($yearlyStats);
+```
+
+Result:
+```php
+    [2017,47882376]
+```
+
+#### Calculates the *max value*
+
+```php
+   // Get the max value of the monthly statistics
+   $maxValue = $statsComputer->computeMaxValue($monthlyStats);
+```
+
+Result:
+```php
+    [8,951224]
+```
+
+#### Calculates the *average*
+
+The **average** is the sum of the values ​​of the statistical series divided by the number of values.
+
+```php
+   // Get the average of the weekly statistics
+   $average = $statsComputer->computeAverage($weeklyStats);
+```
+
+Result:
+```php
+    265039
+```
+
+#### Calculates the *range*
+
+The **range** is the difference between the highest number and the lowest number.
+
+```php
+   // Get the range of the daily statistics
+   $range = $statsComputer->computeRange($dailyStats);
+```
+
+Result:
+```php
+    6
+```
+
+#### Calculates the *mode*
+
+The **mode** is the number that is in the array the most times.
+
+```php
+   // Get the mode of the hourly statistics
+   $mode = $statsComputer->computeMode($hourlyStats);
+```
+
+Result:
+```php
+    700
+```
+
+#### Calculates the *median*
+
+The **median** is the middle value after the numbers are sorted smallest to largest.
+
+```php
+   // Get the median of the statistics per minute
+   $median = $statsComputer->computeMedian($statsPerMinute);
+```
+
+Result:
+```php
+    75.5
+```
+
+#### Count the number of values ​​in the statistical series
+
+```php
+   // Get the count of the statistics per second
+   $count = $statsComputer->count($statsPerSecond);
+```
+
+Result:
+```php
+    60
+```
+
+# Original Credits
 
 Created by [Ernest TCHOULOM](http://tchoulom.com) for [tchoulom.com](https://tchoulom.com).
 
-License:
---------
+# License
 
 This bundle is released under the MIT license. See the complete license in the
 bundle:

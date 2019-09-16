@@ -1,0 +1,11 @@
+parameters:
+    tchoulom.viewcounter.filesystem.class: Tchoulom\ViewCounterBundle\Filesystem\Filesystem
+
+services:
+    # Filesystem
+    tchoulom.viewcounter.filesystem:
+        class: '%tchoulom.viewcounter.filesystem.class%'
+        public: true
+        arguments:
+            - '%kernel.project_dir%'
+            - '@tchoulom.viewcounter_config'

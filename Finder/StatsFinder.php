@@ -43,7 +43,7 @@ class StatsFinder
     protected $stats = [];
 
     /**
-     * Statistics constructor.
+     * StatsFinder constructor.
      *
      * @param FilesystemInterface $filesystem
      */

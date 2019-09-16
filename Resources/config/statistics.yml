@@ -1,7 +1,7 @@
 parameters:
     tchoulom.viewcounter.statistics.class: Tchoulom\ViewCounterBundle\Statistics\Statistics
     tchoulom.viewcounter.stats_finder.class: Tchoulom\ViewCounterBundle\Finder\StatsFinder
-    tchoulom.viewcounter.filesystem.class: Tchoulom\ViewCounterBundle\Filesystem\Filesystem
+    tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Finder\StatsComputer
 
 services:
     # Statistics
@@ -16,10 +16,7 @@ services:
         public: true
         arguments: ['@tchoulom.viewcounter.filesystem']
 
-    # Filesystem
-    tchoulom.viewcounter.filesystem:
-        class: '%tchoulom.viewcounter.filesystem.class%'
+    # StatsComputer
+    tchoulom.viewcounter.stats_computer:
+        class: '%tchoulom.viewcounter.stats_computer.class%'
         public: true
-        arguments:
-            - '%kernel.project_dir%'
-            - '@tchoulom.viewcounter_config'
