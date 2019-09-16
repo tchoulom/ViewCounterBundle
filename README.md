@@ -9,9 +9,9 @@ This bundle can also be used to draw a graphical representation of statistical d
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
 
-# Summary
+**Table of contents**
 
-- [Features include](#features-includes)
+- [Features include](#features-include)
 - [Documentation](#documentation)
 - [Installation](#installation)
   - [Step 1: Download TchoulomViewCounterBundle using composer](#step-1-download-tchoulomviewcounterbundle-using-composer)
