@@ -19,7 +19,6 @@ namespace Tchoulom\ViewCounterBundle\Finder;
  */
 class StatsComputer
 {
-
     /**
      * Computes the min value of the statistics.
      *
@@ -89,7 +88,7 @@ class StatsComputer
     }
 
     /**
-     * Computes the avrage of the statistics.
+     * Computes the average of the statistics.
      * The average is the sum of the values ​​of the statistical series divided by the number of values.
      *
      * @param array $stats
@@ -177,6 +176,8 @@ class StatsComputer
         $statsValues = array_map(function ($statsPoint) {
             return $statsPoint[1];
         }, $stats);
+
+        sort($statsValues);
 
         $statsValuesCount = count($statsValues);
         $statsValuesMaxKey = $statsValuesCount - 1;
