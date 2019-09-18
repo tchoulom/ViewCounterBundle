@@ -27,7 +27,7 @@ This bundle can also be used to draw a graphical representation of statistical d
     - [Method 2](#method-2)
   - [Step 5: The View](#step-5-the-view)
   - [Step 6: Exploitation of statistical data](#step-6-exploitation-of-statistical-data)
-    - [The *StatsFinder* service](#the-statsFinder-service)
+    - [The *StatsFinder* service](#the-statsfinder-service)
       - [Get the *yearly* statistics](#get-the-yearly-statistics)
       - [Get the *monthly* statistics](#get-the-monthly-statistics)
       - [Get the *weekly* statistics](#get-the-weekly-statistics)
@@ -78,7 +78,7 @@ This bundle can also be used to draw a graphical representation of statistical d
   {
       "require": {
           ...
-          "tchoulom/view-counter-bundle": "^3.0"
+          "tchoulom/view-counter-bundle": ">=3.0"
           ...
       }
   }
