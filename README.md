@@ -199,7 +199,7 @@ The **$views** property allows to get the number of views:
         */
        public function removeViewCounter(ViewCounter $viewCounter)
        {
-           $this->comments->removeElement($viewCounter);
+           $this->viewCounters->removeElement($viewCounter);
        }
       ...
     }
@@ -653,7 +653,7 @@ First of all, get the stats computer service
    $statsComputer = $this->get('tchoulom.viewcounter.stats_computer');
 ```
 
-The functions of the service **statsComputer** can take as argument the *$yearlyStats*, *$monthlyStats*, *$weeklyStats*, *$daylyStats*, *$hourlyStats*, *$statsPerMinute*, *$statsPerSecond*
+The functions of the **statsComputer** service can take as argument the *$yearlyStats*, *$monthlyStats*, *$weeklyStats*, *$daylyStats*, *$hourlyStats*, *$statsPerMinute*, and *$statsPerSecond*
 
 #### Calculates the *min value*
 
