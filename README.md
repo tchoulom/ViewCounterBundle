@@ -35,6 +35,7 @@ This bundle can also be used to draw a graphical representation of statistical d
       - [Get the *hourly* statistics](#get-the-hourly-statistics)
       - [Get the statistics *per minute*](#get-the-statistics-per-minute)
       - [Get the statistics *per second*](#get-the-statistics-per-second)
+    - [Build a graph with "Google Charts"](#build-a-graph-with-google-charts)
     - [The *StatsComputer* service](#the-statscomputer-service)
       - [Calculates the *min value*](#calculates-the-min-value)
       - [Calculates the *max value*](#calculates-the-max-value)
@@ -621,14 +622,6 @@ On Saturday  of the week number 33 of August (month number 8) 2019 at 15H49:
 
 * ...
 
-So you can exploit these statistical data to build a graph, as shown in the following figure:
-
-**Statistics of monthly views in 2018**
-
-<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
-
-You can also build the graph on statistics of  **daily view**, **hourly view**, **weekly view** and **yearly view** according to the data in the statistics file.
-
 
 The data in the stats file represents the view statistics, as shown in the following figure:
 
@@ -642,6 +635,18 @@ Let's zoom in on the statistics for the first week of January:
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-first-week-january-2018.png" alt="the statistical data of the first week of January 2018" align="center" />
 
+
+### Build a graph with "Google Charts"
+
+So you can exploit these statistical data to build a graph, as shown in the following figure:
+
+**Statistics of monthly views in 2018**
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/monthly-views-2018.png" alt="Monthly views in 2018" align="center" />
+
+Also, you can build the graph on statistics of  **daily view**, **hourly view**, **weekly view** and **yearly view** according to the data in the statistics file.
+
+You can find out about "Google Charts"  [here](https://developers.google.com/chart/interactive/docs/gallery/linechart)
 
 ### The *StatsComputer* service
 
