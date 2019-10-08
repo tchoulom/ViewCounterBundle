@@ -106,23 +106,23 @@ abstract class AbstractViewCounter
      * Loads the ViewCounter.
      *
      * @param ViewCountable $page The counted object(a tutorial or course...)
-     * @return $this
+     *
+     * @return ViewCounterInterface
      */
     protected function loadViewCounter(ViewCountable $page)
     {
         $this->counterManager->loadMetadata($page);
         $this->property = $this->counterManager->getProperty();
         $this->class = $this->counterManager->getClass();
+        $clientIP = $this->getClientIp();
 
-        $viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $this->getClientIp()], $orderBy = null, $limit = null, $offset = null);
+        $viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $clientIP], $orderBy = null, $limit = null, $offset = null);
 
         if ($viewCounter instanceof ViewCounterInterface) {
-            $this->viewCounter = $viewCounter;
-        } else {
-            $this->viewCounter = $this->createViewCounterObject();
+            return $viewCounter;
         }
 
-        return $this;
+        return $this->createViewCounterObject();
     }
 
     /**
@@ -134,11 +134,9 @@ abstract class AbstractViewCounter
      */
     public function getViewCounter(ViewCountable $page = null)
     {
-        if (!$this->viewCounter instanceof ViewCounterInterface) {
-            $this->loadViewCounter($page);
-        }
+        $viewCounter = $this->loadViewCounter($page);
 
-        return $this->viewCounter;
+        return $viewCounter;
     }
 
     /**
@@ -183,7 +181,7 @@ abstract class AbstractViewCounter
             $this->counterManager->save($page);
 
             // Statistics
-            if (true === $this->getUseStats()) {
+            if (true === $this->canUseStats()) {
                 $this->handleStatistics($viewcounter);
             }
         }
@@ -221,7 +219,10 @@ abstract class AbstractViewCounter
      */
     protected function getViewStrategy()
     {
-        return $this->viewcounterConfig->getViewcounterNodeConfig()->getViewStrategy();
+        $viewcounterNodeConfig = $this->viewcounterConfig->getViewcounterNodeConfig();
+        $viewStrategy = $viewcounterNodeConfig->getViewStrategy();
+
+        return $viewStrategy;
     }
 
     /**
@@ -229,9 +230,12 @@ abstract class AbstractViewCounter
      *
      * @return boolean
      */
-    protected function getUseStats()
+    protected function canUseStats()
     {
-        return $this->viewcounterConfig->getStatisticsNodeConfig()->getUseStats();
+        $statisticsNodeConfig = $this->viewcounterConfig->getStatisticsNodeConfig();
+        $canUseStats = $statisticsNodeConfig->canUseStats();
+
+        return $canUseStats;
     }
 
     /**
@@ -271,10 +275,14 @@ abstract class AbstractViewCounter
      * Sets the current Page   The counted object(a tutorial or course...)
      *
      * @param ViewCountable $page
+     *
+     * @return $this
      */
     protected function setPage(ViewCountable $page)
     {
         $this->page = $page;
+
+        return $this;
     }
 
     /**
@@ -304,7 +312,10 @@ abstract class AbstractViewCounter
      */
     public function getClientIp()
     {
-        return $this->getRequest()->getClientIp();
+        $request = $this->getRequest();
+        $clientIp = $request->getClientIp();
+
+        return $clientIp;
     }
 
     /**

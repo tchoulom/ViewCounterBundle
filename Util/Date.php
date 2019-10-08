@@ -161,6 +161,28 @@ class Date
     }
 
     /**
+     * Gets the previous year.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getPreviousYear(\DateTimeInterface $date)
+    {
+        // Sets Date and Minutes...
+        $dateYear = intval($date->format("Y"));
+
+        // Sets to first day of month
+        $date->setDate($dateYear, 1, 1);
+        $date->setTime(0, 0, 0);
+
+        // Next Year
+        $previousYear = $date->sub(new \DateInterval("P1Y"));
+
+        return $previousYear;
+    }
+
+    /**
      * Gets the next month.
      *
      * @param \DateTimeInterface $date
@@ -184,6 +206,29 @@ class Date
     }
 
     /**
+     * Gets the previous month.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getPreviousMonth(\DateTimeInterface $date)
+    {
+        // Sets Date and Minutes...
+        $dateYear = intval($date->format("Y"));
+        $dateMonth = intval($date->format("m"));
+
+        // Sets to first day of month
+        $date->setDate($dateYear, $dateMonth, 1);
+        $date->setTime(0, 0, 0);
+
+        // Previous Month
+        $previousMonth = $date->sub(new \DateInterval("P1M"));
+
+        return $previousMonth;
+    }
+
+    /**
      * Gets the next week.
      *
      * @param \DateTimeInterface $date
@@ -199,6 +244,24 @@ class Date
         $nextWeek = $date->add(new \DateInterval("P7D"));
 
         return $nextWeek;
+    }
+
+    /**
+     * Gets the previous week.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getPreviousWeek(\DateTimeInterface $date)
+    {
+        // Sets to first day of week
+        $date->setISODate($date->format("Y"), $date->format("W"), 1);
+
+        // Previous Week
+        $previousWeek = $date->sub(new \DateInterval("P7D"));
+
+        return $previousWeek;
     }
 
     /**
@@ -237,6 +300,24 @@ class Date
     }
 
     /**
+     * Gets the previous hour.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getPreviousHour(\DateTimeInterface $date)
+    {
+        // Sets Minutes and Second to zero
+        $dateHour = intval($date->format('H'));
+        $date->setTime($dateHour, 0, 0);
+
+        $previousHour = $date->sub(new \DateInterval('PT1H'));
+
+        return $previousHour;
+    }
+
+    /**
      * Gets the next minute.
      *
      * @param \DateTimeInterface $date
@@ -256,6 +337,25 @@ class Date
     }
 
     /**
+     * Gets the previous minute.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getPreviousMinute(\DateTimeInterface $date)
+    {
+        // Sets Second to zero
+        $dateHour = intval($date->format('H'));
+        $dateMinute = intval($date->format('i'));
+        $date->setTime($dateHour, $dateMinute, 0);
+
+        $previousMinute = $date->sub(new \DateInterval('PT1M'));
+
+        return $previousMinute;
+    }
+
+    /**
      * Gets the next second.
      *
      * @param \DateTimeInterface $date
@@ -267,6 +367,20 @@ class Date
         $nextSecond = $date->add(new \DateInterval('PT1S'));
 
         return $nextSecond;
+    }
+
+    /**
+     * Gets the previous second.
+     *
+     * @param \DateTimeInterface $date
+     *
+     * @return mixed
+     */
+    public static function getPreviousSecond(\DateTimeInterface $date)
+    {
+        $previousSecond = $date->sub(new \DateInterval('PT1S'));
+
+        return $previousSecond;
     }
 
     /**

@@ -103,7 +103,7 @@ class ViewCounter extends AbstractViewCounter
      *
      * @return bool
      */
-    public function isNewHourlyView(ViewCounterInterface $viewCounter)
+    protected function isNewHourlyView(ViewCounterInterface $viewCounter)
     {
         // Next hour
         $viewDate = clone $viewCounter->getViewDate();
@@ -124,7 +124,7 @@ class ViewCounter extends AbstractViewCounter
      *
      * @return bool
      */
-    public function isNewWeeklyView(ViewCounterInterface $viewCounter)
+    protected function isNewWeeklyView(ViewCounterInterface $viewCounter)
     {
         // Next week
         $viewDate = clone $viewCounter->getViewDate();
@@ -144,7 +144,7 @@ class ViewCounter extends AbstractViewCounter
      *
      * @return bool
      */
-    public function isNewMonthlyView(ViewCounterInterface $viewCounter)
+    protected function isNewMonthlyView(ViewCounterInterface $viewCounter)
     {
         // Next month
         $viewDate = clone $viewCounter->getViewDate();
@@ -164,7 +164,7 @@ class ViewCounter extends AbstractViewCounter
      *
      * @return bool
      */
-    public function isNewYearlyView(ViewCounterInterface $viewCounter)
+    protected function isNewYearlyView(ViewCounterInterface $viewCounter)
     {
         // Next month
         $viewDate = clone $viewCounter->getViewDate();
@@ -184,7 +184,7 @@ class ViewCounter extends AbstractViewCounter
      *
      * @return bool
      */
-    public function isViewPerMinute(ViewCounterInterface $viewCounter)
+    protected function isViewPerMinute(ViewCounterInterface $viewCounter)
     {
         // Next minute
         $viewDate = clone $viewCounter->getViewDate();
@@ -205,7 +205,7 @@ class ViewCounter extends AbstractViewCounter
      *
      * @return bool
      */
-    public function isViewPerSecond(ViewCounterInterface $viewCounter)
+    protected function isViewPerSecond(ViewCounterInterface $viewCounter)
     {
         // Next minute
         $viewDate = clone $viewCounter->getViewDate();

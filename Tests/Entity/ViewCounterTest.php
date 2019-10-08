@@ -43,7 +43,7 @@ class ViewCounterTest extends BaseTest
      */
     public function testGetIp()
     {
-        $thisEntity = $this->viewCounterEntity->setIp($this->defaultIP);
+        $thisEntity = $this->viewCounterEntity->setIp($this->clientIP);
 
         $this->assertInstanceOf(ViewCounter::class, $thisEntity);
         $this->assertTrue(is_string($this->viewCounterEntity->getIp()));

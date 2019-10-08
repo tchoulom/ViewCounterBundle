@@ -14,27 +14,16 @@
 
 namespace Tchoulom\ViewCounterBundle\Tests;
 
-use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Tchoulom\ViewCounterBundle\Entity\ViewCounter as ViewCounterEntity;
-use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
-use Tchoulom\ViewCounterBundle\Manager\CounterManager;
-use Tchoulom\ViewCounterBundle\Model\ViewCountable;
-use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
-use Tchoulom\ViewCounterBundle\Repository\CounterRepository;
-use Tchoulom\ViewCounterBundle\Repository\RepositoryInterface;
+use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
 
 /**
  * Class BaseTest
  */
 abstract class BaseTest extends TestCase
 {
-    protected $defaultIP = '127.0.0.1';
-    protected $viewDate = null;
-    protected $viewCountableMock;
-    protected $entityManagerMock;
-    protected $requestStack;
+    protected $clientIP = '127.0.0.1';
+    protected $filesystemMock;
     protected $viewInterval = ['increment_each_view', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
 
     /**
@@ -44,12 +33,7 @@ abstract class BaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->viewCountableMock = $this->createMock(ViewCountable::class);
-        $this->entityManagerMock = $this->createMock(EntityManager::class);
-        $this->requestStack = new RequestStack();
-        $this->viewCounterEntity = new ViewCounterEntity();
-        $this->viewDate = new \DateTime('now');
-        $this->viewCounterInterfaceMock = $this->createMock(ViewCounterInterface::class);
+        $this->filesystemMock = $this->createMock(FilesystemInterface::class);
     }
 
     /**
@@ -57,52 +41,41 @@ abstract class BaseTest extends TestCase
      */
     public function tearDown()
     {
-        $this->entityManagerMock = null;
-        $this->requestStack = null;
-        $this->viewCounterEntity = null;
-        $this->viewDate = null;
-        $this->viewCounterInterfaceMock = null;
+        $this->filesystemMock = null;
     }
 
     /**
-     * tests viewCounterService
+     * Invokes a method.
      *
-     * @return ViewCounter
+     * @param $object
+     * @param $methodName
+     * @param array $arguments
+     *
+     * @return mixed
      */
-    public function testViewCounterService()
+    public function invokeMethod($object, $methodName, array $arguments = array())
     {
-        $counterRepository = new CounterRepository($this->entityManagerMock);
-        $counterManager = new CounterManager($counterRepository);
-        $viewCounterService = new ViewCounter($counterManager, $this->requestStack, $this->viewInterval);
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
 
-        $this->assertInstanceOf(ViewCounter::class, $viewCounterService);
-
-        return $viewCounterService;
+        return $method->invokeArgs($object, $arguments);
     }
 
     /**
-     * tests isNewView
+     * Sets a protected property on a given object via reflection
      *
-     * @depends testViewCounterService
-     */
-    public function testIsNewView($viewCounterService)
-    {
-        $bool = $viewCounterService->isNewView($this->viewCounterInterfaceMock);
-
-        $this->assertTrue(is_bool($bool));
-    }
-
-    /**
-     * Tests CounterRepository.
+     * @param $object Instance in which protected value is being modified
+     * @param $property Property on instance being modified
+     * @param $value New value of the property being modified
      *
-     * @return CounterRepository
+     * @return void
      */
-    public function testCounterRepository()
+    public function setProtectedProperty($object, $property, $value)
     {
-        $counterRepository = new CounterRepository($this->entityManagerMock);
-
-        $this->assertInstanceOf(RepositoryInterface::class, $counterRepository);
-
-        return $counterRepository;
+        $reflection = new \ReflectionClass($object);
+        $reflectionProperty = $reflection->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($object, $value);
     }
 }

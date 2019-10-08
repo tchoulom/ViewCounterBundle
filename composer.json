@@ -3,7 +3,7 @@
     "license": "MIT",
     "type": "symfony-bundle",
     "description": "The \"View Counter\" bundle",
-    "keywords": ["view counter", "view counter symfony", "statistics", "statistics bundle", "statistics symfony","statistics of web pages", "view counter bundle", "Count the number of views of a page", "pages views counter", "view count", "viewership", "viewership measurement", "page views", "page view count", "view counter interface"],
+    "keywords": ["view counter", "view counter symfony", "statistics", "statistics bundle", "statistics symfony","statistics of web pages", "Google Charts", "view counter bundle", "Count the number of views of a page", "pages views counter", "view count", "viewership", "viewership measurement", "page views", "page view count", "view counter interface"],
     "authors": [
         {
             "name": "Ernest TCHOULOM",

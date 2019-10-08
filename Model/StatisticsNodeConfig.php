@@ -51,7 +51,7 @@ class StatisticsNodeConfig
      *
      * @return boolean
      */
-    public function getUseStats()
+    public function canUseStats()
     {
         return $this->useStats;
     }
