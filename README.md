@@ -246,7 +246,7 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
         ...
         
         /**
-         * @ORM\ManyToOne(targetEntity="Article", cascade={"persist"})
+         * @ORM\ManyToOne(targetEntity="Article", cascade={"persist"}, inversedBy="viewCounters")
          * @ORM\JoinColumn(nullable=true)
          */
         private $article;
