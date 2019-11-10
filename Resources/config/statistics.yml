@@ -1,7 +1,7 @@
 parameters:
     tchoulom.viewcounter.statistics.class: Tchoulom\ViewCounterBundle\Statistics\Statistics
     tchoulom.viewcounter.stats_finder.class: Tchoulom\ViewCounterBundle\Finder\StatsFinder
-    tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Finder\StatsComputer
+    tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Compute\StatsComputer
 
 services:
     # Statistics
