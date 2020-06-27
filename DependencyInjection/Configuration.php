@@ -30,11 +30,10 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('tchoulom_view_counter');
+        $treeBuilder = new TreeBuilder('tchoulom_view_counter');
         $supportedInterval = implode(', ', TchoulomViewCounterBundle::SUPPORTED_STRATEGY);
 
-        $rootNode
+        $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('statistics')
                     ->children()
