@@ -9,3 +9,6 @@ services:
         arguments:
             - '%kernel.project_dir%'
             - '@tchoulom.viewcounter_config'
+
+    # aliases needed for services (Symfony version 4, 5)
+    Tchoulom\ViewCounterBundle\Filesystem\Filesystem: '@tchoulom.viewcounter.filesystem'

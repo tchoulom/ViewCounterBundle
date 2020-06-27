@@ -281,7 +281,14 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
 ```
 ## Step 3: Configuration
 
-Add the following configuration in the configuration file:
+###### For symfony 4 or 5:
+ - Create the file **config/packages/tchoulom_viewcounter.yaml**
+ - Add the following viewcounter configuration in the **tchoulom_viewcounter.yaml** file.
+
+###### For version of symfony less than 4:
+ - Add the following viewcounter configuration in the **app/config.yml** file.
+
+###### viewcounter configuration
 
 ```yaml
 
@@ -347,7 +354,23 @@ Recommendation: You can use the **Symfony kernel terminate listener** to set the
 
 ```php
 use App\Entity\ViewCounter;
+use Tchoulom\ViewCounterBundle\Counter\ViewCounter as Counter;
 ...
+
+// For Symfony 4 or 5, inject the ViewCounter service
+
+/**
+ * @var Counter
+ */
+protected $viewcounter;
+
+/**
+ * @param Counter $viewCounter
+ */
+public function __construct(Counter $viewCounter)
+{
+    $this->viewcounter = $viewCounter;
+}
 
 /**
  * Reads an existing article
@@ -360,10 +383,13 @@ use App\Entity\ViewCounter;
  {
     // Viewcounter
     $viewcounter = $this->get('tchoulom.viewcounter')->getViewCounter($article);
+    // For Symfony 4 or 5
+    $viewcounter = $this->viewcounter->getViewCounter($article);
+    
     $em = $this->getDoctrine()->getEntityManager();
     
-    if ($this->get('tchoulom.viewcounter')->isNewView($viewcounter)) {
-        $views = $this->get('tchoulom.viewcounter')->getViews($article);
+    if ($this->viewcounter->isNewView($viewcounter)) {
+        $views = $this->viewcounter->getViews($article);
         $viewcounter->setIp($request->getClientIp());
         $viewcounter->setArticle($article);
         $viewcounter->setViewDate(new \DateTime('now'));
@@ -384,6 +410,24 @@ You only need to save your **Article** Entity via the **'tchoulom.viewcounter'**
 
 ```php
 ...
+
+use Tchoulom\ViewCounterBundle\Counter\ViewCounter as Counter;
+
+// For Symfony 4 or 5, inject the ViewCounter service
+
+/**
+ * @var Counter
+ */
+protected $viewcounter;
+
+/**
+ * @param Counter $viewCounter
+ */
+public function __construct(Counter $viewCounter)
+{
+    $this->viewcounter = $viewCounter;
+}
+
 /**
  * Reads an existing article
  *
@@ -395,6 +439,8 @@ public function readAction(Request $request, Article $article)
 {
     // Saves the view
     $page = $this->get('tchoulom.viewcounter')->saveView($article);
+    // For Symfony 4 or 5
+    $page = $this->viewcounter->saveView($article);
 }
 ...
 ```
@@ -414,6 +460,27 @@ Finally you can display the number of views:
 ```
 
 ## Step 6: Exploitation of statistical data
+
+###### Trick
+
+For Symfony 4 or 5, inject the service you want to use, instead of going through the container: $this->get('tchoulom.viewcounter.stats_finder');
+
+- Example:
+
+use Tchoulom\ViewCounterBundle\Finder\StatsFinder:
+
+/**
+ * @var StatsFinder
+ */
+protected $statsFinder;
+
+/**
+ * @param StatsFinder $statsFinder
+ */
+public function __construct(StatsFinder $statsFinder)
+{
+    $this->statsFinder = $statsFinder;
+}
 
 ### The *StatsFinder* service
 

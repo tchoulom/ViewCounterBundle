@@ -65,3 +65,11 @@ services:
         class: '%tchoulom.statistics_node_config.class%'
         public: true
         arguments: [~]
+
+    # aliases needed for services (Symfony version 4, 5)
+    Tchoulom\ViewCounterBundle\Counter\ViewCounter: '@tchoulom.viewcounter'
+    Tchoulom\ViewCounterBundle\Repository\CounterRepository: '@tchoulom.viewcounter.repository'
+    Tchoulom\ViewCounterBundle\Manager\CounterManager: '@tchoulom.viewcounter.manager'
+    Tchoulom\ViewCounterBundle\Model\ViewcounterConfig: '@tchoulom.viewcounter_config'
+    Tchoulom\ViewCounterBundle\Model\ViewcounterNodeConfig: '@tchoulom.viewcounter_node_config'
+    Tchoulom\ViewCounterBundle\Model\StatisticsNodeConfig: '@tchoulom.statistics_node_config'

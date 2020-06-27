@@ -20,3 +20,8 @@ services:
     tchoulom.viewcounter.stats_computer:
         class: '%tchoulom.viewcounter.stats_computer.class%'
         public: true
+
+    # aliases needed for services (Symfony version 4, 5)
+    Tchoulom\ViewCounterBundle\Statistics\Statistics: '@tchoulom.viewcounter.statistics'
+    Tchoulom\ViewCounterBundle\Finder\StatsFinder: '@tchoulom.viewcounter.stats_finder'
+    Tchoulom\ViewCounterBundle\Compute\StatsComputer: '@tchoulom.viewcounter.stats_computer'
