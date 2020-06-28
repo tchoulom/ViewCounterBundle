@@ -79,7 +79,7 @@ This bundle can also be used to draw a graphical representation of statistical d
   {
       "require": {
           ...
-          "tchoulom/view-counter-bundle": ">=3.0"
+          "tchoulom/view-counter-bundle": "^4.0"
           ...
       }
   }
