@@ -467,6 +467,7 @@ For Symfony 4 or 5, inject the service you want to use, instead of going through
 
 - Example:
 
+```php
 use Tchoulom\ViewCounterBundle\Finder\StatsFinder:
 
 /**
@@ -481,6 +482,7 @@ public function __construct(StatsFinder $statsFinder)
 {
     $this->statsFinder = $statsFinder;
 }
+```
 
 ### The *StatsFinder* service
 
