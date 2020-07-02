@@ -8,13 +8,13 @@ services:
     tchoulom.viewcounter.statistics:
         class: '%tchoulom.viewcounter.statistics.class%'
         public: true
-        arguments: ['@tchoulom.viewcounter.filesystem']
+        arguments: ['@tchoulom.viewcounter.filemanager']
 
     # StatsFinder
     tchoulom.viewcounter.stats_finder:
         class: '%tchoulom.viewcounter.stats_finder.class%'
         public: true
-        arguments: ['@tchoulom.viewcounter.filesystem']
+        arguments: ['@tchoulom.viewcounter.filemanager']
 
     # StatsComputer
     tchoulom.viewcounter.stats_computer:

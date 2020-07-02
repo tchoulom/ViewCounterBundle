@@ -25,8 +25,10 @@ class ReflectionExtractor
      * @param $class
      *
      * @return string
+     *
+     * @throws \ReflectionException
      */
-    public function getShortClassName($class)
+    public function getShortClassName($class): string
     {
         return (new \ReflectionClass($class))->getShortName();
     }
@@ -37,8 +39,10 @@ class ReflectionExtractor
      * @param $class
      *
      * @return string
+     *
+     * @throws \ReflectionException
      */
-    public function getClassName($class)
+    public function getClassName($class): string
     {
         return strtolower($this->getShortClassName($class));
     }
@@ -49,11 +53,11 @@ class ReflectionExtractor
      * @param $class
      *
      * @return string
+     *
+     * @throws \ReflectionException
      */
-    public function getClassNamePluralized($class)
+    public function getClassNamePluralized($class): string
     {
-        $className = strtolower($this->getShortClassName($class));
-
-        return $className . 's';
+        return $this->getClassName($class) . 's';
     }
 }

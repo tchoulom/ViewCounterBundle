@@ -15,7 +15,7 @@
 namespace Tchoulom\ViewCounterBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
+use Tchoulom\ViewCounterBundle\Manager\FileManagerInterface;
 
 /**
  * Class BaseTest
@@ -23,7 +23,7 @@ use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
 abstract class BaseTest extends TestCase
 {
     protected $clientIP = '127.0.0.1';
-    protected $filesystemMock;
+    protected $fileManagerMock;
     protected $viewInterval = ['increment_each_view', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
 
     /**
@@ -33,7 +33,7 @@ abstract class BaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->filesystemMock = $this->createMock(FilesystemInterface::class);
+        $this->fileManagerMock = $this->createMock(FileManagerInterface::class);
     }
 
     /**
@@ -41,7 +41,7 @@ abstract class BaseTest extends TestCase
      */
     public function tearDown()
     {
-        $this->filesystemMock = null;
+        $this->fileManagerMock = null;
     }
 
     /**
@@ -52,6 +52,8 @@ abstract class BaseTest extends TestCase
      * @param array $arguments
      *
      * @return mixed
+     *
+     * @throws \ReflectionException
      */
     public function invokeMethod($object, $methodName, array $arguments = array())
     {
@@ -70,6 +72,8 @@ abstract class BaseTest extends TestCase
      * @param $value New value of the property being modified
      *
      * @return void
+     *
+     * @throws \ReflectionException
      */
     public function setProtectedProperty($object, $property, $value)
     {

@@ -67,7 +67,9 @@ services:
         arguments: [~]
 
     # aliases needed for services (Symfony version 4, 5)
+    Tchoulom\ViewCounterBundle\Counter\AbstractViewCounter: '@tchoulom.viewcounter.base'
     Tchoulom\ViewCounterBundle\Counter\ViewCounter: '@tchoulom.viewcounter'
+    Tchoulom\ViewCounterBundle\Repository\AbstractRepository: '@tchoulom.viewcounter.repository.base'
     Tchoulom\ViewCounterBundle\Repository\CounterRepository: '@tchoulom.viewcounter.repository'
     Tchoulom\ViewCounterBundle\Manager\CounterManager: '@tchoulom.viewcounter.manager'
     Tchoulom\ViewCounterBundle\Model\ViewcounterConfig: '@tchoulom.viewcounter_config'

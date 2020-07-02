@@ -12,16 +12,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Filesystem;
+namespace Tchoulom\ViewCounterBundle\Manager;
 
 use Tchoulom\ViewCounterBundle\Exception\IOException;
 use Tchoulom\ViewCounterBundle\Exception\IOExceptionInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
 
 /**
- * Class Filesystem is used to manipulate the file system.
+ * Class FileManager is used to manipulate the file system.
  */
-class Filesystem implements FilesystemInterface
+class FileManager implements FileManagerInterface
 {
     const CHECK_PERMISSIONS_MSG = '(Please check User and Group permissions)';
 
@@ -49,7 +49,7 @@ class Filesystem implements FilesystemInterface
     protected $filename = 'stats';
 
     /**
-     * Filesystem constructor.
+     * FileManager constructor.
      *
      * @param $projectDir
      * @param ViewcounterConfig $viewcounterConfig

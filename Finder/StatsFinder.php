@@ -14,7 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Finder;
 
-use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
+use Tchoulom\ViewCounterBundle\Manager\FileManagerInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Statistics\Day;
 use Tchoulom\ViewCounterBundle\Statistics\Hour;
@@ -33,9 +33,9 @@ use Tchoulom\ViewCounterBundle\Statistics\Second;
 class StatsFinder
 {
     /**
-     * @var FilesystemInterface
+     * @var FileManagerInterface
      */
-    protected $filesystem;
+    protected $fileManager;
 
     /**
      * @var array|bool|mixed|string
@@ -45,11 +45,11 @@ class StatsFinder
     /**
      * StatsFinder constructor.
      *
-     * @param FilesystemInterface $filesystem
+     * @param FileManagerInterface $fileManager
      */
-    public function __construct(FilesystemInterface $filesystem)
+    public function __construct(FileManagerInterface $fileManager)
     {
-        $this->filesystem = $filesystem;
+        $this->fileManager = $fileManager;
     }
 
     /**
@@ -58,8 +58,10 @@ class StatsFinder
      * @param ViewCountable $page
      *
      * @return Page|null
+     *
+     * @throws \ReflectionException
      */
-    public function findByPage(ViewCountable $page)
+    public function findByPage(ViewCountable $page): ?Page
     {
         $class = (new ReflectionExtractor())->getClassNamePluralized($page);
         $pageId = $page->getId();
@@ -79,8 +81,10 @@ class StatsFinder
      * @param $yearNumber
      *
      * @return Year|null
+     *
+     * @throws \ReflectionException
      */
-    public function findByYear(ViewCountable $page, $yearNumber)
+    public function findByYear(ViewCountable $page, $yearNumber): ?Year
     {
         $page = $this->findByPage($page);
 
@@ -101,8 +105,10 @@ class StatsFinder
      * @param $monthNumber
      *
      * @return Month|null
+     *
+     * @throws \ReflectionException
      */
-    public function findByMonth(ViewCountable $page, $yearNumber, $monthNumber)
+    public function findByMonth(ViewCountable $page, $yearNumber, $monthNumber): ?Month
     {
         $year = $this->findByYear($page, $yearNumber);
 
@@ -124,8 +130,10 @@ class StatsFinder
      * @param $weekNumber
      *
      * @return Week|null
+     *
+     * @throws \ReflectionException
      */
-    public function findByWeek(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber)
+    public function findByWeek(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber): ?Week
     {
         $month = $this->findByMonth($page, $yearNumber, $monthNumber);
 
@@ -148,8 +156,10 @@ class StatsFinder
      * @param $dayName
      *
      * @return Day|null
+     *
+     * @throws \ReflectionException
      */
-    public function findByDay(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName)
+    public function findByDay(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName): ?Day
     {
         $week = $this->findByWeek($page, $yearNumber, $monthNumber, $weekNumber);
 
@@ -172,8 +182,10 @@ class StatsFinder
      * @param $hourName
      *
      * @return Hour|null
+     *
+     * @throws \ReflectionException
      */
-    public function findByHour(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName)
+    public function findByHour(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName): ?Hour
     {
         $day = $this->findByDay($page, $yearNumber, $monthNumber, $weekNumber, $dayName);
 
@@ -196,8 +208,10 @@ class StatsFinder
      * @param $minuteName
      *
      * @return Minute|null
+     *
+     * @throws \ReflectionException
      */
-    public function findByMinute(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName)
+    public function findByMinute(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName): ?Minute
     {
         $hour = $this->findByHour($page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName);
 
@@ -221,8 +235,10 @@ class StatsFinder
      * @param $secondName
      *
      * @return Second|null
+     *
+     * @throws \ReflectionException
      */
-    public function findBySecond(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName, $secondName)
+    public function findBySecond(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName, $secondName): ?Second
     {
         $minute = $this->findByMinute($page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName);
 
@@ -239,8 +255,10 @@ class StatsFinder
      * @param ViewCountable $page
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function getYearlyStats(ViewCountable $page)
+    public function getYearlyStats(ViewCountable $page): array
     {
         $yearlyStats = [];
         $page = $this->findByPage($page);
@@ -262,8 +280,10 @@ class StatsFinder
      * @param $yearNumber
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function getMonthlyStats(ViewCountable $page, $yearNumber)
+    public function getMonthlyStats(ViewCountable $page, $yearNumber): array
     {
         $monthlyStats = [];
         $page = $this->findByPage($page);
@@ -288,8 +308,10 @@ class StatsFinder
      * @param $monthNumber
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function getWeeklylyStats(ViewCountable $page, $yearNumber, $monthNumber)
+    public function getWeeklylyStats(ViewCountable $page, $yearNumber, $monthNumber): array
     {
         $weeklyStats = [];
         $page = $this->findByPage($page);
@@ -318,8 +340,10 @@ class StatsFinder
      * @param $weekNumber
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function getDailyStats(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber)
+    public function getDailyStats(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber): array
     {
         $dailyStats = [];
         $page = $this->findByPage($page);
@@ -354,8 +378,10 @@ class StatsFinder
      * @param $dayName
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function getHourlyStats(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName)
+    public function getHourlyStats(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName): array
     {
         $hourlyStats = [];
         $page = $this->findByPage($page);
@@ -393,8 +419,10 @@ class StatsFinder
      * @param $hourName
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function getStatsPerMinute(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName)
+    public function getStatsPerMinute(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName): array
     {
         $statsPerMinute = [];
         $page = $this->findByPage($page);
@@ -434,8 +462,10 @@ class StatsFinder
      * @param $minuteName
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function getStatsPerSecond(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName)
+    public function getStatsPerSecond(ViewCountable $page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName): array
     {
         $statsPerSecond = [];
         $page = $this->findByPage($page);
@@ -471,7 +501,7 @@ class StatsFinder
      */
     public function loadContents()
     {
-        $this->stats = $this->filesystem->loadContents();
+        $this->stats = $this->fileManager->loadContents();
 
         return $this->stats;
     }

@@ -14,7 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
-use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
+use Tchoulom\ViewCounterBundle\Manager\FileManagerInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 
@@ -24,24 +24,26 @@ use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 class Statistics
 {
     /**
-     * @var FilesystemInterface
+     * @var FileManagerInterface
      */
-    protected $filesystem;
+    protected $fileManager;
 
     /**
      * Statistics constructor.
      *
-     * @param FilesystemInterface $filesystem
+     * @param FileManagerInterface $fileManager
      */
-    public function __construct(FilesystemInterface $filesystem)
+    public function __construct(FileManagerInterface $fileManager)
     {
-        $this->filesystem = $filesystem;
+        $this->fileManager = $fileManager;
     }
 
     /**
      * Registers the statistics of the page.
      *
      * @param ViewCountable $page
+     *
+     * @throws \ReflectionException
      */
     public function register(ViewCountable $page)
     {
@@ -54,13 +56,15 @@ class Statistics
      *
      * @param ViewCountable $page
      *
-     * @return array The statistics
+     * @return array
+     *
+     * @throws \ReflectionException
      */
-    public function build(ViewCountable $page)
+    public function build(ViewCountable $page): array
     {
         $class = (new ReflectionExtractor())->getClassNamePluralized($page);
         $pageId = $page->getId();
-        $contents = $this->filesystem->loadContents();
+        $contents = $this->fileManager->loadContents();
         $statsBuilder = (new StatsBuilder($contents, $class))->build($pageId);
         $stats = $statsBuilder->getStats();
 
@@ -74,6 +78,6 @@ class Statistics
      */
     public function doRegister(array $stats)
     {
-        $this->filesystem->save(serialize($stats));
+        $this->fileManager->save(serialize($stats));
     }
 }

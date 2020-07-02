@@ -12,12 +12,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Filesystem;
+namespace Tchoulom\ViewCounterBundle\Manager;
 
 /**
- * Class Filesystem is used to manipulate the file system.
+ * Class FileManagerInterface is used to manipulate the file system.
  */
-interface FilesystemInterface
+interface FileManagerInterface
 {
     /**
      * Saves the statistics.

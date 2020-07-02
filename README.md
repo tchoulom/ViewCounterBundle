@@ -288,7 +288,7 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
 ###### For version of symfony less than 4:
  - Add the following viewcounter configuration in the **app/config.yml** file.
 
-###### viewcounter configuration
+##### viewcounter configuration:
 
 ```yaml
 
