@@ -14,6 +14,9 @@
 
 namespace Tchoulom\ViewCounterBundle\Repository;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounter as BaseViewCounter;
+
 /**
  * Class AbstractRepository.
  */
@@ -21,6 +24,8 @@ abstract class AbstractRepository implements RepositoryInterface
 {
     /**
      * The EntityManager
+     *
+     * @var EntityManagerInterface
      */
     protected $em;
 
@@ -32,9 +37,9 @@ abstract class AbstractRepository implements RepositoryInterface
     /**
      * AbstractPersister constructor.
      *
-     * @param $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct($em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -134,5 +139,45 @@ abstract class AbstractRepository implements RepositoryInterface
         $class = $this->getClass();
 
         return $this->getEntityManager()->getRepository($class);
+    }
+
+    /**
+     * Loads the ViewCounter Class.
+     *
+     * @return string|null The viewcounter class
+     */
+    public function loadViewCounterClass(): ?string
+    {
+        $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
+        foreach ($metadatas as $metadata) {
+            if ($metadata->getReflectionClass()->getParentClass() instanceof \ReflectionClass
+                && BaseViewCounter::class === $metadata->getReflectionClass()->getParentClass()->getName()
+            ) {
+                return $metadata->getReflectionClass()->getName();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Loads the entity identifier.
+     *
+     * @param string $entityName The entity name
+     *
+     * @return string|null The entity identifier
+     */
+    public function loadEntityIdentifier(string $entityName): ?string
+    {
+        $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
+        foreach ($metadatas as $metadata) {
+            if ($metadata->getName() === $metadata->namespace . '\\' . ucfirst($entityName)) {
+                if (isset($metadata->getIdentifier()[0])) {
+                    return $metadata->getIdentifier()[0];
+                }
+            }
+        }
+
+        return null;
     }
 }

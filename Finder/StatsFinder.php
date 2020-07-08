@@ -14,7 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Finder;
 
-use Tchoulom\ViewCounterBundle\Manager\FileManagerInterface;
+use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Statistics\Day;
 use Tchoulom\ViewCounterBundle\Statistics\Hour;
@@ -33,9 +33,9 @@ use Tchoulom\ViewCounterBundle\Statistics\Second;
 class StatsFinder
 {
     /**
-     * @var FileManagerInterface
+     * @var FilesystemInterface
      */
-    protected $fileManager;
+    protected $filesystem;
 
     /**
      * @var array|bool|mixed|string
@@ -45,11 +45,11 @@ class StatsFinder
     /**
      * StatsFinder constructor.
      *
-     * @param FileManagerInterface $fileManager
+     * @param FilesystemInterface $filesystem
      */
-    public function __construct(FileManagerInterface $fileManager)
+    public function __construct(FilesystemInterface $filesystem)
     {
-        $this->fileManager = $fileManager;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -501,7 +501,7 @@ class StatsFinder
      */
     public function loadContents()
     {
-        $this->stats = $this->fileManager->loadContents();
+        $this->stats = $this->filesystem->loadContents();
 
         return $this->stats;
     }

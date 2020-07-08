@@ -14,11 +14,15 @@
 
 namespace Tchoulom\ViewCounterBundle\Repository;
 
+use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
+
 /**
  * Class CounterRepository
  */
 class CounterRepository extends AbstractRepository
 {
+    protected const VIEWCOUNTER_CLASS_NOT_FOUND_MSG = 'ViewCounter class not found!';
+
     /**
      * Saves the object.
      *
@@ -54,5 +58,40 @@ class CounterRepository extends AbstractRepository
         $result = $this->getClassRepository()->findOneBy($criteria, $orderBy, $limit, $offset);
 
         return $result;
+    }
+
+    /**
+     * Cleanup the viewcounter data.
+     *
+     * @param \DateTimeInterface|null $min
+     * @param \DateTimeInterface|null $max
+     *
+     * @return int The number of rows deleted.
+     */
+    public function cleanup(\DateTimeInterface $min = null, \DateTimeInterface $max = null): int
+    {
+        $where = false;
+        $viewcounterClass = $this->loadViewCounterClass();
+
+        if (null == $viewcounterClass) {
+            throw new RuntimeException(self::VIEWCOUNTER_CLASS_NOT_FOUND_MSG);
+        }
+
+        $queryBuilder = $this->em->createQueryBuilder();
+        $queryBuilder->delete($viewcounterClass, 'v');
+
+        if ($min instanceof \DateTimeInterface) {
+            $andWhere = true === $where ? 'andWhere' : 'where';
+            $where = true;
+            $queryBuilder->$andWhere('v.viewDate >= :min')
+                ->setParameter('min', $min);
+        }
+        if ($max instanceof \DateTimeInterface) {
+            $andWhere = true === $where ? 'andWhere' : 'where';
+            $queryBuilder->$andWhere('v.viewDate <= :max')
+                ->setParameter('max', $max);
+        }
+
+        return $queryBuilder->getQuery()->execute();
     }
 }

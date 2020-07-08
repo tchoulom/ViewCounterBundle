@@ -44,6 +44,8 @@ This bundle can also be used to draw a graphical representation of statistical d
       - [Calculates the *mode*](#calculates-the-mode)
       - [Calculates the *median*](#calculates-the-median)
       - [Count the number of values ​​in the statistical series](#count-the-number-of-values-in-the-statistical-series)
+ - [Tools](#tools)
+   - [Command](#command)
 - [Original Credits](#original-credits)
 - [License](#license)
 
@@ -819,6 +821,42 @@ Result:
 Result:
 ```php
     60
+```
+
+# Tools
+
+## Command
+
+You can delete the viewcounter data using the **ViewcounterCleanupCommand** command.
+
+- Delete all the viewcounter data from the database:
+
+```bash
+   php bin/console tchoulom:viewcounter:cleanup
+```
+
+- Delete all the viewcounter data whose article was viewed at least 1 hour ago:
+
+```bash
+   php bin/console tchoulom:viewcounter:cleanup --min=1h
+```
+
+- Delete all the viewcounter data whose article was viewed at most 1 day ago:
+
+```bash
+   php bin/console tchoulom:viewcounter:cleanup --max=1d
+```
+
+- Examples of date interval:
+
+```text
+'s' => 'second'
+'m' => 'minute'
+'h' => 'hour'
+'d' => 'day'
+'w' => 'week'
+'M' => 'month'
+'y' => 'year'
 ```
 
 # Original Credits

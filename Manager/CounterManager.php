@@ -96,4 +96,17 @@ class CounterManager
     {
         return $this->counterRepository->getClass();
     }
+
+    /**
+     * Cleanup the viewcounter data.
+     *
+     * @param \DateTimeInterface|null $min The min view date
+     * @param \DateTimeInterface|null $max the max view date
+     *
+     * @return int The number of rows deleted.
+     */
+    public function cleanup(\DateTimeInterface $min = null, \DateTimeInterface $max = null): int
+    {
+        return $this->counterRepository->cleanup($min, $max);
+    }
 }

@@ -390,7 +390,7 @@ class AbstractViewCounterTest extends BaseTest
             ->getMock();
 
         $statisticMock = $this->getMockBuilder(Statistics::class)
-            ->setConstructorArgs([$this->fileManagerMock])
+            ->setConstructorArgs([$this->filesystemMock])
             ->getMock();
 
         $this->setProtectedProperty($viewCounterServiceMock, 'statistics', $statisticMock);

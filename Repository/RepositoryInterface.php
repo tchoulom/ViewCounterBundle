@@ -1,21 +1,10 @@
 <?php
 
-/**
- * This file is part of the TchoulomViewCounterBundle package.
- *
- * @package    TchoulomViewCounterBundle
- * @author     Original Author <tchoulomernest@yahoo.fr>
- *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Tchoulom\ViewCounterBundle\Repository;
 
+
 /**
- * Class RepositoryInterface.
+ * Class AbstractRepository.
  */
 interface RepositoryInterface
 {
@@ -52,7 +41,7 @@ interface RepositoryInterface
      *
      * @param $object
      *
-     * @return \Doctrine\ORM\Mapping\ClassMetadata
+     * @return $this
      */
     public function loadMetadata($object);
 
@@ -90,4 +79,20 @@ interface RepositoryInterface
      * @return mixed
      */
     public function getClassRepository();
+
+    /**
+     * Loads the ViewCounter Class.
+     *
+     * @return string|null The viewcounter class
+     */
+    public function loadViewCounterClass(): ?string;
+
+    /**
+     * Loads the entity identifier.
+     *
+     * @param string $entityName The entity name
+     *
+     * @return string|null The entity identifier
+     */
+    public function loadEntityIdentifier(string $entityName): ?string;
 }

@@ -14,7 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
-use Tchoulom\ViewCounterBundle\Manager\FileManagerInterface;
+use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 
@@ -24,18 +24,18 @@ use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 class Statistics
 {
     /**
-     * @var FileManagerInterface
+     * @var FilesystemInterface
      */
-    protected $fileManager;
+    protected $filesystem;
 
     /**
      * Statistics constructor.
      *
-     * @param FileManagerInterface $fileManager
+     * @param FilesystemInterface $filesystem
      */
-    public function __construct(FileManagerInterface $fileManager)
+    public function __construct(FilesystemInterface $filesystem)
     {
-        $this->fileManager = $fileManager;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -64,7 +64,7 @@ class Statistics
     {
         $class = (new ReflectionExtractor())->getClassNamePluralized($page);
         $pageId = $page->getId();
-        $contents = $this->fileManager->loadContents();
+        $contents = $this->filesystem->loadContents();
         $statsBuilder = (new StatsBuilder($contents, $class))->build($pageId);
         $stats = $statsBuilder->getStats();
 
@@ -78,6 +78,6 @@ class Statistics
      */
     public function doRegister(array $stats)
     {
-        $this->fileManager->save(serialize($stats));
+        $this->filesystem->save(serialize($stats));
     }
 }

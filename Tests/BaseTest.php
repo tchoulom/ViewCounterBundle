@@ -15,7 +15,7 @@
 namespace Tchoulom\ViewCounterBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Tchoulom\ViewCounterBundle\Manager\FileManagerInterface;
+use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
 
 /**
  * Class BaseTest
@@ -23,7 +23,7 @@ use Tchoulom\ViewCounterBundle\Manager\FileManagerInterface;
 abstract class BaseTest extends TestCase
 {
     protected $clientIP = '127.0.0.1';
-    protected $fileManagerMock;
+    protected $filesystemMock;
     protected $viewInterval = ['increment_each_view', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
 
     /**
@@ -33,7 +33,7 @@ abstract class BaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->fileManagerMock = $this->createMock(FileManagerInterface::class);
+        $this->filesystemMock = $this->createMock(FilesystemInterface::class);
     }
 
     /**
@@ -41,7 +41,7 @@ abstract class BaseTest extends TestCase
      */
     public function tearDown()
     {
-        $this->fileManagerMock = null;
+        $this->filesystemMock = null;
     }
 
     /**

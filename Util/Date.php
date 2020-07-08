@@ -406,4 +406,109 @@ class Date
 
         return $range;
     }
+
+    /**
+     * Subtract seconds from date.
+     *
+     * @param \DateTimeInterface $date
+     * @param int $seconds
+     *
+     * @return \DateTimeInterface
+     *
+     * @throws \Exception
+     */
+    public static function subtractSecondsFromDate(\DateTimeInterface $date, int $seconds): \DateTimeInterface
+    {
+        return $date->sub(new \DateInterval('PT'.$seconds.'S'));
+    }
+
+    /**
+     * Subtract minutes from date.
+     *
+     * @param \DateTimeInterface $date
+     * @param int $minutes
+     *
+     * @return \DateTimeInterface
+     *
+     * @throws \Exception
+     */
+    public static function subtractMinutesFromDate(\DateTimeInterface $date, int $minutes): \DateTimeInterface
+    {
+        return $date->sub(new \DateInterval('PT'.$minutes.'M'));
+    }
+
+    /**
+     * Subtract minutes from date.
+     *
+     * @param \DateTimeInterface $date
+     * @param int $hours
+     *
+     * @return \DateTimeInterface
+     *
+     * @throws \Exception
+     */
+    public static function subtractHoursFromDate(\DateTimeInterface $date, int $hours): \DateTimeInterface
+    {
+        return $date->sub(new \DateInterval('PT'.$hours.'H'));
+    }
+
+    /**
+     * Subtract days from date.
+     *
+     * @param \DateTimeInterface $date
+     * @param int $days
+     *
+     * @return \DateTimeInterface
+     *
+     * @throws \Exception
+     */
+    public static function subtractDaysFromDate(\DateTimeInterface $date, int $days): \DateTimeInterface
+    {
+        return $date->sub(new \DateInterval('P'.$days.'D'));
+    }
+
+    /**
+     * Subtract weeks from date.
+     *
+     * @param \DateTimeInterface $date
+     * @param int $weeks
+     *
+     * @return \DateTimeInterface
+     *
+     * @throws \Exception
+     */
+    public static function subtractWeeksFromDate(\DateTimeInterface $date, int $weeks): \DateTimeInterface
+    {
+        return $date->sub(new \DateInterval('P'.$weeks.'W'));
+    }
+
+    /**
+     * Subtract weeks from date.
+     *
+     * @param \DateTimeInterface $date
+     * @param int $months
+     *
+     * @return \DateTimeInterface
+     *
+     * @throws \Exception
+     */
+    public static function subtractMonthsFromDate(\DateTimeInterface $date, int $months): \DateTimeInterface
+    {
+        return $date->sub(new \DateInterval('P'.$months.'M'));
+    }
+
+    /**
+     * Subtract years from date.
+     *
+     * @param \DateTimeInterface $date
+     * @param int $years
+     *
+     * @return \DateTimeInterface
+     *
+     * @throws \Exception
+     */
+    public static function subtractYearsFromDate(\DateTimeInterface $date, int $years): \DateTimeInterface
+    {
+        return $date->sub(new \DateInterval('P'.$years.'Y'));
+    }
 }

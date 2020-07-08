@@ -163,6 +163,8 @@ abstract class AbstractViewCounter
      * @param ViewCountable $page The counted object(a tutorial or course...)
      *
      * @return ViewCountable
+     *
+     * @throws \ReflectionException
      */
     public function saveView(ViewCountable $page)
     {
@@ -193,6 +195,8 @@ abstract class AbstractViewCounter
      * Handles statistics.
      *
      * @param ViewCounterInterface $viewcounter
+     *
+     * @throws \ReflectionException
      */
     public function handleStatistics(ViewCounterInterface $viewcounter)
     {
