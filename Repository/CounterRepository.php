@@ -73,7 +73,6 @@ class CounterRepository extends AbstractRepository
      */
     public function cleanup(\DateTimeInterface $min = null, \DateTimeInterface $max = null): int
     {
-        $where = false;
         $viewcounterClass = $this->loadViewCounterClass();
 
         if (null == $viewcounterClass) {
@@ -82,6 +81,7 @@ class CounterRepository extends AbstractRepository
 
         $queryBuilder = $this->em->createQueryBuilder();
         $queryBuilder->delete($viewcounterClass, 'v');
+        $where = false;
 
         if ($min instanceof \DateTimeInterface) {
             $andWhere = true === $where ? 'andWhere' : 'where';

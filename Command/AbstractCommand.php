@@ -84,9 +84,9 @@ abstract class AbstractCommand extends Command
     protected const CRITERIA_NOT_SUPPORTED_MSG = 'The given criteria value %s is not supported!';
 
     /**
-     * @var array The supported duration.
+     * @var array The supported date interval.
      */
-    protected const SUPPORTED_DURATION = ['s' => 'second', 'm' => 'minute', 'h' => 'hour', 'd' => 'day', 'w' => 'week', 'M' => 'month', 'y' => 'year'];
+    protected const SUPPORTED_DATE_INTERVAL = ['s' => 'second', 'm' => 'minute', 'h' => 'hour', 'd' => 'day', 'w' => 'week', 'M' => 'month', 'y' => 'year'];
 
     /**
      * AbstractCommand constructor.
@@ -153,7 +153,7 @@ abstract class AbstractCommand extends Command
      */
     protected function checkDuration(string $duration): bool
     {
-        return is_int($this->getDurationValue($duration)) && array_key_exists($this->getDuration($duration), self::SUPPORTED_DURATION);
+        return is_int($this->getDurationValue($duration)) && array_key_exists($this->getDateInterval($duration), self::SUPPORTED_DATE_INTERVAL);
     }
 
     /**
@@ -169,13 +169,13 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * Gets the duration.
+     * Gets the date interval.
      *
      * @param string $minViewDate
      *
      * @return string
      */
-    protected function getDuration(string $duration): string
+    protected function getDateInterval(string $duration): string
     {
         return (string)substr($duration, -1);
     }
@@ -198,7 +198,7 @@ abstract class AbstractCommand extends Command
         $durationValue = $this->getDurationValue($duration);
         $nowDate = Date::getNowDate();
 
-        switch ($this->getDuration($duration)) {
+        switch ($this->getDateInterval($duration)) {
             case 's':
                 return Date::subtractSecondsFromDate($nowDate, $durationValue);
             case 'm':

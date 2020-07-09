@@ -15,8 +15,6 @@
 namespace Tchoulom\ViewCounterBundle\Command;
 
 use Symfony\Component\Console\Input\InputOption;
-use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
-use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
  * The Viewcounter cleanup Command.
@@ -74,7 +72,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
                 ),
                 new InputOption(
                     'max', null, InputOption::VALUE_OPTIONAL,
-                    "The option 'max' allows to remove viewcounters entities where view date less than or equals the given value (Example: 1s).
+                    "The option 'max' allows to remove viewcounters entities where view date less than or equals the given value (Example: 7m).
                                 If only this option is set, then the viewcounters records meeting this criteria will be deleted.
                                 "
                 )
@@ -148,7 +146,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
             $max = (null === $max) ? $max : $this->subtractDuration($max);
 
             $rowsDeleted = $this->counterManager->cleanup($min, $max);
-            $this->writeResponseMessage($rowsDeleted);
+            $this->writeResponse($rowsDeleted);
             return self::SUCCESS;
         } else {
             $this->io->writeln('<comment>' . self::NO_CHANGE_MADE_MSG . '</comment>');
@@ -162,11 +160,11 @@ class ViewcounterCleanupCommand extends AbstractCommand
     }
 
     /**
-     * Writes the response message.
+     * Writes the response.
      *
      * @param int $rowsDeleted The number of rows deleted.
      */
-    protected function writeResponseMessage(int $rowsDeleted)
+    protected function writeResponse(int $rowsDeleted)
     {
         if ($rowsDeleted > 0) {
             $this->io->success(sprintf(self::SUCCESSFUL_DELETION_MSG, $rowsDeleted, $rowsDeleted > 1 ? 's' : '', $rowsDeleted > 1 ? 'have' : 'has'));
