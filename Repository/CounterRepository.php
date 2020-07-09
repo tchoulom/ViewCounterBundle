@@ -21,7 +21,10 @@ use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
  */
 class CounterRepository extends AbstractRepository
 {
-    protected const VIEWCOUNTER_CLASS_NOT_FOUND_MSG = 'ViewCounter class not found!';
+    /**
+     * @var string Viewcounter class not found message.
+     */
+    protected const VIEWCOUNTER_CLASS_NOT_FOUND_MSG = 'No ViewCounter class to process.';
 
     /**
      * Saves the object.

@@ -46,6 +46,7 @@ This bundle can also be used to draw a graphical representation of statistical d
       - [Count the number of values ​​in the statistical series](#count-the-number-of-values-in-the-statistical-series)
  - [Tools](#tools)
    - [Command](#command)
+     - [Cleanup viewcounter data](#cleanup-viewcounter-data)
 - [Original Credits](#original-credits)
 - [License](#license)
 
@@ -827,7 +828,9 @@ Result:
 
 ## Command
 
-You can delete the viewcounter data using the **ViewcounterCleanupCommand** command.
+### Cleanup viewcounter data
+
+You can delete the viewcounter data using the **ViewcounterCleanupCommand** command:
 
 - Delete all the viewcounter data from the database:
 
@@ -845,6 +848,18 @@ You can delete the viewcounter data using the **ViewcounterCleanupCommand** comm
 
 ```bash
    php bin/console tchoulom:viewcounter:cleanup --max=1d
+```
+
+- Delete all the viewcounter data whose article was viewed at least 3 years ago:
+
+```bash
+   php bin/console tchoulom:viewcounter:cleanup --min=3y
+```
+
+- Delete all the viewcounter data whose article was viewed at most 5 months ago:
+
+```bash
+   php bin/console tchoulom:viewcounter:cleanup --max=5M
 ```
 
 - Examples of date interval:
