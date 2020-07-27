@@ -1,5 +1,6 @@
 parameters:
     tchoulom.viewcounter.statistics.class: Tchoulom\ViewCounterBundle\Statistics\Statistics
+    tchoulom.viewcounter.stats_builder.class: Tchoulom\ViewCounterBundle\Statistics\StatsBuilder
     tchoulom.viewcounter.stats_finder.class: Tchoulom\ViewCounterBundle\Finder\StatsFinder
     tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Compute\StatsComputer
 
@@ -8,7 +9,15 @@ services:
     tchoulom.viewcounter.statistics:
         class: '%tchoulom.viewcounter.statistics.class%'
         public: true
-        arguments: ['@tchoulom.viewcounter.filesystem']
+        arguments:
+            - '@tchoulom.viewcounter.filesystem'
+            - '@tchoulom.viewcounter.stats_builder'
+
+    # StatsBuilder
+    tchoulom.viewcounter.stats_builder:
+        class: '%tchoulom.viewcounter.stats_builder.class%'
+        public: true
+        arguments: ['@tchoulom.viewcounter.geolocator_adapter']
 
     # StatsFinder
     tchoulom.viewcounter.stats_finder:
@@ -23,5 +32,6 @@ services:
 
     # aliases needed for services (Symfony version 4, 5)
     Tchoulom\ViewCounterBundle\Statistics\Statistics: '@tchoulom.viewcounter.statistics'
+    Tchoulom\ViewCounterBundle\Statistics\StatsBuilder: '@tchoulom.viewcounter.stats_builder'
     Tchoulom\ViewCounterBundle\Finder\StatsFinder: '@tchoulom.viewcounter.stats_finder'
     Tchoulom\ViewCounterBundle\Compute\StatsComputer: '@tchoulom.viewcounter.stats_computer'

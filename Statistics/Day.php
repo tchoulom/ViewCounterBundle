@@ -21,8 +21,25 @@ use Tchoulom\ViewCounterBundle\Util\Date;
  */
 class Day
 {
+    /**
+     * The Day name.
+     *
+     * @var string
+     */
     protected $name;
+
+    /**
+     * The total.
+     *
+     * @var int
+     */
     protected $total = 0;
+
+    /**
+     * The Date.
+     *
+     * @var \DateTimeInterface
+     */
     protected $date;
 
     use HourTrait;
@@ -30,10 +47,10 @@ class Day
     /**
      * Day constructor.
      *
-     * @param $name
-     * @param $total
+     * @param string $name
+     * @param int $total
      */
-    public function __construct($name, $total)
+    public function __construct(string $name, int $total)
     {
         $this->name = $name;
         $this->total = $total;
@@ -42,9 +59,9 @@ class Day
     /**
      * Gets the name.
      *
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -52,11 +69,11 @@ class Day
     /**
      * Sets the name.
      *
-     * @param $name
+     * @param string $name
      *
-     * @return $this
+     * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -66,9 +83,9 @@ class Day
     /**
      * Gets the date.
      *
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
-    public function getDate()
+    public function getDate(): \DateTimeInterface
     {
         return $this->date;
     }
@@ -78,9 +95,9 @@ class Day
      *
      * @param \DateTimeInterface $date
      *
-     * @return $this
+     * @return self
      */
-    public function setDate(\DateTimeInterface $date)
+    public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
 
@@ -90,9 +107,9 @@ class Day
     /**
      * Gets the total.
      *
-     * @return integer
+     * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }
@@ -100,11 +117,11 @@ class Day
     /**
      * Sets the total.
      *
-     * @param $total
+     * @param int $total
      *
-     * @return $this
+     * @return self
      */
-    public function setTotal($total)
+    public function setTotal(int $total): self
     {
         $this->total = $total;
 
@@ -114,9 +131,9 @@ class Day
     /**
      * Builds the day.
      *
-     * @return $this
+     * @return self
      */
-    public function build()
+    public function build(): self
     {
         $this->total++;
         $this->date = Date::getNowDate();
@@ -130,11 +147,11 @@ class Day
     /**
      * Gets the hour.
      *
-     * @param null $hourName
+     * @param string|null $hourName
      *
      * @return Hour
      */
-    public function getHour($hourName = null)
+    public function getHour(string $hourName = null): Hour
     {
         if (null == $hourName) {
             $hourName = 'h' . Date::getHour();

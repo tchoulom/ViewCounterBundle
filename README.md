@@ -26,7 +26,8 @@ This bundle can also be used to draw a graphical representation of statistical d
     - [Method 1](#method-1)
     - [Method 2](#method-2)
   - [Step 5: The View](#step-5-the-view)
-  - [Step 6: Exploitation of statistical data](#step-6-exploitation-of-statistical-data)
+  - [Step 6: The Geolocation](#step-6-the-geolocation)
+  - [Step 7: Exploitation of statistical data](#step-7-exploitation-of-statistical-data)
     - [The *StatsFinder* service](#the-statsfinder-service)
       - [Get the *yearly* statistics](#get-the-yearly-statistics)
       - [Get the *monthly* statistics](#get-the-monthly-statistics)
@@ -35,6 +36,7 @@ This bundle can also be used to draw a graphical representation of statistical d
       - [Get the *hourly* statistics](#get-the-hourly-statistics)
       - [Get the statistics *per minute*](#get-the-statistics-per-minute)
       - [Get the statistics *per second*](#get-the-statistics-per-second)
+      - [Search for geolocation data](#search-for-geolocation-data)
     - [Build a graph with "Google Charts"](#build-a-graph-with-google-charts)
     - [The *StatsComputer* service](#the-statscomputer-service)
       - [Calculates the *min value*](#calculates-the-min-value)
@@ -54,6 +56,7 @@ This bundle can also be used to draw a graphical representation of statistical d
 
     - Viewcounter
     - Statistics
+    - Geolocation
 # Documentation
 
 [The ViewCounter documentation](http://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
@@ -126,10 +129,21 @@ The **$views** property allows to get the number of views:
    use Tchoulom\ViewCounterBundle\Model\ViewCountable;
    use Entity\ViewCounter;
    use Doctrine\Common\Collections\ArrayCollection;
+
     ...
+
     class Article implements ViewCountable
     {
       ...
+
+    /**
+      * @var integer
+      * @ORM\Column(name="id", type="integer")
+      * @ORM\Id
+      * @ORM\GeneratedValue(strategy="AUTO")
+      */
+     protected $id;
+
       /**
        * @ORM\OneToMany(targetEntity="Entity\ViewCounter", mappedBy="article")
        */
@@ -147,6 +161,16 @@ The **$views** property allows to get the number of views:
        {
            $this->viewCounters = new ArrayCollection();
        }
+
+        /**
+        * Gets id
+        *
+        * @return integer
+        */
+        public function getId()
+        {
+            return $this->id;
+        }
        
        /**
         * Sets $views
@@ -302,7 +326,8 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
             use_stats: false
             stats_file_name: stats
             stats_file_extension:
-
+        geolocation:
+            geolocator_id: App\Service\Geolocator
 ```
 ### The "view_counter"
 
@@ -347,13 +372,52 @@ If **stats_file_extension:**, then the default name of the statistics file will 
 
 The full path of the statistics file is ***var/viewcounter*** of your project.
 
+### The "geolocation"
+
+The Geolocation defines a service which will allow you to geolocate page visits.
+
+The **geolocator_id** corresponds to the **identifier** or the **name of the class** of your geolocation service, depending on the version of symfony used:
+
+```yaml
+
+    tchoulom_view_counter:
+        ...
+        geolocation:
+            geolocator_id: app.service.geolocator
+```
+or
+
+```yaml
+
+    tchoulom_view_counter:
+        ...
+        geolocation:
+            geolocator_id: App\Service\Geolocator
+```
+
+if your service is declared as such:
+
+```yaml
+    app.service.geolocator:
+        class: App\Service\Geolocator
+```
+You must then set up your "Geolocator" service as we will see in this documentation [Step 6: The Geolocation](#step-6-the-geolocation).
+
+###### You must comment on the geolocation configuration if you do not want to use it in your project:
+
+```yaml
+
+    tchoulom_view_counter:
+        ...
+        # geolocation:
+        #    geolocator_id: app.service.geolocator
+```
+
 ## Step 4: The Controller
 
 2 methods are available:
 
 ### Method 1
-
-Recommendation: You can use the **Symfony kernel terminate listener** to set the Viewcounter
 
 ```php
 use App\Entity\ViewCounter;
@@ -402,6 +466,7 @@ public function __construct(Counter $viewCounter)
         $em->persist($viewcounter);
         $em->persist($article);
         $em->flush();
+        ...
     }
  }
 ...
@@ -444,8 +509,8 @@ public function readAction(Request $request, Article $article)
     $page = $this->get('tchoulom.viewcounter')->saveView($article);
     // For Symfony 4 or 5
     $page = $this->viewcounter->saveView($article);
+    ...
 }
-...
 ```
 
 The second method returns the current page ($article).
@@ -462,7 +527,131 @@ Finally you can display the number of views:
 ...
 ```
 
-## Step 6: Exploitation of statistical data
+## Step 6: The Geolocation
+
+Some bundles can be used to have a geolocation system in your project.
+These bundles usually use the ip address in order to geolocate the visitor of the web page.
+
+For the purposes of this documentation, we will use this bundle, for example:
+
+**gpslab/geoip2** :  [https://github.com/gpslab/geoip2](https://github.com/gpslab/geoip2)
+
+You can read the documentation for installing and using this bundle if you want to use it.
+
+Otherwise, you can use another geolocation bundle according to your preferences.
+
+*****Create the "Geolocator" service that will allow you to manage geolocation data*****
+
+```php
+<?php
+
+namespace App\Service;
+
+use GeoIp2\Database\Reader;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorInterface;
+
+/**
+ * Class Geolocator
+ *
+ * This service must implements the "GeolocationInterface".
+ */
+class Geolocator implements GeolocatorInterface
+{
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var Reader
+     */
+    protected $reader;
+
+    /**
+     * Geolocator constructor.
+     *
+     * @param RequestStack $requestStack
+     * @param Reader $reader
+     */
+    public function __construct(RequestStack $requestStack, Reader $reader)
+    {
+        $this->request = $requestStack->getCurrentRequest();
+        $this->reader = $reader;
+    }
+
+    /**
+     * Gets the record.
+     * 
+     * @return \GeoIp2\Model\City|mixed
+     * @throws \GeoIp2\Exception\AddressNotFoundException
+     * @throws \MaxMind\Db\Reader\InvalidDatabaseException
+     */
+    public function getRecord()
+    {
+        $clientIp = $this->request->getClientIp();
+
+        return $this->reader->city($clientIp);
+    }
+
+    /**
+     * Gets the continent.
+     *
+     * @return string
+     * @throws \GeoIp2\Exception\AddressNotFoundException
+     * @throws \MaxMind\Db\Reader\InvalidDatabaseException
+     */
+    public function getContinent(): string
+    {
+        return $this->getRecord()->continent->name;
+    }
+
+    /**
+     * Gets the country.
+     * 
+     * @return string
+     * @throws \GeoIp2\Exception\AddressNotFoundException
+     * @throws \MaxMind\Db\Reader\InvalidDatabaseException
+     */
+    public function getCountry(): string
+    {
+        return $this->getRecord()->country->name;
+    }
+
+    /**
+     * Gets the region.
+     * 
+     * @return string
+     * @throws \GeoIp2\Exception\AddressNotFoundException
+     * @throws \MaxMind\Db\Reader\InvalidDatabaseException
+     */
+    public function getRegion(): string
+    {
+        return $this->getRecord()->subdivisions[0]->names['en'];
+    }
+
+    /**
+     * Gets the city.
+     * 
+     * @return string
+     * @throws \GeoIp2\Exception\AddressNotFoundException
+     * @throws \MaxMind\Db\Reader\InvalidDatabaseException
+     */
+    public function getCity(): string
+    {
+        return $this->getRecord()->city->name;
+    }
+}
+```
+
+Your Geolocation service must implement the "Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorInterface" interface.
+
+you are free to improve the above "Geolocator" service, in particular to verify the existence of geolocation data.
+
+You can go to this step for the use of geolocation data [Search for geolocation data](#search-for-geolocation-data).
+
+## Step 7: Exploitation of statistical data
 
 ###### Trick
 
@@ -524,11 +713,11 @@ Use the **StatsFinder** service to get statistics of a web page :
    
    // Finds statistics by minute (the name of the minute: 'm49' => in the 49th minute)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Minute
-   $minute = $statsFinder->findByMinute($course, 2019, 1, 3, 'thursday', 'h17', 'm49');
+   $minute = $statsFinder->findByMinute($article, 2019, 1, 3, 'thursday', 'h17', 'm49');
    
    // Finds statistics by second (the name of the second: 's19' => in the 19th second)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Second
-   $second = $statsFinder->findBySecond($course, 2019, 1, 3, 'thursday', 'h17', 'm49', 's19');
+   $second = $statsFinder->findBySecond($article, 2019, 1, 3, 'thursday', 'h17', 'm49', 's19');
    
 ```
 
@@ -707,10 +896,127 @@ Let's zoom in on the statistics for the first week of January:
 
 <img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/statistical-data-first-week-january-2018.png" alt="the statistical data of the first week of January 2018" align="center" />
 
+#### Search for geolocation data
+
+- ##### Observation
+
+The geolocation data of visitors to your web pages may look like the following figure:
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/geolocation-data.png" alt="the geolocation data" align="center" />
+
+The figure above shows that visitors have viewed the web page (with the identifier ***3***) from ***4*** countries: United States, France, United Kingdom and Ireland.
+
+Let's zoom in on the country "United States" in order to visualize the geolocation data it contains:
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/geolocation-data-washington.png" alt="the geolocation data washington" align="center" />
+
+There are ***5*** views from the ***United States*** including ***4*** in the town of ***Washington*** located in the ***District of Columbia*** region.
+
+These ***5*** views are spread over 2 regions: ***District of Columbia*** and ***New York***.
+
+View date data can also be used:
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/geolocation-view-date.png" alt="the geolocation view date" align="center" />
+
+- ##### Search:
+
+###### Gets country stats
+
+```php
+$countryStats = $this->statFinder->getCountryStats($article);
+```
+
+Result:
+```php
+   [
+      ["France", 6],["United States", 45],["Ireland", 8],["United Kingdom", 8]
+   ]
+```
+
+* There are 6 views in France.
+* There are 45 views in United States.
+* ...
+
+###### Gets region stats
+
+```php
+$regionStats = $this->statFinder->getRegionStats($article);
+```
+
+Result:
+```php
+   [
+      ["Île-de-France", 3],["Normandy", 3],["District of Columbia", 44],["New York", 1],["Leinster", 8],["England", 2]
+   ]
+```
+
+* There are 3 views in Île-de-France.
+* There are 3 views in Normandy.
+* There are 44 views in District of Columbia.
+* ...
+
+###### Gets city stats
+
+```php
+$cityStats = $this->statFinder->getCityStats($article);
+```
+
+Result:
+```php
+   [
+      ["Paris", 3],["Rouen", 3],["Washington", 44],["Buffalo", 1],["Dublin", 8],["London", 2]
+   ]
+```
+
+* There are 3 views in Paris.
+* There are 3 views in Rouen.
+* There are 44 views in Washington.
+* ...
+
+###### Gets stats by country
+
+```php
+$statsByCountry = $this->statFinder->getStatsByCountry($article, 'United States');
+```
+
+Result:
+```php
+  45
+```
+
+* There are 45 views in the "united states" country.
+
+###### Gets stats by region
+
+```php
+$statsByRegion = $this->statFinder->getStatsByRegion($article, 'United States', 'District of Columbia');
+```
+
+Result:
+```php
+  44
+```
+
+* There are 44 views in the "District of Columbia" region.
+
+###### Gets stats by city
+
+```php
+$statsByCity = $this->statFinder->getStatsByCity($article, 'United States', 'District of Columbia', 'Washington');
+```
+
+Result:
+```php
+  44
+```
+
+* There are 44 views in the "Washington" city.
+
+The **StatsFinder** service provides other functions that you can browse.
 
 ### Build a graph with "Google Charts"
 
-So you can exploit these statistical data to build a graph, as shown in the following figure:
+You can now use these statistical data to build a graph, as shown in the following figure:
 
 **Statistics of monthly views in 2018**
 

@@ -19,16 +19,27 @@ namespace Tchoulom\ViewCounterBundle\Statistics;
  */
 class Second
 {
+    /**
+     * The second name.
+     *
+     * @var string
+     */
     protected $name;
+
+    /**
+     * The total.
+     *
+     * @var int
+     */
     protected $total = 0;
 
     /**
-     * Minute constructor.
+     * Second constructor.
      *
-     * @param $name
-     * @param $total
+     * @param string $name
+     * @param int $total
      */
-    public function __construct($name, $total)
+    public function __construct(string $name, int $total)
     {
         $this->name = $name;
         $this->total = $total;
@@ -37,9 +48,9 @@ class Second
     /**
      * Gets the name.
      *
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -47,11 +58,11 @@ class Second
     /**
      * Sets the name.
      *
-     * @param $name
+     * @param string $name
      *
-     * @return $this
+     * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -61,9 +72,9 @@ class Second
     /**
      * Gets the total.
      *
-     * @return integer
+     * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }
@@ -71,11 +82,11 @@ class Second
     /**
      * Sets the total.
      *
-     * @param $total
+     * @param int $total
      *
-     * @return $this
+     * @return self
      */
-    public function setTotal($total)
+    public function setTotal(int $total): self
     {
         $this->total = $total;
 
@@ -85,9 +96,9 @@ class Second
     /**
      * Builds the minute.
      *
-     * @return $this
+     * @return self
      */
-    public function build()
+    public function build(): self
     {
         $this->total++;
 

@@ -20,6 +20,13 @@ namespace Tchoulom\ViewCounterBundle\Model;
 interface ViewCountable
 {
     /**
+     * Gets id
+     *
+     * @return integer
+     */
+    public function getId();
+
+    /**
      * Get $views
      *
      * @return integer

@@ -21,30 +21,41 @@ use Tchoulom\ViewCounterBundle\Util\Date;
  */
 class Month
 {
+    /**
+     * The month number.
+     *
+     * @var int
+     */
     protected $monthNumber;
-    protected $total;
+
+    /**
+     * The total.
+     *
+     * @var int
+     */
+    protected $total = 0;
+
+    /**
+     * The weeks.
+     *
+     * @var Week[]
+     */
     protected $weeks = [];
 
     /**
      * Month constructor.
-     *
-     * @param array $weeks
-     * @param $total
      */
-    public function __construct(array $weeks, $total)
+    public function __construct()
     {
         $this->monthNumber = Date::getNowMonth();
-        $this->weeks = $weeks;
-        $this->total = $total;
     }
-
 
     /**
      * Gets the number of month.
      *
      * @return int
      */
-    public function getMonthNumber()
+    public function getMonthNumber(): int
     {
         return $this->monthNumber;
     }
@@ -52,11 +63,11 @@ class Month
     /**
      * Sets the number of month.
      *
-     * @param $monthNumber
+     * @param int $monthNumber
      *
-     * @return $this
+     * @return self
      */
-    public function setMonthNumber($monthNumber)
+    public function setMonthNumber(int $monthNumber): self
     {
         $this->monthNumber = $monthNumber;
 
@@ -66,9 +77,9 @@ class Month
     /**
      * Gets the total.
      *
-     * @return integer
+     * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }
@@ -76,11 +87,11 @@ class Month
     /**
      * Sets the total.
      *
-     * @param $total
+     * @param int $total
      *
-     * @return $this
+     * @return self
      */
-    public function setTotal($total)
+    public function setTotal(int $total): self
     {
         $this->total = $total;
 
@@ -90,33 +101,19 @@ class Month
     /**
      * Gets the weeks.
      *
-     * @return array
+     * @return Week[]
      */
-    public function getWeeks()
+    public function getWeeks(): array
     {
         return $this->weeks;
     }
 
     /**
-     * Sets the weeks.
-     *
-     * @param array $weeks
-     *
-     * @return $this
-     */
-    public function setWeeks(array $weeks)
-    {
-        $this->weeks = $weeks;
-
-        return $this;
-    }
-
-    /**
      * Builds the week.
      *
-     * @return $this
+     * @return self
      */
-    public function buildWeek()
+    public function buildWeek(): self
     {
         $this->total++;
         $weekNumber = Date::getNowWeek();
@@ -124,7 +121,7 @@ class Month
         if (isset($this->weeks[$weekNumber])) {
             $week = $this->weeks[$weekNumber];
         } else {
-            $week = new Week(0);
+            $week = new Week();
         }
 
         $this->weeks[$weekNumber] = $week->buildDay();

@@ -12,45 +12,42 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Statistics;
+namespace Tchoulom\ViewCounterBundle\Geolocation;
 
+use Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapterInterface;
+use Tchoulom\ViewCounterBundle\Statistics\ViewDateTrait;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
- * Class Minute
+ * Class Region
  */
-class Minute
+class Region
 {
     /**
-     * The name.
+     * The region name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * The total.
+     * The total of views.
      *
      * @var int
      */
     protected $total = 0;
 
-    use SecondTrait;
-
     /**
-     * Minute constructor.
+     * The region cities.
      *
-     * @param string $name
-     * @param int $total
+     * @var City[]
      */
-    public function __construct(string $name, int $total)
-    {
-        $this->name = $name;
-        $this->total = $total;
-    }
+    protected $cities = [];
+
+    use ViewDateTrait;
 
     /**
-     * Gets the name.
+     * Gets the region name.
      *
      * @return string
      */
@@ -60,7 +57,7 @@ class Minute
     }
 
     /**
-     * Sets the name.
+     * Sets the region name.
      *
      * @param string $name
      *
@@ -74,7 +71,7 @@ class Minute
     }
 
     /**
-     * Gets the total.
+     * Gets the total of views.
      *
      * @return int
      */
@@ -84,7 +81,7 @@ class Minute
     }
 
     /**
-     * Sets the total.
+     * Sets the total of views.
      *
      * @param int $total
      *
@@ -98,41 +95,37 @@ class Minute
     }
 
     /**
-     * Builds the minute.
+     * Gets the cities.
      *
-     * @return self
+     * @return City[]
      */
-    public function build(): self
+    public function getCities(): array
     {
-        $this->total++;
-
-        $second = $this->getSecond();
-        $secondName = strtolower($second->getName());
-        $this->$secondName = $second->build();
-
-        return $this;
+        return $this->cities;
     }
 
     /**
-     * Gets the second.
+     * Builds the region.
      *
-     * @param string|null $secondName
+     * @param GeolocatorAdapterInterface $geolocatorAdapter
      *
-     * @return Second
+     * @return self
      */
-    public function getSecond(string $secondName = null): Second
+    public function build(GeolocatorAdapterInterface $geolocatorAdapter): self
     {
-        if (null == $secondName) {
-            $secondName = 's' . Date::getSecond();
+        $this->total++;
+        $this->buildViewDate();
+        $this->name = $geolocatorAdapter->getRegion();
+        $cityName = $geolocatorAdapter->getCity();
+
+        if (isset($this->cities[$cityName])) {
+            $city = $this->cities[$cityName];
+        } else {
+            $city = new City();
         }
 
-        $getSecond = 'get' . ucfirst($secondName);
-        $second = $this->$getSecond();
+        $this->cities[$cityName] = $city->build($geolocatorAdapter);
 
-        if (!$second instanceof Second) {
-            $second = new Second($secondName, 0);
-        }
-
-        return $second;
+        return $this;
     }
 }

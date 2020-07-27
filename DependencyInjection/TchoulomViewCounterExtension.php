@@ -41,5 +41,6 @@ class TchoulomViewCounterExtension extends Extension
         $loader->load('filesystem.yml');
         $loader->load('statistics.yml');
         $loader->load('command.yml');
+        $loader->load('geolocation.yml');
     }
 }

@@ -21,25 +21,75 @@ use Tchoulom\ViewCounterBundle\Util\Date;
  */
 class Week
 {
+    /**
+     * The week number.
+     *
+     * @var int
+     */
     protected $weekNumber;
+
+    /**
+     * The total.
+     *
+     * @var int
+     */
     protected $total = 0;
+
+    /**
+     * Monday.
+     *
+     * @var Day|null
+     */
     protected $monday;
+
+    /**
+     * Tuesday.
+     *
+     * @var Day|null
+     */
     protected $tuesday;
+
+    /**
+     * Wednesday.
+     *
+     * @var Day|null
+     */
     protected $wednesday;
+
+    /**
+     * Thursday.
+     *
+     * @var Day|null
+     */
     protected $thursday;
+
+    /**
+     * Friday.
+     *
+     * @var Day|null
+     */
     protected $friday;
+
+    /**
+     * Saturday.
+     *
+     * @var Day|null
+     */
     protected $saturday;
+
+    /**
+     * Sunday.
+     *
+     * @var Day|null
+     */
     protected $sunday;
 
     /**
      * Week constructor.
-     *
-     * @param $total
      */
-    public function __construct($total)
+    public function __construct()
     {
         $this->weekNumber = Date::getNowWeek();
-        $this->total = $total;
     }
 
 
@@ -48,7 +98,7 @@ class Week
      *
      * @return int
      */
-    public function getWeekNumber()
+    public function getWeekNumber(): int
     {
         return $this->weekNumber;
     }
@@ -56,11 +106,11 @@ class Week
     /**
      * Sets the number of week.
      *
-     * @param $weekNumber
+     * @param int $weekNumber
      *
-     * @return $this
+     * @return self
      */
-    public function setWeekNumber($weekNumber)
+    public function setWeekNumber(int $weekNumber): self
     {
         $this->weekNumber = $weekNumber;
 
@@ -72,7 +122,7 @@ class Week
      *
      * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }
@@ -80,11 +130,11 @@ class Week
     /**
      * Sets the total.
      *
-     * @param $total
+     * @param int $total
      *
-     * @return $this
+     * @return self
      */
-    public function setTotal($total)
+    public function setTotal(int $total): self
     {
         $this->total = $total;
 
@@ -94,9 +144,9 @@ class Week
     /**
      * Gets the monday day.
      *
-     * @return Day
+     * @return Day|null
      */
-    public function getMonday()
+    public function getMonday(): ?Day
     {
         return $this->monday;
     }
@@ -106,9 +156,9 @@ class Week
      *
      * @param Day $monday
      *
-     * @return $this
+     * @return self
      */
-    public function setMonday(Day $monday)
+    public function setMonday(Day $monday): self
     {
         $this->monday = $monday;
 
@@ -118,9 +168,9 @@ class Week
     /**
      * Gets the tuesday day.
      *
-     * @return Day
+     * @return Day|null
      */
-    public function getTuesday()
+    public function getTuesday(): ?Day
     {
         return $this->tuesday;
     }
@@ -130,9 +180,9 @@ class Week
      *
      * @param Day $tuesday
      *
-     * @return $this
+     * @return self
      */
-    public function setTuesday(Day $tuesday)
+    public function setTuesday(Day $tuesday): self
     {
         $this->tuesday = $tuesday;
 
@@ -142,9 +192,9 @@ class Week
     /**
      * Gets the wdnesday day.
      *
-     * @return Day
+     * @return Day|null
      */
-    public function getWednesday()
+    public function getWednesday(): ?Day
     {
         return $this->wednesday;
     }
@@ -154,9 +204,9 @@ class Week
      *
      * @param Day $wednesday
      *
-     * @return $this
+     * @return self
      */
-    public function setWednesday(Day $wednesday)
+    public function setWednesday(Day $wednesday): self
     {
         $this->wednesday = $wednesday;
 
@@ -166,9 +216,9 @@ class Week
     /**
      * Gets the thursday day.
      *
-     * @return Day
+     * @return Day|null
      */
-    public function getThursday()
+    public function getThursday(): ?Day
     {
         return $this->thursday;
     }
@@ -178,9 +228,9 @@ class Week
      *
      * @param Day $thursday
      *
-     * @return $this
+     * @return self
      */
-    public function setThursday(Day $thursday)
+    public function setThursday(Day $thursday): self
     {
         $this->thursday = $thursday;
 
@@ -190,9 +240,9 @@ class Week
     /**
      * Gets the friday day.
      *
-     * @return Day
+     * @return Day|null
      */
-    public function getFriday()
+    public function getFriday(): ?Day
     {
         return $this->friday;
     }
@@ -202,9 +252,9 @@ class Week
      *
      * @param Day $friday
      *
-     * @return $this
+     * @return self
      */
-    public function setFriday(Day $friday)
+    public function setFriday(Day $friday): self
     {
         $this->friday = $friday;
 
@@ -214,9 +264,9 @@ class Week
     /**
      * Gets the saturday day.
      *
-     * @return Day
+     * @return Day|null
      */
-    public function getSaturday()
+    public function getSaturday(): ?Day
     {
         return $this->saturday;
     }
@@ -226,9 +276,9 @@ class Week
      *
      * @param Day $saturday
      *
-     * @return $this
+     * @return self
      */
-    public function setSaturday(Day $saturday)
+    public function setSaturday(Day $saturday): self
     {
         $this->saturday = $saturday;
 
@@ -238,9 +288,9 @@ class Week
     /**
      * Gets the sunday day.
      *
-     * @return Day
+     * @return Day|null
      */
-    public function getSunday()
+    public function getSunday(): ?Day
     {
         return $this->sunday;
     }
@@ -250,9 +300,9 @@ class Week
      *
      * @param Day $sunday
      *
-     * @return $this
+     * @return self
      */
-    public function setSunday(Day $sunday)
+    public function setSunday(Day $sunday): self
     {
         $this->sunday = $sunday;
 
@@ -262,13 +312,14 @@ class Week
     /**
      * Builds the day.
      *
-     * @return $this
+     * @return self
      */
-    public function buildDay()
+    public function buildDay(): self
     {
         $this->total++;
         $day = $this->getDay();
         $dayName = strtolower($day->getName());
+
         $this->$dayName = $day->build();
 
         return $this;
@@ -277,11 +328,11 @@ class Week
     /**
      * Gets the day.
      *
-     * @param null $dayName
+     * @param string|null $dayName
      *
      * @return Day
      */
-    public function getDay($dayName = null)
+    public function getDay(string $dayName = null): Day
     {
         if (null == $dayName) {
             $dayName = Date::getDayName();

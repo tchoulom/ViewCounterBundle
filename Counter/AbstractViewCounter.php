@@ -327,9 +327,9 @@ abstract class AbstractViewCounter
      *
      * @param Statistics $statistics
      *
-     * @return $this
+     * @return self
      */
-    public function setStatistics(Statistics $statistics)
+    public function setStatistics(Statistics $statistics): self
     {
         $this->statistics = $statistics;
 

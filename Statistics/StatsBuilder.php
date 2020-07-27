@@ -14,6 +14,8 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
+use Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapterInterface;
+
 /**
  * Class StatsBuilder
  *
@@ -21,21 +23,49 @@ namespace Tchoulom\ViewCounterBundle\Statistics;
  */
 class StatsBuilder
 {
+    /**
+     * The contents.
+     *
+     * @var array
+     */
     protected $contents;
+
+    /**
+     * The given class.
+     *
+     * @var string
+     */
     protected $class;
+
+    /**
+     * The page.
+     *
+     * @var Page
+     */
     protected $page;
+
+    /**
+     * The stats.
+     *
+     * @var array
+     */
     protected $stats = [];
+
+    /**
+     * The Geolocator Adapter
+     *
+     * @var GeolocatorAdapterInterface
+     */
+    protected $geolocatorAdapter;
 
     /**
      * StatsBuilder constructor.
      *
-     * @param array $contents The stats contents
-     * @param $class
+     * @param GeolocatorAdapterInterface $geolocatorAdapter
      */
-    public function __construct(array $contents, $class)
+    public function __construct(GeolocatorAdapterInterface $geolocatorAdapter)
     {
-        $this->contents = $contents;
-        $this->class = $class;
+        $this->geolocatorAdapter = $geolocatorAdapter;
     }
 
     /**
@@ -43,7 +73,7 @@ class StatsBuilder
      *
      * @return array
      */
-    public function getContents()
+    public function getContents(): array
     {
         return $this->contents;
     }
@@ -53,9 +83,9 @@ class StatsBuilder
      *
      * @param array $contents
      *
-     * @return $this
+     * @return self
      */
-    public function setContents(array $contents)
+    public function setContents(array $contents): self
     {
         $this->contents = $contents;
 
@@ -65,7 +95,7 @@ class StatsBuilder
     /**
      * Gets the class name.
      *
-     * @return mixed
+     * @return string
      */
     public function getClass()
     {
@@ -75,11 +105,11 @@ class StatsBuilder
     /**
      * Sets the class name.
      *
-     * @param mixed $class
+     * @param string $class
      *
-     * @return StatsBuilder
+     * @return self
      */
-    public function setClass($class)
+    public function setClass(string $class): self
     {
         $this->class = $class;
 
@@ -91,7 +121,7 @@ class StatsBuilder
      *
      * @return Page
      */
-    public function getPage()
+    public function getPage(): Page
     {
         return $this->page;
     }
@@ -101,9 +131,9 @@ class StatsBuilder
      *
      * @param Page $page
      *
-     * @return $this
+     * @return self
      */
-    public function setPage(Page $page)
+    public function setPage(Page $page): self
     {
         $this->page = $page;
 
@@ -115,7 +145,7 @@ class StatsBuilder
      *
      * @return array
      */
-    public function getStats()
+    public function getStats(): array
     {
         return $this->stats;
     }
@@ -125,9 +155,9 @@ class StatsBuilder
      *
      * @param array $stats
      *
-     * @return $this
+     * @return self
      */
-    public function setStats(array $stats)
+    public function setStats(array $stats): self
     {
         $this->stats = $stats;
 
@@ -137,14 +167,17 @@ class StatsBuilder
     /**
      * Builds the stats.
      *
-     * @param $pageId
+     * @param array $contents
+     * @param string $class
+     * @param int $pageId
      *
-     * @return $this
+     * @return self
      */
-    public function build($pageId)
+    public function build(array $contents, string $class, int $pageId): self
     {
-        $contents = $this->buildPage($pageId);
-        $this->stats = $contents;
+        $this->contents = $contents;
+        $this->class = $class;
+        $this->stats = $this->buildPage($pageId);
 
         return $this;
     }
@@ -152,19 +185,24 @@ class StatsBuilder
     /**
      * Builds the page.
      *
-     * @param $pageId
+     * @param int $pageId
      *
      * @return array
      */
-    public function buildPage($pageId)
+    public function buildPage(int $pageId): array
     {
         if (isset($this->contents[$this->class][$pageId])) {
             $page = $this->contents[$this->class][$pageId];
         } else {
-            $page = new Page($pageId, []);
+            $page = new Page($pageId);
         }
 
-        $this->contents[$this->class][$pageId] = $page->buildYear();
+        $page->buildYear();
+        if ($this->geolocatorAdapter->canGeolocate()) {
+            $page->buildCountry($this->geolocatorAdapter);
+        }
+
+        $this->contents[$this->class][$pageId] = $page;
         $this->page = $page;
 
         return $this->contents;

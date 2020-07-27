@@ -24,18 +24,29 @@ use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 class Statistics
 {
     /**
+     * The Filesystem service.
+     *
      * @var FilesystemInterface
      */
     protected $filesystem;
 
     /**
+     * The Statistics builder.
+     *
+     * @var StatsBuilder
+     */
+    protected $statsBuilder;
+
+    /**
      * Statistics constructor.
      *
      * @param FilesystemInterface $filesystem
+     * @param StatsBuilder $statsBuilder
      */
-    public function __construct(FilesystemInterface $filesystem)
+    public function __construct(FilesystemInterface $filesystem, StatsBuilder $statsBuilder)
     {
         $this->filesystem = $filesystem;
+        $this->statsBuilder = $statsBuilder;
     }
 
     /**
@@ -45,7 +56,7 @@ class Statistics
      *
      * @throws \ReflectionException
      */
-    public function register(ViewCountable $page)
+    public function register(ViewCountable $page): void
     {
         $stats = $this->build($page);
         $this->doRegister($stats);
@@ -62,10 +73,9 @@ class Statistics
      */
     public function build(ViewCountable $page): array
     {
-        $class = (new ReflectionExtractor())->getClassNamePluralized($page);
-        $pageId = $page->getId();
+        $class = ReflectionExtractor::getClassNamePluralized($page);
         $contents = $this->filesystem->loadContents();
-        $statsBuilder = (new StatsBuilder($contents, $class))->build($pageId);
+        $statsBuilder = $this->statsBuilder->build($contents, $class, $page->getId());
         $stats = $statsBuilder->getStats();
 
         return $stats;
@@ -76,7 +86,7 @@ class Statistics
      *
      * @param array $stats
      */
-    public function doRegister(array $stats)
+    public function doRegister(array $stats): void
     {
         $this->filesystem->save(serialize($stats));
     }

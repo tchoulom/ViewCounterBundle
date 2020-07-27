@@ -21,19 +21,36 @@ use Tchoulom\ViewCounterBundle\Util\Date;
  */
 class Hour
 {
+    /**
+     * The Hour name.
+     *
+     * @var string
+     */
     protected $name;
+
+    /**
+     * The Full Hour.
+     *
+     * @var false|string
+     */
     protected $fullHour;
+
+    /**
+     * The total.
+     *
+     * @var int
+     */
     protected $total = 0;
 
     use MinuteTrait;
 
     /**
-     * Day constructor.
+     * Hour constructor.
      *
-     * @param $name
-     * @param $total
+     * @param string $name
+     * @param int $total
      */
-    public function __construct($name, $total)
+    public function __construct(string $name, int $total)
     {
         $this->name = $name;
         $this->total = $total;
@@ -42,9 +59,9 @@ class Hour
     /**
      * Gets the name.
      *
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -52,11 +69,11 @@ class Hour
     /**
      * Sets the name.
      *
-     * @param $name
+     * @param string $name
      *
-     * @return $this
+     * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -78,9 +95,9 @@ class Hour
      *
      * @param false|string $fullHour
      *
-     * @return Hour
+     * @return self
      */
-    public function setFullHour($fullHour)
+    public function setFullHour($fullHour): self
     {
         $this->fullHour = $fullHour;
 
@@ -91,9 +108,9 @@ class Hour
     /**
      * Gets the total.
      *
-     * @return integer
+     * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }
@@ -103,9 +120,9 @@ class Hour
      *
      * @param $total
      *
-     * @return $this
+     * @return self
      */
-    public function setTotal($total)
+    public function setTotal(int $total): self
     {
         $this->total = $total;
 
@@ -115,9 +132,9 @@ class Hour
     /**
      * Builds the hour.
      *
-     * @return $this
+     * @return self
      */
-    public function build()
+    public function build(): self
     {
         $this->total++;
         $this->fullHour = Date::getFullHour();
@@ -132,11 +149,11 @@ class Hour
     /**
      * Gets the minute.
      *
-     * @param null $minuteName
+     * @param string|null $minuteName
      *
      * @return Minute
      */
-    public function getMinute($minuteName = null)
+    public function getMinute(string $minuteName = null): Minute
     {
         if (null == $minuteName) {
             $minuteName = 'm' . Date::getMinute();

@@ -12,45 +12,35 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Statistics;
+namespace Tchoulom\ViewCounterBundle\Geolocation;
 
+use Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapterInterface;
+use Tchoulom\ViewCounterBundle\Statistics\ViewDateTrait;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
- * Class Minute
+ * Class City
  */
-class Minute
+class City
 {
     /**
-     * The name.
+     * The city name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * The total.
+     * The total of views.
      *
      * @var int
      */
     protected $total = 0;
 
-    use SecondTrait;
+    use ViewDateTrait;
 
     /**
-     * Minute constructor.
-     *
-     * @param string $name
-     * @param int $total
-     */
-    public function __construct(string $name, int $total)
-    {
-        $this->name = $name;
-        $this->total = $total;
-    }
-
-    /**
-     * Gets the name.
+     * Gets the city name.
      *
      * @return string
      */
@@ -60,7 +50,7 @@ class Minute
     }
 
     /**
-     * Sets the name.
+     * Sets the city name.
      *
      * @param string $name
      *
@@ -74,7 +64,7 @@ class Minute
     }
 
     /**
-     * Gets the total.
+     * Gets the total of views.
      *
      * @return int
      */
@@ -84,7 +74,7 @@ class Minute
     }
 
     /**
-     * Sets the total.
+     * Sets the total of views.
      *
      * @param int $total
      *
@@ -98,41 +88,18 @@ class Minute
     }
 
     /**
-     * Builds the minute.
+     * Builds the city.
+     *
+     * @param GeolocatorAdapterInterface $geolocatorAdapter
      *
      * @return self
      */
-    public function build(): self
+    public function build(GeolocatorAdapterInterface $geolocatorAdapter): self
     {
         $this->total++;
-
-        $second = $this->getSecond();
-        $secondName = strtolower($second->getName());
-        $this->$secondName = $second->build();
+        $this->buildViewDate();
+        $this->name = $geolocatorAdapter->getCity();
 
         return $this;
-    }
-
-    /**
-     * Gets the second.
-     *
-     * @param string|null $secondName
-     *
-     * @return Second
-     */
-    public function getSecond(string $secondName = null): Second
-    {
-        if (null == $secondName) {
-            $secondName = 's' . Date::getSecond();
-        }
-
-        $getSecond = 'get' . ucfirst($secondName);
-        $second = $this->$getSecond();
-
-        if (!$second instanceof Second) {
-            $second = new Second($secondName, 0);
-        }
-
-        return $second;
     }
 }

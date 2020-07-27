@@ -21,30 +21,41 @@ use Tchoulom\ViewCounterBundle\Util\Date;
  */
 class Year
 {
+    /**
+     * The year number.
+     *
+     * @var int
+     */
     protected $yearNumber;
+
+    /**
+     * The total.
+     *
+     * @var int
+     */
     protected $total = 0;
+
+    /**
+     * The months.
+     *
+     * @var Month[]
+     */
     protected $months = [];
 
     /**
      * Year constructor.
-     *
-     * @param array $months
-     * @param $total
      */
-    public function __construct(array $months, $total)
+    public function __construct()
     {
         $this->yearNumber = Date::getNowYear();
-        $this->months = $months;
-        $this->total = $total;
     }
-
 
     /**
      * Gets the number of year.
      *
      * @return int
      */
-    public function getYearNumber()
+    public function getYearNumber(): int
     {
         return $this->yearNumber;
     }
@@ -52,11 +63,11 @@ class Year
     /**
      * Sets the number of year.
      *
-     * @param $yearNumber
+     * @param int $yearNumber
      *
-     * @return $this
+     * @return self
      */
-    public function setYearNumber($yearNumber)
+    public function setYearNumber(int $yearNumber): self
     {
         $this->yearNumber = $yearNumber;
 
@@ -68,7 +79,7 @@ class Year
      *
      * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }
@@ -76,11 +87,11 @@ class Year
     /**
      * Sets the total.
      *
-     * @param $total
+     * @param int $total
      *
-     * @return $this
+     * @return self
      */
-    public function setTotal($total)
+    public function setTotal(int $total): self
     {
         $this->total = $total;
 
@@ -90,33 +101,19 @@ class Year
     /**
      * Gets the months.
      *
-     * @return array
+     * @return Month[]
      */
-    public function getMonths()
+    public function getMonths(): array
     {
         return $this->months;
     }
 
     /**
-     * Sets the months.
-     *
-     * @param array $months
-     *
-     * @return $this
-     */
-    public function setMonths(array $months)
-    {
-        $this->months = $months;
-
-        return $this;
-    }
-
-    /**
      * Builds the month.
      *
-     * @return $this
+     * @return self
      */
-    public function buildMonth()
+    public function buildMonth(): self
     {
         $this->total++;
         $monthNumber = Date::getNowMonth();
@@ -124,7 +121,7 @@ class Year
         if (isset($this->months[$monthNumber])) {
             $month = $this->months[$monthNumber];
         } else {
-            $month = new Month([], 0);
+            $month = new Month();
         }
 
         $this->months[$monthNumber] = $month->buildWeek();

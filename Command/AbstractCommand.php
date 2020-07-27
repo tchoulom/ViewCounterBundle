@@ -192,7 +192,7 @@ abstract class AbstractCommand extends Command
     protected function subtractDuration(string $duration): \DateTimeInterface
     {
         if (false === $this->checkDuration($duration)) {
-            throw new RuntimeException(self::CRITERIA_NOT_SUPPORTED_MSG);
+            throw new RuntimeException(sprintf(self::CRITERIA_NOT_SUPPORTED_MSG, "'$duration'"));
         }
 
         $durationValue = $this->getDurationValue($duration);

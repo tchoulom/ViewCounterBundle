@@ -1,0 +1,13 @@
+parameters:
+    tchoulom.viewcounter.geolocator_adapter.class: Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapter
+
+services:
+
+    # GeoLocAdapter
+    tchoulom.viewcounter.geolocator_adapter:
+        class: '%tchoulom.viewcounter.geolocator_adapter.class%'
+        public: true
+        arguments: [~]
+
+    # aliases needed for services (Symfony version 4, 5)
+    Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapter: '@tchoulom.viewcounter.geolocator_adapter'

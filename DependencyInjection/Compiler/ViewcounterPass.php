@@ -29,14 +29,21 @@ class ViewcounterPass implements CompilerPassInterface
     {
         $configs = $container->getExtensionConfig('tchoulom_view_counter');
 
-        $viewcounterNodeConfig = $this->getViewCounterNodeConfig($configs);
-        $statsNodeConfig = $this->getStatsNodeConfig($configs);
+        $viewcounterNode = $this->getViewCounterNode($configs);
+        $statsNode = $this->getStatsNode($configs);
+        $geolocationNode = $this->getGeolocationNode($configs);
 
-        $viewcounterNodeConfigDefinition = $container->getDefinition('tchoulom.viewcounter_node_config');
-        $statisticsNodeConfigDefinition = $container->getDefinition('tchoulom.statistics_node_config');
+        $viewcounterNodeDefinition = $container->getDefinition('tchoulom.viewcounter_node_config');
+        $statisticsNodeDefinition = $container->getDefinition('tchoulom.statistics_node_config');
 
-        $viewcounterNodeConfigDefinition->replaceArgument(0, $viewcounterNodeConfig);
-        $statisticsNodeConfigDefinition->replaceArgument(0, $statsNodeConfig);
+        $viewcounterNodeDefinition->replaceArgument(0, $viewcounterNode);
+        $statisticsNodeDefinition->replaceArgument(0, $statsNode);
+
+        if (isset($geolocationNode['geolocator_id'])) {
+            $geolocatorAdapterDefinition = $container->getDefinition('tchoulom.viewcounter.geolocator_adapter');
+            $geolocatorDefinition = $container->getDefinition($geolocationNode['geolocator_id']);
+            $geolocatorAdapterDefinition->replaceArgument(0, $geolocatorDefinition);
+        }
     }
 
     /**
@@ -46,12 +53,9 @@ class ViewcounterPass implements CompilerPassInterface
      *
      * @return array
      */
-    public function getViewCounterNodeConfig(array $configs)
+    public function getViewCounterNode(array $configs): array
     {
-        $configs = $configs[0];
-        $viewcounterNode = $configs['view_counter'];
-
-        return $viewcounterNode;
+        return $configs[0]['view_counter'];
     }
 
     /**
@@ -61,11 +65,25 @@ class ViewcounterPass implements CompilerPassInterface
      *
      * @return array
      */
-    public function getStatsNodeConfig(array $configs)
+    public function getStatsNode(array $configs): array
+    {
+        return $configs[0]['statistics'];
+    }
+
+    /**
+     * Gets the geolocation node.
+     *
+     * @param array $configs
+     *
+     * @return array|null
+     */
+    public function getGeolocationNode(array $configs): ?array
     {
         $configs = $configs[0];
-        $statsNode = $configs['statistics'];
+        if (isset($configs['geolocation'])) {
+            return $configs['geolocation'];
+        }
 
-        return $statsNode;
+        return null;
     }
 }
