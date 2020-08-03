@@ -116,19 +116,17 @@ class Minute
     /**
      * Gets the second.
      *
-     * @param string|null $secondName
+     * @param string|null $secondName The second name.
      *
-     * @return Second
+     * @return Second                 The second.
      */
     public function getSecond(string $secondName = null): Second
     {
         if (null == $secondName) {
             $secondName = 's' . Date::getSecond();
         }
-
-        $getSecond = 'get' . ucfirst($secondName);
-        $second = $this->$getSecond();
-
+        
+        $second = $this->get($secondName);
         if (!$second instanceof Second) {
             $second = new Second($secondName, 0);
         }

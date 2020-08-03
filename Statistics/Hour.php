@@ -149,9 +149,9 @@ class Hour
     /**
      * Gets the minute.
      *
-     * @param string|null $minuteName
+     * @param string|null $minuteName The minute name.
      *
-     * @return Minute
+     * @return Minute                 The minute.
      */
     public function getMinute(string $minuteName = null): Minute
     {
@@ -159,9 +159,7 @@ class Hour
             $minuteName = 'm' . Date::getMinute();
         }
 
-        $getMinute = 'get' . ucfirst($minuteName);
-        $minute = $this->$getMinute();
-
+        $minute = $this->get($minuteName);
         if (!$minute instanceof Minute) {
             $minute = new Minute($minuteName, 0);
         }

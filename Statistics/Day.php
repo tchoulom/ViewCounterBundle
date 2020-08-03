@@ -147,9 +147,9 @@ class Day
     /**
      * Gets the hour.
      *
-     * @param string|null $hourName
+     * @param string|null $hourName The hour name.
      *
-     * @return Hour
+     * @return Hour                 The hour.
      */
     public function getHour(string $hourName = null): Hour
     {
@@ -157,9 +157,7 @@ class Day
             $hourName = 'h' . Date::getHour();
         }
 
-        $getHour = 'get' . ucfirst($hourName);
-        $hour = $this->$getHour();
-
+        $hour = $this->get($hourName);
         if (!$hour instanceof Hour) {
             $hour = new Hour($hourName, 0);
         }
