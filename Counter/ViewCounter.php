@@ -25,11 +25,11 @@ class ViewCounter extends AbstractViewCounter
     /**
      * Determines whether the view is new.
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is new view ?
      */
-    public function isNewView(ViewCounterInterface $viewCounter)
+    public function isNewView(ViewCounterInterface $viewCounter): bool
     {
         if (null == $viewCounter->getViewDate()) {
             return true;
@@ -79,143 +79,119 @@ class ViewCounter extends AbstractViewCounter
     /**
      * Checks whether this is a new daily view.
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is new daily view ?
      */
-    protected function isNewDailyView(ViewCounterInterface $viewCounter)
+    protected function isNewDailyView(ViewCounterInterface $viewCounter): bool
     {
         // Next day
         $viewDate = clone $viewCounter->getViewDate();
         $nextDay = Date::getNextDay($viewDate);
         $nextDayTimestamp = strtotime($nextDay->format('Y-m-d H:i:s'));
 
-        // Current Timestamp
-        $currentTimestamp = time();
-
-        return $currentTimestamp >= $nextDayTimestamp;
+        return Date::time() >= $nextDayTimestamp;
     }
 
     /**
      * Checks whether this is a new hourly view.
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is new hourly view ?
      */
-    protected function isNewHourlyView(ViewCounterInterface $viewCounter)
+    protected function isNewHourlyView(ViewCounterInterface $viewCounter): bool
     {
         // Next hour
         $viewDate = clone $viewCounter->getViewDate();
         $nextHour = Date::getNextHour($viewDate);
-
         $nextHourTimestamp = strtotime($nextHour->format('Y-m-d H:i:s'));
 
-        // Current Timestamp
-        $currentTimestamp = time();
-
-        return $currentTimestamp >= $nextHourTimestamp;
+        return Date::time() >= $nextHourTimestamp;
     }
 
     /**
      * Checks whether this is a new weekly view.
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is new weekly view ?
      */
-    protected function isNewWeeklyView(ViewCounterInterface $viewCounter)
+    protected function isNewWeeklyView(ViewCounterInterface $viewCounter): bool
     {
         // Next week
         $viewDate = clone $viewCounter->getViewDate();
         $nextWeek = Date::getNextWeek($viewDate);
         $nextWeekTimestamp = strtotime($nextWeek->format('Y-m-d H:i:s'));
 
-        // Current Timestamp
-        $currentTimestamp = time();
-
-        return $currentTimestamp >= $nextWeekTimestamp;
+        return Date::time() >= $nextWeekTimestamp;
     }
 
     /**
      * Checks whether this is a new monthly view.
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is new monthly view ?
      */
-    protected function isNewMonthlyView(ViewCounterInterface $viewCounter)
+    protected function isNewMonthlyView(ViewCounterInterface $viewCounter): bool
     {
         // Next month
         $viewDate = clone $viewCounter->getViewDate();
         $nextMonth = Date::getNextMonth($viewDate);
         $nextMonthTimestamp = strtotime($nextMonth->format('Y-m-d H:i:s'));
 
-        // Current Timestamp
-        $currentTimestamp = time();
-
-        return $currentTimestamp >= $nextMonthTimestamp;
+        return Date::time() >= $nextMonthTimestamp;
     }
 
     /**
      * Checks whether this is a new yearly view.
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is new yearly view ?
      */
-    protected function isNewYearlyView(ViewCounterInterface $viewCounter)
+    protected function isNewYearlyView(ViewCounterInterface $viewCounter): bool
     {
         // Next month
         $viewDate = clone $viewCounter->getViewDate();
         $nextYear = Date::getNextYear($viewDate);
         $nextYearTimestamp = strtotime($nextYear->format('Y-m-d H:i:s'));
 
-        // Current Timestamp
-        $currentTimestamp = time();
-
-        return $currentTimestamp >= $nextYearTimestamp;
+        return Date::time() >= $nextYearTimestamp;
     }
 
     /**
      * Checks whether this is a new "view per minute".
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is view per minute ?
      */
-    protected function isViewPerMinute(ViewCounterInterface $viewCounter)
+    protected function isViewPerMinute(ViewCounterInterface $viewCounter): bool
     {
         // Next minute
         $viewDate = clone $viewCounter->getViewDate();
         $nextMinute = Date::getNextMinute($viewDate);
-
         $nextMinuteTimestamp = strtotime($nextMinute->format('Y-m-d H:i:s'));
 
-        // Current Timestamp
-        $currentTimestamp = time();
-
-        return $currentTimestamp >= $nextMinuteTimestamp;
+        return Date::time() >= $nextMinuteTimestamp;
     }
 
     /**
      * Checks whether this is a new "view per second".
      *
-     * @param ViewCounterInterface $viewCounter
+     * @param ViewCounterInterface $viewCounter The Viewcounter.
      *
-     * @return bool
+     * @return bool Is view per second ?
      */
-    protected function isViewPerSecond(ViewCounterInterface $viewCounter)
+    protected function isViewPerSecond(ViewCounterInterface $viewCounter): bool
     {
-        // Next minute
+        // Next second
         $viewDate = clone $viewCounter->getViewDate();
         $nextSecond = Date::getNextSecond($viewDate);
-
         $nextSecondTimestamp = strtotime($nextSecond->format('Y-m-d H:i:s'));
 
-        // Current Timestamp
-        $currentTimestamp = time();
-
-        return $currentTimestamp >= $nextSecondTimestamp;
+        return Date::time() >= $nextSecondTimestamp;
     }
 }

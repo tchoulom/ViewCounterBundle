@@ -175,7 +175,7 @@ abstract class AbstractViewCounter
             $viewcounter->setIp($this->getClientIp());
             $setPage = 'set' . ucfirst($this->getProperty());
             $viewcounter->$setPage($page);
-            $viewcounter->setViewDate($this->getNowDate());
+            $viewcounter->setViewDate(Date::getNowDate());
 
             $page->setViews($views);
 
@@ -297,16 +297,6 @@ abstract class AbstractViewCounter
     protected function getPage()
     {
         return $this->page;
-    }
-
-    /**
-     * Gets now Date.
-     *
-     * @return \DateTime
-     */
-    protected function getNowDate()
-    {
-        return Date::getNowDate();
     }
 
     /**
