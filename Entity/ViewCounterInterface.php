@@ -16,11 +16,7 @@ namespace Tchoulom\ViewCounterBundle\Entity;
 
 
 /**
- * ViewCounter
- *
- * @MappedSuperclass
- *
- * @ORM\HasLifecycleCallbacks
+ * ViewCounterInterface
  */
 interface ViewCounterInterface
 {

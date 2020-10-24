@@ -14,13 +14,14 @@
 
 namespace Tchoulom\ViewCounterBundle\Entity;
 
-use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\MappedSuperclass;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
  * ViewCounter
  *
- * @MappedSuperclass
+ * @ORM\MappedSuperclass
  *
  * @ORM\HasLifecycleCallbacks
  */
