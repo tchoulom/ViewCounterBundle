@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
  * ViewCounter
  *
  * @ORM\MappedSuperclass
- *
  * @ORM\HasLifecycleCallbacks
  */
 class ViewCounter implements ViewCounterInterface
