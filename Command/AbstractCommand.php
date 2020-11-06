@@ -31,12 +31,12 @@ abstract class AbstractCommand extends Command
     /**
      * @var int Does the command end successfully.
      */
-    protected const SUCCESS = 0;
+    public const SUCCESS = 0;
 
     /**
      * @var int Does the command end with failure.
      */
-    protected const FAILURE = 1;
+    public const FAILURE = 1;
 
     /**
      * @var InputInterface
