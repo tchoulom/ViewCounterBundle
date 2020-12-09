@@ -21,6 +21,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
+use Tchoulom\ViewCounterBundle\Statistics\StatManager;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -37,6 +38,11 @@ abstract class AbstractCommand extends Command
      * @var int Does the command end with failure.
      */
     protected const FAILURE = 1;
+
+    /**
+     * @var int Comment message.
+     */
+    protected const COMMENT = 2;
 
     /**
      * @var InputInterface
@@ -57,6 +63,13 @@ abstract class AbstractCommand extends Command
      * @var CounterManager The Counter Manager.
      */
     protected $counterManager;
+
+    /**
+     * The StatManager service.
+     *
+     * @var StatManager The StatManager.
+     */
+    protected $statManager;
 
     /**
      * @var string See the documentation message.
@@ -84,26 +97,50 @@ abstract class AbstractCommand extends Command
     protected const CRITERIA_NOT_SUPPORTED_MSG = 'The given criteria value %s is not supported!';
 
     /**
+     * @var string successful deletion message.
+     */
+    protected const SUCCESSFUL_DELETION_MSG = '%s line%s %s been successfully deleted!';
+
+    /**
+     * @var string Nothing to delete message.
+     */
+    protected const NOTHING_TO_DELETE_MSG = 'Nothing to delete!';
+
+    /**
      * @var array The supported date interval.
      */
-    protected const SUPPORTED_DATE_INTERVAL = ['s' => 'second', 'm' => 'minute', 'h' => 'hour', 'd' => 'day', 'w' => 'week', 'M' => 'month', 'y' => 'year'];
+    protected const SUPPORTED_DATE_INTERVAL = [
+        's' => 'second',
+        'm' => 'minute',
+        'h' => 'hour',
+        'd' => 'day',
+        'w' => 'week',
+        'M' => 'month',
+        'y' => 'year',
+    ];
 
     /**
      * AbstractCommand constructor.
      *
      * @param CounterManager $counterManager
+     * @param StatManager $statManager
      * @param string|null $name
      */
-    public function __construct(CounterManager $counterManager, string $name = null)
-    {
+    public function __construct(
+        CounterManager $counterManager,
+        StatManager $statManager,
+        string $name = null
+    ) {
         parent::__construct($name);
+
         $this->counterManager = $counterManager;
+        $this->statManager = $statManager;
     }
 
     /**
      * @return int
      */
-    abstract protected function executeCleanupCommand();
+    abstract protected function doExecute();
 
     /**
      * {@inheritdoc}
@@ -114,7 +151,7 @@ abstract class AbstractCommand extends Command
         $this->output = $output;
         $this->io = new SymfonyStyle($this->input, $this->output);
 
-        return $this->executeCleanupCommand();
+        return $this->doExecute();
     }
 
     /**
@@ -153,7 +190,8 @@ abstract class AbstractCommand extends Command
      */
     protected function checkDuration(string $duration): bool
     {
-        return is_int($this->getDurationValue($duration)) && array_key_exists($this->getDateInterval($duration), self::SUPPORTED_DATE_INTERVAL);
+        return is_int($this->getDurationValue($duration)) && array_key_exists($this->getDateInterval($duration),
+                self::SUPPORTED_DATE_INTERVAL);
     }
 
     /**
@@ -213,6 +251,42 @@ abstract class AbstractCommand extends Command
                 return Date::subtractMonthsFromDate($nowDate, $durationValue);
             case 'y':
                 return Date::subtractYearsFromDate($nowDate, $durationValue);
+        }
+    }
+
+    /**
+     * Writes the rows deleted response.
+     *
+     * @param int $rowsDeleted The number of rows deleted.
+     */
+    protected function writeRowsDeletedResponse(int $rowsDeleted)
+    {
+        if ($rowsDeleted > 0) {
+            $this->io->success(sprintf(self::SUCCESSFUL_DELETION_MSG, $rowsDeleted, $rowsDeleted > 1 ? 's' : '',
+                $rowsDeleted > 1 ? 'have' : 'has'));
+        } else {
+            $this->io->writeln('');
+            $this->io->writeln('<comment>'.self::NOTHING_TO_DELETE_MSG.'</comment>');
+        }
+    }
+
+    /**
+     *  Writes a message.
+     *
+     * @param string $message
+     * @param int $status
+     */
+    protected function writeMessage(string $message, int $status)
+    {
+        switch ($status) {
+            case self::SUCCESS:
+                $this->io->success($message);
+                break;
+            case self::FAILURE:
+                $this->io->error($message);
+                break;
+            case self::COMMENT:
+                $this->io->writeln('<comment>'.$message.'</comment>');
         }
     }
 }

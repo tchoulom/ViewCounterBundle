@@ -14,12 +14,13 @@
 
 namespace Tchoulom\ViewCounterBundle\Counter;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
-use Tchoulom\ViewCounterBundle\Statistics\Statistics;
+use Tchoulom\ViewCounterBundle\Statistics\StatManager;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -38,9 +39,9 @@ abstract class AbstractViewCounter
     protected $requestStack;
 
     /**
-     * @var Statistics
+     * @var StatManager
      */
-    protected $statistics;
+    protected $statManager;
 
     /**
      * The View counter configs.
@@ -86,8 +87,11 @@ abstract class AbstractViewCounter
      * @param RequestStack $requestStack
      * @param ViewcounterConfig $viewcounterConfig
      */
-    public function __construct(CounterManager $counterManager, RequestStack $requestStack, ViewcounterConfig $viewcounterConfig)
-    {
+    public function __construct(
+        CounterManager $counterManager,
+        RequestStack $requestStack,
+        ViewcounterConfig $viewcounterConfig
+    ) {
         $this->counterManager = $counterManager;
         $this->requestStack = $requestStack;
         $this->viewcounterConfig = $viewcounterConfig;
@@ -109,14 +113,15 @@ abstract class AbstractViewCounter
      *
      * @return ViewCounterInterface
      */
-    protected function loadViewCounter(ViewCountable $page)
+    protected function loadViewCounter(ViewCountable $page): ViewCounterInterface
     {
         $this->counterManager->loadMetadata($page);
         $this->property = $this->counterManager->getProperty();
         $this->class = $this->counterManager->getClass();
         $clientIP = $this->getClientIp();
 
-        $viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $clientIP], $orderBy = null, $limit = null, $offset = null);
+        $viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $clientIP],
+            $orderBy = null, $limit = null, $offset = null);
 
         if ($viewCounter instanceof ViewCounterInterface) {
             return $viewCounter;
@@ -132,7 +137,7 @@ abstract class AbstractViewCounter
      *
      * @return ViewCounterInterface
      */
-    public function getViewCounter(ViewCountable $page = null)
+    public function getViewCounter(ViewCountable $page = null): ViewCounterInterface
     {
         $viewCounter = $this->loadViewCounter($page);
 
@@ -146,7 +151,7 @@ abstract class AbstractViewCounter
      *
      * @return int
      */
-    public function getViews(ViewCountable $page)
+    public function getViews(ViewCountable $page): int
     {
         $viewCounter = $this->getViewCounter($page);
 
@@ -166,15 +171,14 @@ abstract class AbstractViewCounter
      *
      * @throws \ReflectionException
      */
-    public function saveView(ViewCountable $page)
+    public function saveView(ViewCountable $page): ViewCountable
     {
         $viewcounter = $this->getViewCounter($page);
 
         if ($this->isNewView($viewcounter)) {
             $views = $this->getViews($page);
             $viewcounter->setIp($this->getClientIp());
-            $setPage = 'set' . ucfirst($this->getProperty());
-            $viewcounter->$setPage($page);
+            $viewcounter->setPage($page);
             $viewcounter->setViewDate(Date::getNowDate());
 
             $page->setViews($views);
@@ -200,18 +204,15 @@ abstract class AbstractViewCounter
      */
     public function handleStatistics(ViewCounterInterface $viewcounter)
     {
-        $getPage = 'get' . ucfirst($this->getProperty());
-        $page = $viewcounter->$getPage();
-
-        $this->statistics->register($page);
+        $this->statManager->register($viewcounter->getPage());
     }
 
     /**
      * Gets the current Request.
      *
-     * @return null|\Symfony\Component\HttpFoundation\Request
+     * @return Request|null
      */
-    protected function getRequest()
+    protected function getRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
     }
@@ -232,9 +233,9 @@ abstract class AbstractViewCounter
     /**
      * Gets the use_stats value.
      *
-     * @return boolean
+     * @return bool
      */
-    protected function canUseStats()
+    protected function canUseStats(): bool
     {
         $statisticsNodeConfig = $this->viewcounterConfig->getStatisticsNodeConfig();
         $canUseStats = $statisticsNodeConfig->canUseStats();
@@ -247,7 +248,7 @@ abstract class AbstractViewCounter
      *
      * @return ViewCounterInterface
      */
-    protected function createViewCounterObject()
+    protected function createViewCounterObject(): ViewCounterInterface
     {
         $class = $this->getClass();
         $viewCounterObject = new $class();
@@ -258,7 +259,7 @@ abstract class AbstractViewCounter
     /**
      * Gets the class namespace.
      *
-     * @return null
+     * @return mixed
      */
     protected function getClass()
     {
@@ -268,7 +269,7 @@ abstract class AbstractViewCounter
     /**
      * Gets the property.
      *
-     * @return null
+     * @return mixed
      */
     protected function getProperty()
     {
@@ -280,9 +281,9 @@ abstract class AbstractViewCounter
      *
      * @param ViewCountable $page
      *
-     * @return $this
+     * @return self
      */
-    protected function setPage(ViewCountable $page)
+    protected function setPage(ViewCountable $page): self
     {
         $this->page = $page;
 
@@ -294,7 +295,7 @@ abstract class AbstractViewCounter
      *
      * @return ViewCountable|null
      */
-    protected function getPage()
+    protected function getPage(): ?ViewCountable
     {
         return $this->page;
     }
@@ -304,24 +305,21 @@ abstract class AbstractViewCounter
      *
      * @return null|string
      */
-    public function getClientIp()
+    public function getClientIp(): ?string
     {
-        $request = $this->getRequest();
-        $clientIp = $request->getClientIp();
-
-        return $clientIp;
+        return $this->getRequest()->getClientIp();
     }
 
     /**
-     * Sets the statistics.
+     * Sets the StatManager.
      *
-     * @param Statistics $statistics
+     * @param StatManager $statManager
      *
      * @return self
      */
-    public function setStatistics(Statistics $statistics): self
+    public function setStatManager(StatManager $statManager): self
     {
-        $this->statistics = $statistics;
+        $this->statManager = $statManager;
 
         return $this;
     }

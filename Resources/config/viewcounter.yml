@@ -19,7 +19,7 @@ services:
             - '@request_stack'
             - '@tchoulom.viewcounter_config'
         calls:
-            - [setStatistics, ['@tchoulom.viewcounter.statistics']]
+            - [setStatManager, ['@tchoulom.viewcounter.stat_manager']]
 
     tchoulom.viewcounter:
         class: '%tchoulom.viewcounter.class%'

@@ -120,6 +120,8 @@ class Date
      * @param null $timeZone The timezone.
      *
      * @return \DateTimeInterface The Date.
+     *
+     * @throws \Exception
      */
     public static function getNowDate($timeZone = null): \DateTimeInterface
     {

@@ -14,7 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Finder;
 
-use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
+use Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemInterface;
 use Tchoulom\ViewCounterBundle\Geolocation\City;
 use Tchoulom\ViewCounterBundle\Geolocation\Country;
 use Tchoulom\ViewCounterBundle\Geolocation\Region;
@@ -166,12 +166,18 @@ class StatsFinder
      *
      * @throws \ReflectionException
      */
-    public function findByDay(ViewCountable $page, int $yearNumber, int $monthNumber, int $weekNumber, string $dayName): ?Day
-    {
+    public function findByDay(
+        ViewCountable $page,
+        int $yearNumber,
+        int $monthNumber,
+        int $weekNumber,
+        string $dayName
+    ): ?Day {
         $week = $this->findByWeek($page, $yearNumber, $monthNumber, $weekNumber);
 
         if ($week instanceof Week) {
-            $getDay = 'get' . ucfirst(strtolower($dayName));
+            $getDay = 'get'.ucfirst(strtolower($dayName));
+
             return $week->$getDay();
         }
 
@@ -192,8 +198,14 @@ class StatsFinder
      *
      * @throws \ReflectionException
      */
-    public function findByHour(ViewCountable $page, int $yearNumber, int $monthNumber, int $weekNumber, string $dayName, string $hourName): ?Hour
-    {
+    public function findByHour(
+        ViewCountable $page,
+        int $yearNumber,
+        int $monthNumber,
+        int $weekNumber,
+        string $dayName,
+        string $hourName
+    ): ?Hour {
         $day = $this->findByDay($page, $yearNumber, $monthNumber, $weekNumber, $dayName);
 
         if ($day instanceof Day) {
@@ -218,8 +230,15 @@ class StatsFinder
      *
      * @throws \ReflectionException
      */
-    public function findByMinute(ViewCountable $page, int $yearNumber, int $monthNumber, int $weekNumber, string $dayName, string $hourName, string $minuteName): ?Minute
-    {
+    public function findByMinute(
+        ViewCountable $page,
+        int $yearNumber,
+        int $monthNumber,
+        int $weekNumber,
+        string $dayName,
+        string $hourName,
+        string $minuteName
+    ): ?Minute {
         $hour = $this->findByHour($page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName);
 
         if ($hour instanceof Hour) {
@@ -245,8 +264,16 @@ class StatsFinder
      *
      * @throws \ReflectionException
      */
-    public function findBySecond(ViewCountable $page, int $yearNumber, int $monthNumber, int $weekNumber, string $dayName, string $hourName, string $minuteName, string $secondName): ?Second
-    {
+    public function findBySecond(
+        ViewCountable $page,
+        int $yearNumber,
+        int $monthNumber,
+        int $weekNumber,
+        string $dayName,
+        string $hourName,
+        string $minuteName,
+        string $secondName
+    ): ?Second {
         $minute = $this->findByMinute($page, $yearNumber, $monthNumber, $weekNumber, $dayName, $hourName, $minuteName);
 
         if ($minute instanceof Minute) {
@@ -405,8 +432,13 @@ class StatsFinder
      *
      * @throws \ReflectionException
      */
-    public function getHourlyStats(ViewCountable $page, int $yearNumber, int $monthNumber, int $weekNumber, string $dayName): array
-    {
+    public function getHourlyStats(
+        ViewCountable $page,
+        int $yearNumber,
+        int $monthNumber,
+        int $weekNumber,
+        string $dayName
+    ): array {
         $hourlyStats = [];
         $page = $this->findByPage($page);
 
@@ -420,7 +452,7 @@ class StatsFinder
                         $day = $week->getDay($dayName);
                         $hoursRange = Date::buildTimeRange(0, 23);
                         foreach ($hoursRange as $hourRangeName) {
-                            $hourName = 'h' . $hourRangeName;
+                            $hourName = 'h'.$hourRangeName;
                             $hour = $day->getHour($hourName);
                             $hourlyStats[] = [$hourRangeName, $hour->getTotal()];
                         }
@@ -446,8 +478,14 @@ class StatsFinder
      *
      * @throws \ReflectionException
      */
-    public function getStatsPerMinute(ViewCountable $page, int $yearNumber, int $monthNumber, int $weekNumber, string $dayName, string $hourName): array
-    {
+    public function getStatsPerMinute(
+        ViewCountable $page,
+        int $yearNumber,
+        int $monthNumber,
+        int $weekNumber,
+        string $dayName,
+        string $hourName
+    ): array {
         $statsPerMinute = [];
         $page = $this->findByPage($page);
 
@@ -462,7 +500,7 @@ class StatsFinder
                         $hour = $day->getHour($hourName);
                         $minutesRange = Date::buildTimeRange(0, 59);
                         foreach ($minutesRange as $minuteRangeName) {
-                            $minuteName = 'm' . $minuteRangeName;
+                            $minuteName = 'm'.$minuteRangeName;
                             $minute = $hour->getMinute($minuteName);
                             $statsPerMinute[] = [$minuteRangeName, $minute->getTotal()];
                         }
@@ -489,8 +527,15 @@ class StatsFinder
      *
      * @throws \ReflectionException
      */
-    public function getStatsPerSecond(ViewCountable $page, int $yearNumber, int $monthNumber, int $weekNumber, string $dayName, string $hourName, string $minuteName): array
-    {
+    public function getStatsPerSecond(
+        ViewCountable $page,
+        int $yearNumber,
+        int $monthNumber,
+        int $weekNumber,
+        string $dayName,
+        string $hourName,
+        string $minuteName
+    ): array {
         $statsPerSecond = [];
         $page = $this->findByPage($page);
 
@@ -506,7 +551,7 @@ class StatsFinder
                         $minute = $hour->getMinute($minuteName);
                         $secondsRange = Date::buildTimeRange(0, 59);
                         foreach ($secondsRange as $secondRangeName) {
-                            $secondName = 's' . $secondRangeName;
+                            $secondName = 's'.$secondRangeName;
                             $second = $minute->getSecond($secondName);
                             $statsPerSecond[] = [$secondRangeName, $second->getTotal()];
                         }

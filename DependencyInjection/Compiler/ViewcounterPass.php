@@ -31,6 +31,7 @@ class ViewcounterPass implements CompilerPassInterface
 
         $viewcounterNode = $this->getViewCounterNode($configs);
         $statsNode = $this->getStatsNode($configs);
+        $storageNode = $this->getStorageNode($configs);
         $geolocationNode = $this->getGeolocationNode($configs);
 
         $viewcounterNodeDefinition = $container->getDefinition('tchoulom.viewcounter_node_config');
@@ -43,6 +44,12 @@ class ViewcounterPass implements CompilerPassInterface
             $geolocatorAdapterDefinition = $container->getDefinition('tchoulom.viewcounter.geolocator_adapter');
             $geolocatorDefinition = $container->getDefinition($geolocationNode['geolocator_id']);
             $geolocatorAdapterDefinition->replaceArgument(0, $geolocatorDefinition);
+        }
+
+        if (isset($storageNode['service'])) {
+            $storageAdapterDefinition = $container->getDefinition('tchoulom.viewcounter.storage_adapter');
+            $storerDefinition = $container->getDefinition($storageNode['service']);
+            $storageAdapterDefinition->replaceArgument(0, $storerDefinition);
         }
     }
 
@@ -68,6 +75,18 @@ class ViewcounterPass implements CompilerPassInterface
     public function getStatsNode(array $configs): array
     {
         return $configs[0]['statistics'];
+    }
+
+    /**
+     * Gets the storage node configuration
+     *
+     * @param array $configs
+     *
+     * @return array
+     */
+    public function getStorageNode(array $configs): array
+    {
+        return $configs[0]['storage'];
     }
 
     /**

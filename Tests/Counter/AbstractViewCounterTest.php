@@ -25,6 +25,7 @@ use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterNodeConfig;
 use Tchoulom\ViewCounterBundle\Statistics\Statistics;
+use Tchoulom\ViewCounterBundle\Statistics\StatManager;
 use Tchoulom\ViewCounterBundle\Tests\BaseTest;
 
 /**
@@ -40,7 +41,7 @@ class AbstractViewCounterTest extends BaseTest
     protected $requestMock;
     protected $requestStack;
     protected $requestStackMock;
-    protected $statisticsMock;
+    protected $statManagerMock;
     protected $viewCounterEntityClass = 'Blog\BlogBundle\Entity\ViewCounter';
     protected $viewCounterEntityMock;
     protected $counterManagerMock;
@@ -75,7 +76,7 @@ class AbstractViewCounterTest extends BaseTest
         $this->request = new Request();
         $this->requestStackMock = $this->createMock(RequestStack::class);
         $this->requestMock = $this->createMock(Request::class);
-        $this->statisticsMock = $this->createMock(Statistics::class);
+        $this->statManagerMock = $this->createMock(StatManager::class);
         $this->viewCounterEntityMock = $this->createMock(ViewCounterInterface::class);
         $this->counterManagerMock = $this->createMock(CounterManager::class);
         $this->viewcounterConfigMock = $this->createMock(ViewcounterConfig::class);
@@ -93,7 +94,7 @@ class AbstractViewCounterTest extends BaseTest
         $this->request = null;
         $this->requestStackMock = null;
         $this->requestMock = null;
-        $this->statisticsMock = null;
+        $this->statManagerMock = null;
         $this->viewCounterEntityMock = null;
         $this->counterManagerMock = null;
         $this->viewcounterConfigMock = null;
@@ -639,16 +640,16 @@ class AbstractViewCounterTest extends BaseTest
     }
 
     /**
-     * Tests the setStatistics method.
+     * Tests the setStatManager method.
      */
-    public function testSetStatistics()
+    public function testSetStatManager()
     {
         $viewCounterServiceMock = $this->getMockBuilder(ViewCounter::class)
             ->setConstructorArgs([$this->counterManagerMock, $this->requestStackMock, $this->viewcounterConfigMock])
             ->setMethods(['getRequest'])
             ->getMock();
 
-        $viewCounterService = $viewCounterServiceMock->setStatistics($this->statisticsMock);
+        $viewCounterService = $viewCounterServiceMock->setStatManager($this->statManagerMock);
 
         $this->assertTrue($viewCounterService instanceof AbstractViewCounter);
     }

@@ -1,0 +1,23 @@
+parameters:
+    tchoulom.viewcounter.storage_adapter.class: Tchoulom\ViewCounterBundle\Adapter\Storage\StorageAdapter
+    tchoulom.viewcounter.filesystem.class: Tchoulom\ViewCounterBundle\Storage\Filesystem\Filesystem
+
+services:
+    # Storage Adapter
+    tchoulom.viewcounter.storage_adapter:
+        class: '%tchoulom.viewcounter.storage_adapter.class%'
+        public: true
+        arguments:
+            - '@tchoulom.viewcounter.filesystem'
+
+    # Filesystem
+    tchoulom.viewcounter.filesystem:
+        class: '%tchoulom.viewcounter.filesystem.class%'
+        public: true
+        arguments:
+            - '%kernel.project_dir%'
+            - '@tchoulom.viewcounter_config'
+
+    # aliases needed for services (Symfony version 4, 5)
+    Tchoulom\ViewCounterBundle\Adapter\FileStorageAdapter: '@tchoulom.viewcounter.storage_adapter'
+    Tchoulom\ViewCounterBundle\Filesystem\Filesystem: '@tchoulom.viewcounter.filesystem'

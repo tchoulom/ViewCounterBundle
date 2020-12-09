@@ -24,28 +24,29 @@ class GeolocatorAdapter implements GeolocatorAdapterInterface
 {
     /**
      * The given Geolocator service.
-     * This service must implements the "GeolocatorInterface".
+     * This service must implements the "GeolocatorAdapterInterface".
      *
-     * @var GeolocatorInterface|null
+     * @var GeolocatorAdapterInterface|null
      */
     protected $geolocator;
 
     /**
      * The criteria is not supported message.
-     * 
+     *
      * @var string
      */
-    protected const GEOLOCATOR_NOT_SUPPORTED_MSG = '%s service must implement the "Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorInterface".';
+    protected const GEOLOCATOR_NOT_SUPPORTED_MSG = '%s service must implement the "Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapterInterface".';
 
     /**
      * GeolocatorAdapter constructor.
      *
-     * @param $geolocator The given Geolocator service
+     * @param GeolocatorAdapterInterface|null $geolocator The given Geolocator service
      */
-    public function __construct($geolocator)
+    public function __construct(?GeolocatorAdapterInterface $geolocator)
     {
         if (!$this->supports($geolocator)) {
-            throw new RuntimeException(sprintf(self::GEOLOCATOR_NOT_SUPPORTED_MSG, ReflectionExtractor::getFullClassName($geolocator)));
+            throw new RuntimeException(sprintf(self::GEOLOCATOR_NOT_SUPPORTED_MSG,
+                ReflectionExtractor::getFullClassName($geolocator)));
         }
 
         $this->geolocator = $geolocator;
@@ -54,9 +55,9 @@ class GeolocatorAdapter implements GeolocatorAdapterInterface
     /**
      * Gets the Geolocator service.
      *
-     * @return GeolocatorInterface|null The Geolocator service
+     * @return GeolocatorAdapterInterface|null The Geolocator service
      */
-    public function getGeolocator(): ?GeolocatorInterface
+    public function getGeolocator(): ?GeolocatorAdapterInterface
     {
         return $this->geolocator;
     }
@@ -118,23 +119,23 @@ class GeolocatorAdapter implements GeolocatorAdapterInterface
      */
     public function canGeolocate(): bool
     {
-        return $this->getGeolocator() instanceof GeolocatorInterface;
+        return $this->getGeolocator() instanceof GeolocatorAdapterInterface;
     }
 
     /**
      * Checks if the given Geolocator service is supported.
      *
-     * @param $geolocator The given Geolocator service.
+     * @param GeolocatorAdapterInterface|null $geolocator The given Geolocator service.
      *
      * @return bool Is the given Geolocator service supported?
      */
-    public function supports($geolocator): bool
+    public function supports(?GeolocatorAdapterInterface $geolocator): bool
     {
         // The case where the Geolocator geolocator_id is not used in the project.
         if (null === $geolocator) {
             return true;
         }
 
-        return $geolocator instanceof GeolocatorInterface;
+        return $geolocator instanceof GeolocatorAdapterInterface;
     }
 }

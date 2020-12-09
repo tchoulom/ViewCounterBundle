@@ -17,6 +17,7 @@ namespace Tchoulom\ViewCounterBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 
 /**
  * ViewCounter
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
  */
-class ViewCounter implements ViewCounterInterface
+abstract class ViewCounter implements ViewCounterInterface
 {
     /**
      * @ORM\Id
@@ -56,6 +57,22 @@ class ViewCounter implements ViewCounterInterface
     {
         return $this->id;
     }
+
+    /**
+     * Gets the ViewCountable entity.
+     *
+     * @return ViewCountable The ViewCountable entity.
+     */
+    abstract public function getPage(): ViewCountable;
+
+    /**
+     * Sets the ViewCountable entity.
+     *
+     * @param ViewCountable $page The ViewCountable entity.
+     *
+     * @return self
+     */
+    abstract public function setPage(ViewCountable $page): ViewCounterInterface;
 
     /**
      * Gets the IP

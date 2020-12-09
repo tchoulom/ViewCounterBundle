@@ -15,7 +15,7 @@
 namespace Tchoulom\ViewCounterBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Tchoulom\ViewCounterBundle\Filesystem\FilesystemInterface;
+use Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemInterface;
 
 /**
  * Class BaseTest

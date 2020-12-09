@@ -1,19 +1,19 @@
 parameters:
-    tchoulom.viewcounter.statistics.class: Tchoulom\ViewCounterBundle\Statistics\Statistics
-    tchoulom.viewcounter.stats_builder.class: Tchoulom\ViewCounterBundle\Statistics\StatsBuilder
+    tchoulom.viewcounter.stat_manager.class: Tchoulom\ViewCounterBundle\Statistics\StatManager
+    tchoulom.viewcounter.stats_builder.class: Tchoulom\ViewCounterBundle\Statistics\StatBuilder
     tchoulom.viewcounter.stats_finder.class: Tchoulom\ViewCounterBundle\Finder\StatsFinder
     tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Compute\StatsComputer
 
 services:
     # Statistics
-    tchoulom.viewcounter.statistics:
-        class: '%tchoulom.viewcounter.statistics.class%'
+    tchoulom.viewcounter.stat_manager:
+        class: '%tchoulom.viewcounter.stat_manager.class%'
         public: true
         arguments:
-            - '@tchoulom.viewcounter.filesystem'
+            - '@tchoulom.viewcounter.storage_adapter'
             - '@tchoulom.viewcounter.stats_builder'
 
-    # StatsBuilder
+    # StatBuilder
     tchoulom.viewcounter.stats_builder:
         class: '%tchoulom.viewcounter.stats_builder.class%'
         public: true
@@ -31,7 +31,7 @@ services:
         public: true
 
     # aliases needed for services (Symfony version 4, 5)
-    Tchoulom\ViewCounterBundle\Statistics\Statistics: '@tchoulom.viewcounter.statistics'
-    Tchoulom\ViewCounterBundle\Statistics\StatsBuilder: '@tchoulom.viewcounter.stats_builder'
+    Tchoulom\ViewCounterBundle\Statistics\StatManager: '@tchoulom.viewcounter.stat_manager'
+    Tchoulom\ViewCounterBundle\Statistics\StatBuilder: '@tchoulom.viewcounter.stats_builder'
     Tchoulom\ViewCounterBundle\Finder\StatsFinder: '@tchoulom.viewcounter.stats_finder'
     Tchoulom\ViewCounterBundle\Compute\StatsComputer: '@tchoulom.viewcounter.stats_computer'

@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Manager;
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Repository\RepositoryInterface;
 
 
@@ -108,5 +109,15 @@ class CounterManager
     public function cleanup(\DateTimeInterface $min = null, \DateTimeInterface $max = null): int
     {
         return $this->counterRepository->cleanup($min, $max);
+    }
+
+    /**
+     * Loads the ViewCounter data.
+     *
+     * @return ViewCounterInterface[]
+     */
+    public function loadViewCounterData()
+    {
+        return $this->counterRepository->loadViewCounterData();
     }
 }

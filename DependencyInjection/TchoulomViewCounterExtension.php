@@ -38,7 +38,7 @@ class TchoulomViewCounterExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('viewcounter.yml');
-        $loader->load('filesystem.yml');
+        $loader->load('storage.yml');
         $loader->load('statistics.yml');
         $loader->load('command.yml');
         $loader->load('geolocation.yml');

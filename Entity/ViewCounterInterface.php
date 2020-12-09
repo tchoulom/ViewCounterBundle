@@ -1,19 +1,9 @@
 <?php
 
-/**
- * This file is part of the TchoulomViewCounterBundle package.
- *
- * @package    TchoulomViewCounterBundle
- * @author     Original Author <tchoulomernest@yahoo.fr>
- *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Tchoulom\ViewCounterBundle\Entity;
 
+
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 
 /**
  * ViewCounterInterface
@@ -21,21 +11,37 @@ namespace Tchoulom\ViewCounterBundle\Entity;
 interface ViewCounterInterface
 {
     /**
-     * Get the ID
+     * Gets the ID
      *
      * @return integer
      */
     public function getId();
 
     /**
-     * Get the IP
+     * Gets the ViewCountable entity.
+     *
+     * @return ViewCountable The ViewCountable entity.
+     */
+    public function getPage(): ViewCountable;
+
+    /**
+     * Sets the ViewCountable entity.
+     *
+     * @param ViewCountable $page The ViewCountable entity.
+     *
+     * @return self
+     */
+    public function setPage(ViewCountable $page): self;
+
+    /**
+     * Gets the IP
      *
      * @return text
      */
     public function getIp();
 
     /**
-     * Set viewDate
+     * Sets viewDate
      *
      * @param $ip
      *
@@ -44,14 +50,14 @@ interface ViewCounterInterface
     public function setIp($ip);
 
     /**
-     * Get viewDate
+     * Gets viewDate
      *
      * @return \DateTime
      */
     public function getViewDate();
 
     /**
-     * Set viewDate
+     * Sets viewDate
      *
      * @param \DateTime $viewDate
      *

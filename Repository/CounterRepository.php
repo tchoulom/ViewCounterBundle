@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Repository;
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
 
 /**
@@ -96,5 +97,17 @@ class CounterRepository extends AbstractRepository
         }
 
         return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
+     * Loads the ViewCounter data.
+     *
+     * @return ViewCounterInterface[]
+     */
+    public function loadViewCounterData()
+    {
+        $viewcounterClass = $this->loadViewCounterClass();
+
+        return $this->getEntityManager()->getRepository($viewcounterClass)->findAll();
     }
 }

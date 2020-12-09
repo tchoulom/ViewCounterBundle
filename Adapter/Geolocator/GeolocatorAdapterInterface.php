@@ -4,17 +4,10 @@ namespace Tchoulom\ViewCounterBundle\Adapter\Geolocator;
 
 
 /**
- * Class GeolocatorAdapterInterface
+ * Class GeolocatorAdapter
  */
 interface GeolocatorAdapterInterface
 {
-    /**
-     * Gets the Geolocator service.
-     *
-     * @return GeolocatorInterface|null The Geolocator service
-     */
-    public function getGeolocator();
-
     /**
      * The record returned.
      *
@@ -49,20 +42,4 @@ interface GeolocatorAdapterInterface
      * @return string The city name
      */
     public function getCity(): string;
-
-    /**
-     * Allows to check if we can geolocate.
-     *
-     * @return bool Can use the Geolocator service?
-     */
-    public function canGeolocate(): bool;
-
-    /**
-     * Checks if the given Geolocator service is supported.
-     *
-     * @param $geolocator The given Geolocator service.
-     *
-     * @return bool Is the given Geolocator service supported?
-     */
-    public function supports($geolocator);
 }

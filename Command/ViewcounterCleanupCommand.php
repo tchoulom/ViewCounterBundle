@@ -44,16 +44,6 @@ class ViewcounterCleanupCommand extends AbstractCommand
     protected const DELETING_VIEWCOUNTER_DATA_MSG = 'Deleting viewcounter data...';
 
     /**
-     * @var string successful deletion message.
-     */
-    protected const SUCCESSFUL_DELETION_MSG = '%s line%s %s been successfully deleted!';
-
-    /**
-     * @var string Nothing to delete message.
-     */
-    protected const NOTHING_TO_DELETE_MSG = 'Nothing to delete!';
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -75,7 +65,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
                     "The option 'max' allows to remove viewcounters entities where view date less than or equals the given value (Example: 7m).
                                 If only this option is set, then the viewcounters records meeting this criteria will be deleted.
                                 "
-                )
+                ),
             ))
             ->setHelp('
                             Deletes viewcounter data from the database according to the given criteria.
@@ -91,7 +81,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
                             "y" => "year"
                             
                 
-                            <comment>' . self::SEE_DOCUMENTATION_MSG . '</comment>'
+                            <comment>'.self::SEE_DOCUMENTATION_MSG.'</comment>'
             );
     }
 
@@ -102,9 +92,9 @@ class ViewcounterCleanupCommand extends AbstractCommand
      *
      * @throws \Exception
      */
-    protected function executeCleanupCommand(): int
+    protected function doExecute(): int
     {
-        return $this->handle();
+        return $this->cleanup();
     }
 
     /**
@@ -114,7 +104,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
      *
      * @throws \Exception
      */
-    protected function handle(): int
+    protected function cleanup(): int
     {
         $this->io->title(self::CLEANUP_MSG);
 
@@ -135,6 +125,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
             $this->io->note(self::SEE_DOCUMENTATION_MSG);
             $this->io->writeln('');
             $this->io->comment(self::NO_CHANGE_MADE_MSG);
+
             return self::FAILURE;
         }
 
@@ -146,31 +137,18 @@ class ViewcounterCleanupCommand extends AbstractCommand
             $max = (null === $max) ? $max : $this->subtractDuration($max);
 
             $rowsDeleted = $this->counterManager->cleanup($min, $max);
-            $this->writeResponse($rowsDeleted);
+            $this->writeRowsDeletedResponse($rowsDeleted);
+
             return self::SUCCESS;
         } else {
-            $this->io->writeln('<comment>' . self::NO_CHANGE_MADE_MSG . '</comment>');
+            $this->io->writeln('<comment>'.self::NO_CHANGE_MADE_MSG.'</comment>');
+
             return self::SUCCESS;
         }
 
         $this->io->error(self::ERROR_OCCURRED_MSG);
-        $this->io->writeln('<comment>' . self::NO_CHANGE_MADE_MSG . '</comment>');
+        $this->io->writeln('<comment>'.self::NO_CHANGE_MADE_MSG.'</comment>');
 
         return self::FAILURE;
-    }
-
-    /**
-     * Writes the response.
-     *
-     * @param int $rowsDeleted The number of rows deleted.
-     */
-    protected function writeResponse(int $rowsDeleted)
-    {
-        if ($rowsDeleted > 0) {
-            $this->io->success(sprintf(self::SUCCESSFUL_DELETION_MSG, $rowsDeleted, $rowsDeleted > 1 ? 's' : '', $rowsDeleted > 1 ? 'have' : 'has'));
-        } else {
-            $this->io->writeln('');
-            $this->io->writeln('<comment>' . self::NOTHING_TO_DELETE_MSG . '</comment>');
-        }
     }
 }

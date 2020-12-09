@@ -132,6 +132,8 @@ class Day
      * Builds the day.
      *
      * @return self
+     *
+     * @throws \Exception
      */
     public function build(): self
     {
@@ -154,7 +156,7 @@ class Day
     public function getHour(string $hourName = null): Hour
     {
         if (null == $hourName) {
-            $hourName = 'h' . Date::getHour();
+            $hourName = 'h'.Date::getHour();
         }
 
         $hour = $this->get($hourName);
