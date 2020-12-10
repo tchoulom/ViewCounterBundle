@@ -12,14 +12,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Statistics;
+namespace Tchoulom\ViewCounterBundle\Manager;
 
 use Tchoulom\ViewCounterBundle\Adapter\Storage\StorageAdapterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+use Tchoulom\ViewCounterBundle\Statistics\StatBuilder;
 use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 
 /**
- * Class StatManager is used to build statistics.
+ * Class StatManager is used to manage statistics.
  */
 class StatManager
 {
@@ -59,7 +60,7 @@ class StatManager
     public function register(ViewCountable $page): void
     {
         $stats = $this->build($page);
-        $this->doRegister($stats);
+        $this->storageAdapter->save($stats);
     }
 
     /**
@@ -79,16 +80,6 @@ class StatManager
         $stats = $statBuilder->getStats();
 
         return $stats;
-    }
-
-    /**
-     * Registers the statistics of the page.
-     *
-     * @param array $stats
-     */
-    public function doRegister(array $stats): void
-    {
-        $this->storageAdapter->save($stats);
     }
 
     /**

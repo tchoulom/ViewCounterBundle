@@ -21,7 +21,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
-use Tchoulom\ViewCounterBundle\Statistics\StatManager;
+use Tchoulom\ViewCounterBundle\Manager\StatManager;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**

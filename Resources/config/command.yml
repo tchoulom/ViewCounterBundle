@@ -1,7 +1,7 @@
 parameters:
     tchoulom.viewcounter.command.base.class: Tchoulom\ViewCounterBundle\Command\AbstractCommand
     tchoulom.viewcounter.cleanup.command.class: Tchoulom\ViewCounterBundle\Command\ViewcounterCleanupCommand
-    tchoulom.viewcounter.convert_to_stats.command.class: Tchoulom\ViewCounterBundle\Command\ConvertToStatCommand
+    tchoulom.viewcounter.stats_converter.command.class: Tchoulom\ViewCounterBundle\Command\StatConverterCommand
 
 services:
 
@@ -22,9 +22,9 @@ services:
         tags:
             - { name: console.command }
 
-    # RegisterStatCommand
-    tchoulom.viewcounter.convert_to_stats.command:
-        class: '%tchoulom.viewcounter.convert_to_stats.command.class%'
+    # StatConverterCommand
+    tchoulom.viewcounter.stats_converter.command:
+        class: '%tchoulom.viewcounter.stats_converter.command.class%'
         parent: tchoulom.viewcounter.command.base
         public: true
         tags:
@@ -33,4 +33,4 @@ services:
     # aliases needed for services (Symfony version 4, 5)
     Tchoulom\ViewCounterBundle\Command\AbstractCommand: '@tchoulom.viewcounter.command.base'
     Tchoulom\ViewCounterBundle\Command\ViewcounterCleanupCommand: '@tchoulom.viewcounter.cleanup.command'
-    Tchoulom\ViewCounterBundle\Command\RegisterStatCommand: '@tchoulom.viewcounter.convert_to_stats.command'
+    Tchoulom\ViewCounterBundle\Command\StatConverterCommand: '@tchoulom.viewcounter.stats_converter.command'

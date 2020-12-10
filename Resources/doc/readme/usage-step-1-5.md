@@ -187,13 +187,13 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
         /**
          * Set the Page (Article entity)
          *
-         * @param Article $article
+         * @param ViewCountable $article
          *
          * @return ViewCounterInterface
          */
         public function setPage(ViewCountable $article): ViewCounterInterface
         {
-            $this->course = $course;
+            $this->article = $article;
     
             return $this;
         }

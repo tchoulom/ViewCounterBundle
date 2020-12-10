@@ -1,5 +1,5 @@
 parameters:
-    tchoulom.viewcounter.stat_manager.class: Tchoulom\ViewCounterBundle\Statistics\StatManager
+    tchoulom.viewcounter.stat_manager.class: Tchoulom\ViewCounterBundle\Manager\StatManager
     tchoulom.viewcounter.stats_builder.class: Tchoulom\ViewCounterBundle\Statistics\StatBuilder
     tchoulom.viewcounter.stats_finder.class: Tchoulom\ViewCounterBundle\Finder\StatsFinder
     tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Compute\StatsComputer
@@ -31,7 +31,7 @@ services:
         public: true
 
     # aliases needed for services (Symfony version 4, 5)
-    Tchoulom\ViewCounterBundle\Statistics\StatManager: '@tchoulom.viewcounter.stat_manager'
+    Tchoulom\ViewCounterBundle\Manager\StatManager: '@tchoulom.viewcounter.stat_manager'
     Tchoulom\ViewCounterBundle\Statistics\StatBuilder: '@tchoulom.viewcounter.stats_builder'
     Tchoulom\ViewCounterBundle\Finder\StatsFinder: '@tchoulom.viewcounter.stats_finder'
     Tchoulom\ViewCounterBundle\Compute\StatsComputer: '@tchoulom.viewcounter.stats_computer'

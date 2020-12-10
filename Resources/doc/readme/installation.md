@@ -22,7 +22,7 @@
   {
       "require": {
           ...
-          "tchoulom/view-counter-bundle": "^4.0"
+          "tchoulom/view-counter-bundle": "^5.0"
           ...
       }
   }

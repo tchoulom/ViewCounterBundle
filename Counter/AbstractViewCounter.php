@@ -20,7 +20,7 @@ use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
-use Tchoulom\ViewCounterBundle\Statistics\StatManager;
+use Tchoulom\ViewCounterBundle\Manager\StatManager;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**

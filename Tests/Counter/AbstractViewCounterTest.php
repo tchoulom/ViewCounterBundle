@@ -25,7 +25,7 @@ use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterNodeConfig;
 use Tchoulom\ViewCounterBundle\Statistics\Statistics;
-use Tchoulom\ViewCounterBundle\Statistics\StatManager;
+use Tchoulom\ViewCounterBundle\Manager\StatManager;
 use Tchoulom\ViewCounterBundle\Tests\BaseTest;
 
 /**
