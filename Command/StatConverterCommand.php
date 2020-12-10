@@ -67,9 +67,9 @@ class StatConverterCommand extends AbstractCommand
                             
                             Examples of using the command:
                             
-                            bin/console tchoulom:viewcounter:convert-to-stats --cleanup=true
-                            bin/console tchoulom:viewcounter:convert-to-stats --cleanup=false
-                            bin/console tchoulom:viewcounter:convert-to-stats
+                            bin/console tchoulom:viewcounter:stats:convert --cleanup=true
+                            bin/console tchoulom:viewcounter:stats:convert --cleanup=false
+                            bin/console tchoulom:viewcounter:stats:convert
                             
                 
                             <comment>'.self::SEE_DOCUMENTATION_MSG.'</comment>'
