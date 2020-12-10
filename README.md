@@ -49,7 +49,7 @@ This bundle can also be used to draw a graphical representation of statistical d
  - [Tools](Resources/doc/readme/tools-command-cleanup.md#tools)
    - [Command](Resources/doc/readme/tools-command-cleanup.md#command)
      - [Cleanup ViewCounter data](Resources/doc/readme/tools-command-cleanup.md#cleanup-viewcounter-data)
-     - [Converts ViewCounter entities to statistical data](Resources/doc/readme/tools-command-convert-to-stats.md#converts-viewcounter-entities-to-statistical-data)
+     - [Converts ViewCounter entities to statistical data](Resources/doc/readme/tools-command-stats-converter.md#converts-viewcounter-entities-to-statistical-data)
 - [Original Credits](#original-credits)
 - [License](#license)
 

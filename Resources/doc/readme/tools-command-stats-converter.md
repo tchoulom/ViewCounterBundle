@@ -23,16 +23,16 @@ Set **use_stats** to **false** in config :
 
 - Run the following command:
 
-This command convert ViewCounter entities to statistical data.
+This command converts ViewCounter entities to statistical data.
 
 ```bash
-   php bin/console tchoulom:viewcounter:convert-to-stats
+   php bin/console tchoulom:viewcounter:stats:convert
 ```
 
 or
 
 ```bash
-   php bin/console tchoulom:viewcounter:convert-to-stats --cleanup=true
+   php bin/console tchoulom:viewcounter:stats:convert --cleanup=true
 ```
 
 This command can be automated via a cron task.
