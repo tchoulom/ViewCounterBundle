@@ -120,4 +120,4 @@ Your Geolocation service must implement the "Tchoulom\ViewCounterBundle\Adapter\
 
 you are free to improve the above "Geolocator" service, in particular to verify the existence of geolocation data.
 
-You can go to this step for the use of geolocation data [Search for geolocation data](Resources/doc/readme/statistics-finder.md#search-for-geolocation-data).
+You can go to this step for the use of geolocation data [Search for geolocation data](statistics-finder.md#search-for-geolocation-data).

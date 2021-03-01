@@ -30,16 +30,6 @@ use Tchoulom\ViewCounterBundle\Util\Date;
 abstract class AbstractCommand extends Command
 {
     /**
-     * @var int Does the command end successfully.
-     */
-    protected const SUCCESS = 0;
-
-    /**
-     * @var int Does the command end with failure.
-     */
-    protected const FAILURE = 1;
-
-    /**
      * @var int Comment message.
      */
     protected const COMMENT = 2;
@@ -130,7 +120,8 @@ abstract class AbstractCommand extends Command
         CounterManager $counterManager,
         StatManager $statManager,
         string $name = null
-    ) {
+    )
+    {
         parent::__construct($name);
 
         $this->counterManager = $counterManager;
@@ -266,7 +257,7 @@ abstract class AbstractCommand extends Command
                 $rowsDeleted > 1 ? 'have' : 'has'));
         } else {
             $this->io->writeln('');
-            $this->io->writeln('<comment>'.self::NOTHING_TO_DELETE_MSG.'</comment>');
+            $this->io->writeln('<comment>' . self::NOTHING_TO_DELETE_MSG . '</comment>');
         }
     }
 
@@ -286,7 +277,7 @@ abstract class AbstractCommand extends Command
                 $this->io->error($message);
                 break;
             case self::COMMENT:
-                $this->io->writeln('<comment>'.$message.'</comment>');
+                $this->io->writeln('<comment>' . $message . '</comment>');
         }
     }
 }

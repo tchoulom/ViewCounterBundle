@@ -351,7 +351,7 @@ if your service is declared as such:
     app.service.geolocator:
         class: App\Service\Geolocator
 ```
-You must then set up your "Geolocator" service as we will see in this documentation [Step 6: The Geolocation](Resources/doc/readme/geolocation.md#step-6-the-geolocation).
+You must then set up your "Geolocator" service as we will see in this documentation [Step 6: The Geolocation](geolocation.md#step-6-the-geolocation).
 
 ###### You must comment on the geolocation configuration if you do not want to use it in your project:
 

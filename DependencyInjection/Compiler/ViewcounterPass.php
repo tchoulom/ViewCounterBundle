@@ -82,11 +82,11 @@ class ViewcounterPass implements CompilerPassInterface
      *
      * @param array $configs
      *
-     * @return array
+     * @return array|null
      */
-    public function getStorageNode(array $configs): array
+    public function getStorageNode(array $configs): ?array
     {
-        return $configs[0]['storage'];
+        return $configs[0]['storage'] ?? null;
     }
 
     /**
@@ -98,11 +98,6 @@ class ViewcounterPass implements CompilerPassInterface
      */
     public function getGeolocationNode(array $configs): ?array
     {
-        $configs = $configs[0];
-        if (isset($configs['geolocation'])) {
-            return $configs['geolocation'];
-        }
-
-        return null;
+        return $configs[0]['geolocation'] ?? null;
     }
 }
