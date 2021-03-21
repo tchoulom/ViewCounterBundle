@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,6 +15,7 @@
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
 use Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapterInterface;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Geolocation\Country;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
@@ -116,20 +117,22 @@ class Page
     /**
      * Builds the year.
      *
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
      * @return self
      */
-    public function buildYear(): self
+    public function buildYear(ViewCounterInterface $viewcounter): self
     {
         $this->total++;
-        $yearNumber = Date::getNowYear();
-
+        $yearNumber = intval($viewcounter->getViewDate()->format('Y'));
+        
         if (isset($this->years[$yearNumber])) {
             $year = $this->years[$yearNumber];
         } else {
             $year = new Year();
         }
 
-        $this->years[$yearNumber] = $year->buildMonth();
+        $this->years[$yearNumber] = $year->buildMonth($viewcounter);
 
         return $this;
     }
@@ -137,13 +140,14 @@ class Page
     /**
      * Builds the country.
      *
-     * @param GeolocatorAdapterInterface $geolocatorAdapter
+     * @param GeolocatorAdapterInterface $geolocator The geolocator.
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
      *
      * @return self
      */
-    public function buildCountry(GeolocatorAdapterInterface $geolocatorAdapter): self
+    public function buildCountry(GeolocatorAdapterInterface $geolocator, ViewCounterInterface $viewcounter): self
     {
-        $countryName = $geolocatorAdapter->getCountry();
+        $countryName = $geolocator->getCountry();
 
         if (isset($this->countries[$countryName])) {
             $country = $this->countries[$countryName];
@@ -151,7 +155,7 @@ class Page
             $country = new Country();
         }
 
-        $this->countries[$countryName] = $country->build($geolocatorAdapter);
+        $this->countries[$countryName] = $country->build($geolocator, $viewcounter);
 
         return $this;
     }

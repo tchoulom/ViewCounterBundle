@@ -1,19 +1,34 @@
 <?php
 
+/**
+ * This file is part of the TchoulomViewCounterBundle package.
+ *
+ * @package    TchoulomViewCounterBundle
+ * @author     Original Author <tchoulomernest@yahoo.fr>
+ *
+ * (c) Ernest TCHOULOM
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tchoulom\ViewCounterBundle\Storage\Filesystem;
 
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+
 /**
- * Class Filesystem is used to manipulate the file system.
+ * Class FilesystemStorageInterface is used to manipulate the file system.
  */
-interface FilesystemInterface
+interface FilesystemStorageInterface
 {
     /**
      * Saves the statistics.
      *
-     * @param $stats
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
      */
-    public function save($stats);
+    public function save(ViewCounterInterface $viewcounter);
 
     /**
      * Loads the contents.

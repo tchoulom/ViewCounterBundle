@@ -1,0 +1,21 @@
+parameters:
+    tchoulom.viewcounter.repository.base.class: Tchoulom\ViewCounterBundle\Repository\AbstractRepository
+    tchoulom.viewcounter.repository.class: Tchoulom\ViewCounterBundle\Repository\CounterRepository
+
+services:
+    # ORM
+    tchoulom.viewcounter.repository.base:
+        class: '%tchoulom.viewcounter.repository.base.class%'
+        abstract:  true
+        public: true
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    tchoulom.viewcounter.repository:
+        class: '%tchoulom.viewcounter.repository.class%'
+        public: true
+        parent: tchoulom.viewcounter.repository.base
+
+    # aliases needed for services (Symfony version 4, 5)
+    Tchoulom\ViewCounterBundle\Repository\AbstractRepository: '@tchoulom.viewcounter.repository.base'
+    Tchoulom\ViewCounterBundle\Repository\CounterRepository: '@tchoulom.viewcounter.repository'

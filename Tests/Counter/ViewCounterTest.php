@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -46,7 +46,7 @@ class ViewCounterTest extends AbstractViewCounterTest
     {
         return [
             [null, '', true],
-            ['', self::INCREMENT_EACH_VIEW, true],
+            ['', self::ON_REFRESH, true],
             ['2019-09-24 11:18:11', self::UNIQUE_VIEW, false],
             ['2019-09-24 11:18:11', self::DAILY_VIEW, false],
             ['2019-09-24 11:18:11', self::DAILY_VIEW, true],

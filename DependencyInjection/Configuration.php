@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -48,15 +48,14 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('statistics')
                     ->children()
-                        ->booleanNode('use_stats')->isRequired()->defaultValue(false)->info('Defines whether to use statistics.')->end()
+                        ->booleanNode('enabled')->isRequired()->defaultValue(false)->info('Defines whether to use statistics.')->end()
                         ->scalarNode('stats_file_name')->isRequired()->info('Defines the name of the statistics file.')->end()
                         ->scalarNode('stats_file_extension')->isRequired()->info('Defines the extension of the statistics file.')->end()
                     ->end()
                 ->end()
                 ->arrayNode('storage')
                     ->children()
-                        ->scalarNode('service')->info('Allows to define the Storage service identifier.')
-                        ->end()
+                        ->scalarNode('engine')->info('Allows to define the Storage engine name.')->end()
                     ->end()
                 ->end()
                 ->arrayNode('geolocation')

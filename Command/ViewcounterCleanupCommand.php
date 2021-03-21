@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Command;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -67,11 +68,12 @@ class ViewcounterCleanupCommand extends AbstractCommand
                                 "
                 ),
             ))
+            ->addArgument('auto-approve', InputArgument::OPTIONAL, "The argument 'auto-approve' allows interactive questions to be approved automatically.")
             ->setHelp('
                             Deletes viewcounter data from the database according to the given criteria.
-                            
+
                             Examples of date interval:
-                            
+
                             "s" => "second"
                             "m" => "minute"
                             "h" => "hour"
@@ -79,9 +81,9 @@ class ViewcounterCleanupCommand extends AbstractCommand
                             "w" => "week"
                             "M" => "month"
                             "y" => "year"
-                            
-                
-                            <comment>'.self::SEE_DOCUMENTATION_MSG.'</comment>'
+
+
+                            <comment>' . self::SEE_DOCUMENTATION_MSG . '</comment>'
             );
     }
 
@@ -129,7 +131,8 @@ class ViewcounterCleanupCommand extends AbstractCommand
             return self::FAILURE;
         }
 
-        $confirmCleanup = $this->askQuestion(self::ASK_QUESTION_MSG);
+        $confirmCleanup = $this->canAutoApprove(self::ASK_QUESTION_MSG);
+
         if (self::CLEANUP_CONFIRMED === $confirmCleanup) {
             $this->io->writeln(self::DELETING_VIEWCOUNTER_DATA_MSG);
 
@@ -141,13 +144,13 @@ class ViewcounterCleanupCommand extends AbstractCommand
 
             return self::SUCCESS;
         } else {
-            $this->io->writeln('<comment>'.self::NO_CHANGE_MADE_MSG.'</comment>');
+            $this->io->writeln('<comment>' . self::NO_CHANGE_MADE_MSG . '</comment>');
 
             return self::SUCCESS;
         }
 
         $this->io->error(self::ERROR_OCCURRED_MSG);
-        $this->io->writeln('<comment>'.self::NO_CHANGE_MADE_MSG.'</comment>');
+        $this->io->writeln('<comment>' . self::NO_CHANGE_MADE_MSG . '</comment>');
 
         return self::FAILURE;
     }

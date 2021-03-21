@@ -1,37 +1,46 @@
 parameters:
-    tchoulom.viewcounter.stat_manager.class: Tchoulom\ViewCounterBundle\Manager\StatManager
-    tchoulom.viewcounter.stats_builder.class: Tchoulom\ViewCounterBundle\Statistics\StatBuilder
-    tchoulom.viewcounter.stats_finder.class: Tchoulom\ViewCounterBundle\Finder\StatsFinder
+    tchoulom.viewcounter.stats_manager.class: Tchoulom\ViewCounterBundle\Manager\StatsManager
+    tchoulom.viewcounter.file_stats_builder.class: Tchoulom\ViewCounterBundle\Builder\FileStatsBuilder
+    tchoulom.viewcounter.file_stats_finder.class: Tchoulom\ViewCounterBundle\Finder\FileStatsFinder
     tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Compute\StatsComputer
+    tchoulom.viewcounter.stats_converter.class: Tchoulom\ViewCounterBundle\Etl\StatsConverter
 
 services:
     # Statistics
-    tchoulom.viewcounter.stat_manager:
-        class: '%tchoulom.viewcounter.stat_manager.class%'
+    tchoulom.viewcounter.stats_manager:
+        class: '%tchoulom.viewcounter.stats_manager.class%'
         public: true
         arguments:
             - '@tchoulom.viewcounter.storage_adapter'
-            - '@tchoulom.viewcounter.stats_builder'
+            - '@tchoulom.viewcounter.file_stats_builder'
 
-    # StatBuilder
-    tchoulom.viewcounter.stats_builder:
-        class: '%tchoulom.viewcounter.stats_builder.class%'
+    # FileStatsBuilder
+    tchoulom.viewcounter.file_stats_builder:
+        class: '%tchoulom.viewcounter.file_stats_builder.class%'
         public: true
         arguments: ['@tchoulom.viewcounter.geolocator_adapter']
 
-    # StatsFinder
-    tchoulom.viewcounter.stats_finder:
-        class: '%tchoulom.viewcounter.stats_finder.class%'
+    # FileStatsFinder
+    tchoulom.viewcounter.file_stats_finder:
+        class: '%tchoulom.viewcounter.file_stats_finder.class%'
         public: true
-        arguments: ['@tchoulom.viewcounter.filesystem']
+        arguments: ['@tchoulom.viewcounter.filesystem_storage']
 
     # StatsComputer
     tchoulom.viewcounter.stats_computer:
         class: '%tchoulom.viewcounter.stats_computer.class%'
         public: true
 
+    # StatsConverter
+    tchoulom.viewcounter.stats_converter:
+        class: '%tchoulom.viewcounter.stats_converter.class%'
+        public: true
+        arguments:
+            - '@tchoulom.viewcounter.filesystem_storage'
+
     # aliases needed for services (Symfony version 4, 5)
-    Tchoulom\ViewCounterBundle\Manager\StatManager: '@tchoulom.viewcounter.stat_manager'
-    Tchoulom\ViewCounterBundle\Statistics\StatBuilder: '@tchoulom.viewcounter.stats_builder'
-    Tchoulom\ViewCounterBundle\Finder\StatsFinder: '@tchoulom.viewcounter.stats_finder'
+    Tchoulom\ViewCounterBundle\Manager\StatsManager: '@tchoulom.viewcounter.stats_manager'
+    Tchoulom\ViewCounterBundle\Builder\FileStatsBuilder: '@tchoulom.viewcounter.file_stats_builder'
+    Tchoulom\ViewCounterBundle\Finder\FileStatsFinder: '@tchoulom.viewcounter.file_stats_finder'
     Tchoulom\ViewCounterBundle\Compute\StatsComputer: '@tchoulom.viewcounter.stats_computer'
+    Tchoulom\ViewCounterBundle\Etl\StatsConverter: '@tchoulom.viewcounter.stats_converter'

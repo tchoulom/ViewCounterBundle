@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,14 +14,19 @@
 
 namespace Tchoulom\ViewCounterBundle\Command;
 
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Tchoulom\ViewCounterBundle\Etl\StatsConverter;
+use Tchoulom\ViewCounterBundle\Manager\CounterManager;
+use Tchoulom\ViewCounterBundle\Manager\StatsManager;
 
 /**
- * Class StatConverterCommand
+ * Class StatsConverterCommand
  *
  * @package Tchoulom\ViewCounterBundle\Command
  */
-class StatConverterCommand extends AbstractCommand
+class StatsConverterCommand extends AbstractCommand
 {
     /**
      * @var string confirmation before converting to stats.
@@ -41,7 +46,34 @@ class StatConverterCommand extends AbstractCommand
     /**
      * @var string No data to convert to stats.
      */
-    protected const NO_DATA_TO_CONVERT_TO_STATS_MSG = 'No ViewCounter entities to convert to statistical data!';
+    protected const NO_DATA_TO_CONVERT_TO_STATS_MSG = 'No ViewCounter entities to convert into statistical data!';
+
+    /**
+     * The Stats converter.
+     *
+     * @var StatsConverter The Stats converter.
+     */
+    protected $statsConverter;
+
+    /**
+     * StatConverterCommand constructor.
+     *
+     * @param CounterManager $counterManager
+     * @param StatsManager $statsManager
+     * @param StatsConverter $statsConverter
+     * @param string|null $name
+     */
+    public function __construct(
+        CounterManager $counterManager,
+        StatsManager $statsManager,
+        StatsConverter $statsConverter,
+        string $name = null
+    )
+    {
+        parent::__construct($counterManager, $statsManager, $name);
+
+        $this->statsConverter = $statsConverter;
+    }
 
     /**
      * {@inheritdoc}
@@ -62,17 +94,19 @@ class StatConverterCommand extends AbstractCommand
                                 "
                 ),
             ))
+            ->addArgument(self::AUTO_APPROVE, InputArgument::OPTIONAL, "The argument 'auto-approve' allows interactive questions to be approved automatically.")
             ->setHelp('
                             Converts ViewCounter entities to statistical data.
-                            
+
                             Examples of using the command:
-                            
+
                             bin/console tchoulom:viewcounter:stats:convert --cleanup=true
                             bin/console tchoulom:viewcounter:stats:convert --cleanup=false
                             bin/console tchoulom:viewcounter:stats:convert
-                            
-                
-                            <comment>'.self::SEE_DOCUMENTATION_MSG.'</comment>'
+                            bin/console tchoulom:viewcounter:stats:convert auto-approve
+
+
+                            <comment>' . self::SEE_DOCUMENTATION_MSG . '</comment>'
             );
     }
 
@@ -98,7 +132,8 @@ class StatConverterCommand extends AbstractCommand
     protected function convert(): int
     {
         $this->io->title(self::CONVERT_TO_STATS_MSG);
-        $confirmConvert = $this->askQuestion(self::ASK_QUESTION_MSG);
+
+        $confirmConvert = $this->canAutoApprove(self::ASK_QUESTION_MSG);
 
         if (self::CONVERT_TO_STATS_CONFIRMED === $confirmConvert) {
             $this->io->writeln(self::CONVERTING_TO_STATS_DATA_MSG);
@@ -107,11 +142,20 @@ class StatConverterCommand extends AbstractCommand
             $canConvertToStats = is_array($viewCounterData) && !empty($viewCounterData);
 
             if ($canConvertToStats) {
-                $this->statManager->convertToStats($viewCounterData);
-
                 $nbVcEntities = count($viewCounterData);
+                $progressBar = new ProgressBar($this->output, $nbVcEntities);
+                $progressBar->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
+                $progressBar->start();
+
+                foreach ($viewCounterData as $viewcounter) {
+                    $this->statsConverter->convert($viewcounter);
+                    $progressBar->advance();
+                }
+
+                $progressBar->finish();
+
                 $vcMessage = $nbVcEntities > 1 ? 'entities from the ViewCounter table have been' : 'entity from the viewCounter table has been';
-                $this->writeMessage($nbVcEntities.' '.$vcMessage.' successfully converted to statistical data.',
+                $this->writeMessage($nbVcEntities . ' ' . $vcMessage . ' successfully converted into statistical data.',
                     self::SUCCESS);
 
                 // Cleanup ViewCounter entities.

@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
 namespace Tchoulom\ViewCounterBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemInterface;
+use Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemStorageInterface;
 
 /**
  * Class BaseTest
@@ -23,8 +23,8 @@ use Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemInterface;
 abstract class BaseTest extends TestCase
 {
     protected $clientIP = '127.0.0.1';
-    protected $filesystemMock;
-    protected $viewInterval = ['increment_each_view', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
+    protected $filesystemStorageMock;
+    protected $viewInterval = ['on_refresh', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
 
     /**
      * Setup the fixtures.
@@ -33,7 +33,7 @@ abstract class BaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->filesystemMock = $this->createMock(FilesystemInterface::class);
+        $this->filesystemStorageMock = $this->createMock(FilesystemStorageInterface::class);
     }
 
     /**
@@ -41,7 +41,7 @@ abstract class BaseTest extends TestCase
      */
     public function tearDown()
     {
-        $this->filesystemMock = null;
+        $this->filesystemStorageMock = null;
     }
 
     /**

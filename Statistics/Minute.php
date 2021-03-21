@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -100,15 +101,18 @@ class Minute
     /**
      * Builds the minute.
      *
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
      * @return self
      */
-    public function build(): self
+    public function build(ViewCounterInterface $viewcounter): self
     {
         $this->total++;
 
-        $second = $this->getSecond();
+        $secondName = 's' . $viewcounter->getViewDate()->format('s');
+        $second = $this->getSecond($secondName);
         $secondName = strtolower($second->getName());
-        $this->$secondName = $second->build();
+        $this->$secondName = $second->build($viewcounter);
 
         return $this;
     }
@@ -125,7 +129,7 @@ class Minute
         if (null == $secondName) {
             $secondName = 's' . Date::getSecond();
         }
-        
+
         $second = $this->get($secondName);
         if (!$second instanceof Second) {
             $second = new Second($secondName, 0);

@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,12 +35,12 @@ class TchoulomViewCounterBundle extends Bundle
      *
      * @var array
      */
-    const SUPPORTED_STRATEGY = ['increment_each_view', 'unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
+    const SUPPORTED_STRATEGY = ['on_refresh', 'unique_view', 'daily_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
 
     /**
      * The supported statistics keys.
      *
      * @var array
      */
-    const SUPPORTED_STATS_KEYS = ['use_stats', 'stats_file_name', 'stats_file_extension'];
+    const SUPPORTED_STATS_KEYS = ['enabled', 'stats_file_name', 'stats_file_extension'];
 }

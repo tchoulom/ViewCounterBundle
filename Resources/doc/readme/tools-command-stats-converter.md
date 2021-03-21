@@ -10,14 +10,14 @@ It is possible to avoid the creation of statistical data after each view count, 
 
 - Disable the use of statistics
 
-Set **use_stats** to **false** in config :
+Set **enabled** to **false** in config :
 
 ```yaml
 
     tchoulom_view_counter:
         ...
         statistics:
-            use_stats: false
+            enabled: false
         ...
 ```
 
@@ -33,6 +33,12 @@ or
 
 ```bash
    php bin/console tchoulom:viewcounter:stats:convert --cleanup=true
+```
+
+- Add the "auto-approve" argument to skip approval questions:
+
+```bash
+   php bin/console tchoulom:viewcounter:stats:convert --cleanup=true auto-approve
 ```
 
 This command can be automated via a cron task.

@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,6 +15,7 @@
 namespace Tchoulom\ViewCounterBundle\Geolocation;
 
 use Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapterInterface;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Statistics\ViewDateTrait;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
@@ -36,6 +37,13 @@ class City
      * @var int
      */
     protected $total = 0;
+
+    /**
+     * The viewcounter entity.
+     *
+     * @var ViewCounterInterface
+     */
+    protected $viewcounter;
 
     use ViewDateTrait;
 
@@ -90,15 +98,17 @@ class City
     /**
      * Builds the city.
      *
-     * @param GeolocatorAdapterInterface $geolocatorAdapter
+     * @param GeolocatorAdapterInterface $geolocator The geolocator.
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
      *
      * @return self
      */
-    public function build(GeolocatorAdapterInterface $geolocatorAdapter): self
+    public function build(GeolocatorAdapterInterface $geolocator, ViewCounterInterface $viewcounter): self
     {
         $this->total++;
+        $this->viewcounter = $viewcounter;
         $this->buildViewDate();
-        $this->name = $geolocatorAdapter->getCity();
+        $this->name = $geolocator->getCity();
 
         return $this;
     }

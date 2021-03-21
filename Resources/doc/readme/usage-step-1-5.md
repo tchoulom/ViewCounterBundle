@@ -243,24 +243,24 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
         view_counter:
             view_strategy: daily_view
         statistics:
-            use_stats: false
+            enabled: false
             stats_file_name: stats
             stats_file_extension:
         storage:
-            service: App\Service\Storer
+            engine: filesystem # filesystem or mongodb or a custom service
         geolocation:
             geolocator_id: App\Service\Geolocator
 ```
 ### The "view_counter"
 
-The different values of ***view_strategy*** are : daily_view, unique_view, increment_each_view, hourly_view, weekly_view, monthly_view, yearly_view, view_per_minute, view_per_second.
+The different values of ***view_strategy*** are : daily_view, unique_view, on_refresh, hourly_view, weekly_view, monthly_view, yearly_view, view_per_minute, view_per_second.
 
 * The **daily_view** allows to increment **daily**, for a given **IP** address, the number of views of an **Article** (the viewership).
 In fact it increments the **$views** property.
 
 * The **unique_view** allows to set to **1**, for a given **IP** address, the number of view of an article
 
-* The **increment_each_view** allows to increment the number of views of an **Article** every time the user will refresh the page
+* The **on_refresh** allows to increment the number of views of an **Article** each time the user refreshes the page
 
 * The **hourly_view** allows to increment **hourly**, for a given **IP** address, the number of views of an **Article** (the viewership).
 
@@ -276,9 +276,9 @@ In fact it increments the **$views** property.
 
 ### The "statistics"
 
-The **use_stats** allows to indicate if you want to use statistics.
+The **enabled** allows to indicate if you want to use statistics.
 
-If **use_stats** is set to ***true***, statistics functionality will be used.
+If **enabled** is set to ***true***, statistics functionality will be used.
 
 The **stats_file_name** allows to define the name of the statistics file.
 
@@ -296,9 +296,10 @@ The full path of the statistics file is ***var/viewcounter*** of your project.
 
 ### The "storage"
 
-The Storage defines the service that will allow you to store your statistical data.
+The Storage defines the service that will allow to store the statistical data.
 
-The **service** corresponds to the **identifier** or the **name of the class** of your storage service, depending on the version of symfony used:
+The **filesystem** engine allows to save the statistical data in a file.
+The **mongodb** engine allows to save the statistical data in a mongodb database.
 
 
 ```yaml
@@ -306,8 +307,28 @@ The **service** corresponds to the **identifier** or the **name of the class** o
     tchoulom_view_counter:
         ...
         storage:
-            service: app.service.storer
+            engine: filesystem
 ```
+You can choose to save your statistical data in a database such as **mongodb** :
+
+```yaml
+
+    tchoulom_view_counter:
+        ...
+        storage:
+            engine: mongodb
+```
+
+You can also set a custom storage service:
+
+```yaml
+
+    tchoulom_view_counter:
+        ...
+        storage:
+            engine: app.service.storer
+```
+
 or
 
 ```yaml
@@ -315,12 +336,12 @@ or
     tchoulom_view_counter:
         ...
         storage:
-            service: App\Service\Storer
+            engine: App\Service\Storer
 ```
 
 The storage service must implement the interface "Tchoulom\ViewCounterBundle\Adapter\Storage\StorageAdapterInterface".
 
-If **use_stats** is **true** and no storage service is defined, then the default storage service used will be "Tchoulom\ViewCounterBundle\Storage\Filesystem\Filesystem".
+If **enabled** is **true** and no storage engine is defined, then the default storage service used will be **filesystem**.
 
 ### The "geolocation"
 

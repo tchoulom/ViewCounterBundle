@@ -1,8 +1,6 @@
 parameters:
     tchoulom.viewcounter.base.class: Tchoulom\ViewCounterBundle\Counter\AbstractViewCounter
     tchoulom.viewcounter.class: Tchoulom\ViewCounterBundle\Counter\ViewCounter
-    tchoulom.viewcounter.repository.base.class: Tchoulom\ViewCounterBundle\Repository\AbstractRepository
-    tchoulom.viewcounter.repository.class: Tchoulom\ViewCounterBundle\Repository\CounterRepository
     tchoulom.viewcounter.manager.class: Tchoulom\ViewCounterBundle\Manager\CounterManager
     tchoulom.viewcounter_config.class: Tchoulom\ViewCounterBundle\Model\ViewcounterConfig
     tchoulom.viewcounter_node_config.class: Tchoulom\ViewCounterBundle\Model\ViewcounterNodeConfig
@@ -19,25 +17,12 @@ services:
             - '@request_stack'
             - '@tchoulom.viewcounter_config'
         calls:
-            - [setStatManager, ['@tchoulom.viewcounter.stat_manager']]
+            - [setStatsManager, ['@tchoulom.viewcounter.stats_manager']]
 
     tchoulom.viewcounter:
         class: '%tchoulom.viewcounter.class%'
         public: true
         parent: tchoulom.viewcounter.base
-
-    # Repository
-    tchoulom.viewcounter.repository.base:
-        class: '%tchoulom.viewcounter.repository.base.class%'
-        abstract:  true
-        public: true
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
-    tchoulom.viewcounter.repository:
-        class: '%tchoulom.viewcounter.repository.class%'
-        public: true
-        parent: tchoulom.viewcounter.repository.base
 
     # Manager
     tchoulom.viewcounter.manager:
@@ -69,8 +54,6 @@ services:
     # aliases needed for services (Symfony version 4, 5)
     Tchoulom\ViewCounterBundle\Counter\AbstractViewCounter: '@tchoulom.viewcounter.base'
     Tchoulom\ViewCounterBundle\Counter\ViewCounter: '@tchoulom.viewcounter'
-    Tchoulom\ViewCounterBundle\Repository\AbstractRepository: '@tchoulom.viewcounter.repository.base'
-    Tchoulom\ViewCounterBundle\Repository\CounterRepository: '@tchoulom.viewcounter.repository'
     Tchoulom\ViewCounterBundle\Manager\CounterManager: '@tchoulom.viewcounter.manager'
     Tchoulom\ViewCounterBundle\Model\ViewcounterConfig: '@tchoulom.viewcounter_config'
     Tchoulom\ViewCounterBundle\Model\ViewcounterNodeConfig: '@tchoulom.viewcounter_node_config'

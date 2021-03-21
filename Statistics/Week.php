@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -312,15 +313,18 @@ class Week
     /**
      * Builds the day.
      *
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
      * @return self
      */
-    public function buildDay(): self
+    public function buildDay(ViewCounterInterface $viewcounter): self
     {
         $this->total++;
-        $day = $this->getDay();
+        $dayName = $viewcounter->getViewDate()->format('l');
+        $day = $this->getDay($dayName);
         $dayName = strtolower($day->getName());
 
-        $this->$dayName = $day->build();
+        $this->$dayName = $day->build($viewcounter);
 
         return $this;
     }

@@ -1,6 +1,7 @@
 parameters:
     tchoulom.viewcounter.storage_adapter.class: Tchoulom\ViewCounterBundle\Adapter\Storage\StorageAdapter
-    tchoulom.viewcounter.filesystem.class: Tchoulom\ViewCounterBundle\Storage\Filesystem\Filesystem
+    tchoulom.viewcounter.filesystem_storage.class: Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemStorage
+    tchoulom.viewcounter.mongodb_storage.class: Tchoulom\ViewCounterBundle\Storage\Database\MongoDB\MongoDBStorage
 
 services:
     # Storage Adapter
@@ -8,16 +9,26 @@ services:
         class: '%tchoulom.viewcounter.storage_adapter.class%'
         public: true
         arguments:
-            - '@tchoulom.viewcounter.filesystem'
+            - '@tchoulom.viewcounter.filesystem_storage'
 
-    # Filesystem
-    tchoulom.viewcounter.filesystem:
-        class: '%tchoulom.viewcounter.filesystem.class%'
+    # FilesystemStorage
+    tchoulom.viewcounter.filesystem_storage:
+        class: '%tchoulom.viewcounter.filesystem_storage.class%'
         public: true
         arguments:
             - '%kernel.project_dir%'
             - '@tchoulom.viewcounter_config'
+            - '@tchoulom.viewcounter.file_stats_builder'
+
+    # MongoDBStorage
+    tchoulom.viewcounter.mongodb_storage:
+        class: '%tchoulom.viewcounter.mongodb_storage.class%'
+        public: true
+        arguments:
+            - '@doctrine_mongodb.odm.document_manager'
+            - '@tchoulom.viewcounter.geolocator_adapter'
 
     # aliases needed for services (Symfony version 4, 5)
     Tchoulom\ViewCounterBundle\Adapter\FileStorageAdapter: '@tchoulom.viewcounter.storage_adapter'
-    Tchoulom\ViewCounterBundle\Filesystem\Filesystem: '@tchoulom.viewcounter.filesystem'
+    Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemStorage: '@tchoulom.viewcounter.filesystem_storage'
+    Tchoulom\ViewCounterBundle\Storage\Database\MongoDB\MongoDBStorage: '@tchoulom.viewcounter.mongodb_storage'

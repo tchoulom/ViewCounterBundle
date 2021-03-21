@@ -1,24 +1,34 @@
 <?php
 
+/**
+ * This file is part of the TchoulomViewCounterBundle package.
+ *
+ * @package    TchoulomViewCounterBundle
+ * @author     Original Author <tchoulomernest@yahoo.fr>
+ *
+ * (c) Ernest TCHOULOM
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tchoulom\ViewCounterBundle\Adapter\Storage;
 
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+
 /**
- * Class StorageAdapter
+ * Interface StorageAdapterInterface
+ *
+ * @package Tchoulom\ViewCounterBundle\Adapter\Storage
  */
 interface StorageAdapterInterface
 {
     /**
      * Saves the statistics.
      *
-     * @param $stats
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
      */
-    public function save($stats);
-
-    /**
-     * Loads the contents.
-     *
-     * @return mixed
-     */
-    public function loadContents();
+    public function save(ViewCounterInterface $viewcounter);
 }

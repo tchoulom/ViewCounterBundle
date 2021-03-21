@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Tchoulom\ViewCounterBundle\Exception\RuntimeException;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
-use Tchoulom\ViewCounterBundle\Manager\StatManager;
+use Tchoulom\ViewCounterBundle\Manager\StatsManager;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -55,11 +55,11 @@ abstract class AbstractCommand extends Command
     protected $counterManager;
 
     /**
-     * The StatManager service.
+     * The StatsManager service.
      *
-     * @var StatManager The StatManager.
+     * @var StatsManager The StatsManager.
      */
-    protected $statManager;
+    protected $statsManager;
 
     /**
      * @var string See the documentation message.
@@ -97,6 +97,16 @@ abstract class AbstractCommand extends Command
     protected const NOTHING_TO_DELETE_MSG = 'Nothing to delete!';
 
     /**
+     * @var string Allows interactive questions to be approved automatically.
+     */
+    protected const AUTO_APPROVE = 'auto-approve';
+
+    /**
+     * @var string The returned response for auto-approve argument.
+     */
+    protected const AUTO_APPROVE_RESPONSE = 'yes';
+
+    /**
      * @var array The supported date interval.
      */
     protected const SUPPORTED_DATE_INTERVAL = [
@@ -113,19 +123,19 @@ abstract class AbstractCommand extends Command
      * AbstractCommand constructor.
      *
      * @param CounterManager $counterManager
-     * @param StatManager $statManager
+     * @param StatsManager $statsManager
      * @param string|null $name
      */
     public function __construct(
         CounterManager $counterManager,
-        StatManager $statManager,
+        StatsManager $statsManager,
         string $name = null
     )
     {
         parent::__construct($name);
 
         $this->counterManager = $counterManager;
-        $this->statManager = $statManager;
+        $this->statsManager = $statsManager;
     }
 
     /**
@@ -143,6 +153,19 @@ abstract class AbstractCommand extends Command
         $this->io = new SymfonyStyle($this->input, $this->output);
 
         return $this->doExecute();
+    }
+
+    /**
+     * Check if the command can be approved, if not ask the question.
+     *
+     * @param string $questionText The question
+     * @param null $defaultAnswer The answer
+     *
+     * @return bool|mixed
+     */
+    protected function canAutoApprove(string $questionText, $defaultAnswer = null)
+    {
+        return self::AUTO_APPROVE === $this->input->getArgument(self::AUTO_APPROVE) ? self::AUTO_APPROVE_RESPONSE : $this->askQuestion(self::ASK_QUESTION_MSG);
     }
 
     /**

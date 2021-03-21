@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -111,12 +112,14 @@ class Year
     /**
      * Builds the month.
      *
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
      * @return self
      */
-    public function buildMonth(): self
+    public function buildMonth(ViewCounterInterface $viewcounter): self
     {
         $this->total++;
-        $monthNumber = Date::getNowMonth();
+        $monthNumber = intval($viewcounter->getViewDate()->format('m'));
 
         if (isset($this->months[$monthNumber])) {
             $month = $this->months[$monthNumber];
@@ -124,7 +127,7 @@ class Year
             $month = new Month();
         }
 
-        $this->months[$monthNumber] = $month->buildWeek();
+        $this->months[$monthNumber] = $month->buildWeek($viewcounter);
 
         return $this;
     }

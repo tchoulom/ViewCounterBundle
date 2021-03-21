@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ use Tchoulom\ViewCounterBundle\Counter\ViewCounter;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterNodeConfig;
 use Tchoulom\ViewCounterBundle\Statistics\Statistics;
-use Tchoulom\ViewCounterBundle\Manager\StatManager;
+use Tchoulom\ViewCounterBundle\Manager\StatsManager;
 use Tchoulom\ViewCounterBundle\Tests\BaseTest;
 
 /**
@@ -41,7 +41,7 @@ class AbstractViewCounterTest extends BaseTest
     protected $requestMock;
     protected $requestStack;
     protected $requestStackMock;
-    protected $statManagerMock;
+    protected $statsManagerMock;
     protected $viewCounterEntityClass = 'Blog\BlogBundle\Entity\ViewCounter';
     protected $viewCounterEntityMock;
     protected $counterManagerMock;
@@ -49,9 +49,9 @@ class AbstractViewCounterTest extends BaseTest
     protected $viewcounterNodeConfigMock;
     protected $statisticsNodeConfigMock;
     protected $viewStrategy = 'view_per_minute';
-    protected $viewInterval = ['increment_each_view', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
+    protected $viewInterval = ['on_refresh', 'daily_view', 'unique_view', 'hourly_view', 'weekly_view', 'monthly_view', 'yearly_view', 'view_per_minute', 'view_per_second'];
 
-    const INCREMENT_EACH_VIEW = 'increment_each_view';
+    const ON_REFRESH = 'on_refresh';
     const DAILY_VIEW = 'daily_view';
     const UNIQUE_VIEW = 'unique_view';
     const HOURLY_VIEW = 'hourly_view';
@@ -76,7 +76,7 @@ class AbstractViewCounterTest extends BaseTest
         $this->request = new Request();
         $this->requestStackMock = $this->createMock(RequestStack::class);
         $this->requestMock = $this->createMock(Request::class);
-        $this->statManagerMock = $this->createMock(StatManager::class);
+        $this->statsManagerMock = $this->createMock(StatsManager::class);
         $this->viewCounterEntityMock = $this->createMock(ViewCounterInterface::class);
         $this->counterManagerMock = $this->createMock(CounterManager::class);
         $this->viewcounterConfigMock = $this->createMock(ViewcounterConfig::class);
@@ -94,7 +94,7 @@ class AbstractViewCounterTest extends BaseTest
         $this->request = null;
         $this->requestStackMock = null;
         $this->requestMock = null;
-        $this->statManagerMock = null;
+        $this->statsManagerMock = null;
         $this->viewCounterEntityMock = null;
         $this->counterManagerMock = null;
         $this->viewcounterConfigMock = null;
@@ -391,7 +391,7 @@ class AbstractViewCounterTest extends BaseTest
             ->getMock();
 
         $statisticMock = $this->getMockBuilder(Statistics::class)
-            ->setConstructorArgs([$this->filesystemMock])
+            ->setConstructorArgs([$this->filesystemStorageMock])
             ->getMock();
 
         $this->setProtectedProperty($viewCounterServiceMock, 'statistics', $statisticMock);
@@ -640,16 +640,16 @@ class AbstractViewCounterTest extends BaseTest
     }
 
     /**
-     * Tests the setStatManager method.
+     * Tests the setStatsManager method.
      */
-    public function testSetStatManager()
+    public function testSetStatsManager()
     {
         $viewCounterServiceMock = $this->getMockBuilder(ViewCounter::class)
             ->setConstructorArgs([$this->counterManagerMock, $this->requestStackMock, $this->viewcounterConfigMock])
             ->setMethods(['getRequest'])
             ->getMock();
 
-        $viewCounterService = $viewCounterServiceMock->setStatManager($this->statManagerMock);
+        $viewCounterService = $viewCounterServiceMock->setStatsManager($this->statsManagerMock);
 
         $this->assertTrue($viewCounterService instanceof AbstractViewCounter);
     }

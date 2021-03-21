@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,6 +16,7 @@ namespace Tchoulom\ViewCounterBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Class ViewcounterPass.
@@ -29,10 +30,10 @@ class ViewcounterPass implements CompilerPassInterface
     {
         $configs = $container->getExtensionConfig('tchoulom_view_counter');
 
-        $viewcounterNode = $this->getViewCounterNode($configs);
-        $statsNode = $this->getStatsNode($configs);
-        $storageNode = $this->getStorageNode($configs);
-        $geolocationNode = $this->getGeolocationNode($configs);
+        $viewcounterNode = $configs[0]['view_counter'];;
+        $statsNode = $configs[0]['statistics'];
+        $storageNode = $configs[0]['storage'] ?? null;
+        $geolocationNode = $configs[0]['geolocation'] ?? null;
 
         $viewcounterNodeDefinition = $container->getDefinition('tchoulom.viewcounter_node_config');
         $statisticsNodeDefinition = $container->getDefinition('tchoulom.statistics_node_config');
@@ -40,64 +41,37 @@ class ViewcounterPass implements CompilerPassInterface
         $viewcounterNodeDefinition->replaceArgument(0, $viewcounterNode);
         $statisticsNodeDefinition->replaceArgument(0, $statsNode);
 
+        if (isset($storageNode['engine'])) {
+            $storerDefinition = $this->getStorageEngineDefinition($container, $storageNode['engine']);
+
+            $storageAdapterDefinition = $container->getDefinition('tchoulom.viewcounter.storage_adapter');
+            $storageAdapterDefinition->replaceArgument(0, $storerDefinition);
+
+            $statsConverterDefinition = $container->getDefinition('tchoulom.viewcounter.stats_converter');
+            $statsConverterDefinition->replaceArgument(0, $storerDefinition);
+        }
+
         if (isset($geolocationNode['geolocator_id'])) {
             $geolocatorAdapterDefinition = $container->getDefinition('tchoulom.viewcounter.geolocator_adapter');
             $geolocatorDefinition = $container->getDefinition($geolocationNode['geolocator_id']);
             $geolocatorAdapterDefinition->replaceArgument(0, $geolocatorDefinition);
         }
+    }
 
-        if (isset($storageNode['service'])) {
-            $storageAdapterDefinition = $container->getDefinition('tchoulom.viewcounter.storage_adapter');
-            $storerDefinition = $container->getDefinition($storageNode['service']);
-            $storageAdapterDefinition->replaceArgument(0, $storerDefinition);
+    /**
+     * Gets the storage engine definition.
+     *
+     * @param ContainerBuilder $container The container.
+     * @param string $storageEngine The storage engine.
+     *
+     * @return Definition
+     */
+    public function getStorageEngineDefinition(ContainerBuilder $container, string $storageEngine): Definition
+    {
+        if (in_array($storageEngine, ['filesystem', 'mongodb'])) {
+            return $container->getDefinition('tchoulom.viewcounter.' . $storageEngine . '_storage');
         }
-    }
 
-    /**
-     * Gets the view counter node configuration
-     *
-     * @param array $configs
-     *
-     * @return array
-     */
-    public function getViewCounterNode(array $configs): array
-    {
-        return $configs[0]['view_counter'];
-    }
-
-    /**
-     * Gets the stats node configuration
-     *
-     * @param array $configs
-     *
-     * @return array
-     */
-    public function getStatsNode(array $configs): array
-    {
-        return $configs[0]['statistics'];
-    }
-
-    /**
-     * Gets the storage node configuration
-     *
-     * @param array $configs
-     *
-     * @return array|null
-     */
-    public function getStorageNode(array $configs): ?array
-    {
-        return $configs[0]['storage'] ?? null;
-    }
-
-    /**
-     * Gets the geolocation node.
-     *
-     * @param array $configs
-     *
-     * @return array|null
-     */
-    public function getGeolocationNode(array $configs): ?array
-    {
-        return $configs[0]['geolocation'] ?? null;
+        return $container->getDefinition($storageEngine);
     }
 }

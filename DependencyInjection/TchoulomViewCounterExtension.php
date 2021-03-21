@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -42,5 +42,6 @@ class TchoulomViewCounterExtension extends Extension
         $loader->load('statistics.yml');
         $loader->load('command.yml');
         $loader->load('geolocation.yml');
+        $loader->load('repository.yml');
     }
 }

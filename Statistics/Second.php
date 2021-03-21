@@ -6,13 +6,15 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
+
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 
 /**
  * Class Second
@@ -94,11 +96,13 @@ class Second
     }
 
     /**
-     * Builds the minute.
+     * Builds the second.
+     *
+     * ViewCounterInterface $viewcounter The viewcounter entity.
      *
      * @return self
      */
-    public function build(): self
+    public function build(ViewCounterInterface $viewcounter): self
     {
         $this->total++;
 

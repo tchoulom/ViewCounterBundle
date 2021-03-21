@@ -28,7 +28,7 @@ This bundle can also be used to draw a graphical representation of statistical d
   - [Step 5: The View](Resources/doc/readme/usage-step-1-5.md#step-5-the-view)
   - [Step 6: The Geolocation](Resources/doc/readme/geolocation.md#step-6-the-geolocation)
   - [Step 7: Use of statistical data](Resources/doc/readme/statistics-finder.md#step-7-use-of-statistical-data)
-    - [The *StatsFinder* service](Resources/doc/readme/statistics-finder.md#the-statsfinder-service)
+    - [The *FileStatsFinder* service](Resources/doc/readme/statistics-finder.md#the-filestatsfinder-service)
       - [Get the *yearly* statistics](Resources/doc/readme/statistics-finder.md#get-the-yearly-statistics)
       - [Get the *monthly* statistics](Resources/doc/readme/statistics-finder.md#get-the-monthly-statistics)
       - [Get the *weekly* statistics](Resources/doc/readme/statistics-finder.md#get-the-weekly-statistics)
@@ -61,11 +61,11 @@ This bundle can also be used to draw a graphical representation of statistical d
 
 # Documentation
 
-[The ViewCounter documentation](http://tchoulom.com/fr/tutoriel/the-view-counter-bundle-1)
+[The ViewCounter documentation](https://github.com/tchoulom/ViewCounterBundle)
 
 # Original Credits
 
-Created by [Ernest TCHOULOM](http://tchoulom.com) for [tchoulom.com](https://tchoulom.com).
+Created by Ernest TCHOULOM
 
 # License
 
@@ -77,6 +77,3 @@ LICENSE
 ```
 
 Enjoy!
-
-Need help or found a bug?
-[http://www.tchoulom.com](http://www.tchoulom.com)

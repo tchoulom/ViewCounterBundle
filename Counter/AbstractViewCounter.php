@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,7 +20,7 @@ use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
-use Tchoulom\ViewCounterBundle\Manager\StatManager;
+use Tchoulom\ViewCounterBundle\Manager\StatsManager;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -39,9 +39,9 @@ abstract class AbstractViewCounter
     protected $requestStack;
 
     /**
-     * @var StatManager
+     * @var StatsManager
      */
-    protected $statManager;
+    protected $statsManager;
 
     /**
      * The View counter configs.
@@ -70,7 +70,7 @@ abstract class AbstractViewCounter
      */
     protected $page = null;
 
-    const INCREMENT_EACH_VIEW = 'increment_each_view';
+    const ON_REFRESH = 'on_refresh';
     const DAILY_VIEW = 'daily_view';
     const UNIQUE_VIEW = 'unique_view';
     const HOURLY_VIEW = 'hourly_view';
@@ -91,7 +91,8 @@ abstract class AbstractViewCounter
         CounterManager $counterManager,
         RequestStack $requestStack,
         ViewcounterConfig $viewcounterConfig
-    ) {
+    )
+    {
         $this->counterManager = $counterManager;
         $this->requestStack = $requestStack;
         $this->viewcounterConfig = $viewcounterConfig;
@@ -121,13 +122,29 @@ abstract class AbstractViewCounter
         $clientIP = $this->getClientIp();
 
         $viewCounter = $this->counterManager->findOneBy($criteria = [$this->property => $page, 'ip' => $clientIP],
-            $orderBy = null, $limit = null, $offset = null);
+            $orderBy = ['viewDate' => 'DESC'], $limit = null, $offset = null);
 
         if ($viewCounter instanceof ViewCounterInterface) {
             return $viewCounter;
         }
 
-        return $this->createViewCounterObject();
+        return $this->createViewCounterObject($page);
+    }
+
+    /**
+     * Creates the ViewCounter Object from the class namespace.
+     *
+     * @param ViewCountable $page The given page.
+     *
+     * @return ViewCounterInterface
+     */
+    protected function createViewCounterObject(ViewCountable $page): ViewCounterInterface
+    {
+        $this->counterManager->loadMetadata($page);
+        $class = $this->counterManager->getClass();
+        $viewCounterObject = new $class();
+
+        return $viewCounterObject;
     }
 
     /**
@@ -176,7 +193,9 @@ abstract class AbstractViewCounter
         $viewcounter = $this->getViewCounter($page);
 
         if ($this->isNewView($viewcounter)) {
+            $viewcounter = $this->createViewCounterObject($page);
             $views = $this->getViews($page);
+
             $viewcounter->setIp($this->getClientIp());
             $viewcounter->setPage($page);
             $viewcounter->setViewDate(Date::getNowDate());
@@ -187,7 +206,7 @@ abstract class AbstractViewCounter
             $this->counterManager->save($page);
 
             // Statistics
-            if (true === $this->canUseStats()) {
+            if (true === $this->isStatsEnabled()) {
                 $this->handleStatistics($viewcounter);
             }
         }
@@ -198,13 +217,13 @@ abstract class AbstractViewCounter
     /**
      * Handles statistics.
      *
-     * @param ViewCounterInterface $viewcounter
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
      *
      * @throws \ReflectionException
      */
     public function handleStatistics(ViewCounterInterface $viewcounter)
     {
-        $this->statManager->register($viewcounter->getPage());
+        $this->statsManager->register($viewcounter);
     }
 
     /**
@@ -231,29 +250,16 @@ abstract class AbstractViewCounter
     }
 
     /**
-     * Gets the use_stats value.
+     * Is stats enabled ?
      *
-     * @return bool
+     * @return bool Is stats enabled ?
      */
-    protected function canUseStats(): bool
+    protected function isStatsEnabled(): bool
     {
         $statisticsNodeConfig = $this->viewcounterConfig->getStatisticsNodeConfig();
-        $canUseStats = $statisticsNodeConfig->canUseStats();
+        $isStatsEnabled = $statisticsNodeConfig->isStatsEnabled();
 
-        return $canUseStats;
-    }
-
-    /**
-     * Creates the ViewCounter Object from the class namespace.
-     *
-     * @return ViewCounterInterface
-     */
-    protected function createViewCounterObject(): ViewCounterInterface
-    {
-        $class = $this->getClass();
-        $viewCounterObject = new $class();
-
-        return $viewCounterObject;
+        return $isStatsEnabled;
     }
 
     /**
@@ -311,15 +317,15 @@ abstract class AbstractViewCounter
     }
 
     /**
-     * Sets the StatManager.
+     * Sets the StatsManager.
      *
-     * @param StatManager $statManager
+     * @param StatsManager $statsManager
      *
      * @return self
      */
-    public function setStatManager(StatManager $statManager): self
+    public function setStatsManager(StatsManager $statsManager): self
     {
-        $this->statManager = $statManager;
+        $this->statsManager = $statsManager;
 
         return $this;
     }

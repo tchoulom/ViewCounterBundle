@@ -6,22 +6,26 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Statistics;
+namespace Tchoulom\ViewCounterBundle\Builder;
 
 use Tchoulom\ViewCounterBundle\Adapter\Geolocator\GeolocatorAdapterInterface;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
+use Tchoulom\ViewCounterBundle\Statistics\Page;
+use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 
 /**
- * Class StatBuilder
+ * Class FileStatsBuilder
  *
- * Builds the statistics.
+ * Builds the file statistics.
  */
-class StatBuilder
+class FileStatsBuilder
 {
     /**
      * The contents.
@@ -52,20 +56,20 @@ class StatBuilder
     protected $stats = [];
 
     /**
-     * The Geolocator Adapter
+     * The Geolocator.
      *
      * @var GeolocatorAdapterInterface
      */
-    protected $geolocatorAdapter;
+    protected $geolocator;
 
     /**
-     * StatBuilder constructor.
+     * FileStatsBuilder constructor.
      *
-     * @param GeolocatorAdapterInterface $geolocatorAdapter
+     * @param GeolocatorAdapterInterface $geolocator
      */
-    public function __construct(GeolocatorAdapterInterface $geolocatorAdapter)
+    public function __construct(GeolocatorAdapterInterface $geolocator)
     {
-        $this->geolocatorAdapter = $geolocatorAdapter;
+        $this->geolocator = $geolocator;
     }
 
     /**
@@ -167,17 +171,17 @@ class StatBuilder
     /**
      * Builds the stats.
      *
-     * @param array $contents
-     * @param string $class
-     * @param int $pageId
+     * @param array $contents The contents.
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
      *
      * @return self
      */
-    public function build(array $contents, string $class, int $pageId): self
+    public function build(array $contents, ViewCounterInterface $viewcounter): self
     {
+        $page = $viewcounter->getPage();
         $this->contents = $contents;
-        $this->class = $class;
-        $this->stats = $this->buildPage($pageId);
+        $this->class = ReflectionExtractor::getClassNamePluralized($page);;
+        $this->stats = $this->buildPage($page, $viewcounter);
 
         return $this;
     }
@@ -185,21 +189,24 @@ class StatBuilder
     /**
      * Builds the page.
      *
-     * @param int $pageId
+     * @param ViewCountable $pageRef The page ref.
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
      *
      * @return array
      */
-    public function buildPage(int $pageId): array
+    public function buildPage(ViewCountable $pageRef, ViewCounterInterface $viewcounter): array
     {
+        $pageId = $pageRef->getId();
+
         if (isset($this->contents[$this->class][$pageId])) {
             $page = $this->contents[$this->class][$pageId];
         } else {
             $page = new Page($pageId);
         }
 
-        $page->buildYear();
-        if ($this->geolocatorAdapter->canGeolocate()) {
-            $page->buildCountry($this->geolocatorAdapter);
+        $page->buildYear($viewcounter);
+        if ($this->geolocator->canGeolocate()) {
+            $page->buildCountry($this->geolocator, $viewcounter);
         }
 
         $this->contents[$this->class][$pageId] = $page;

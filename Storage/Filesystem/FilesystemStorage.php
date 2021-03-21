@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,14 +15,18 @@
 namespace Tchoulom\ViewCounterBundle\Storage\Filesystem;
 
 use Tchoulom\ViewCounterBundle\Adapter\Storage\StorageAdapterInterface;
+use Tchoulom\ViewCounterBundle\Builder\FileStatsBuilder;
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Exception\IOException;
 use Tchoulom\ViewCounterBundle\Exception\IOExceptionInterface;
+use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Model\ViewcounterConfig;
+use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 
 /**
- * Class Filesystem is used to manipulate the file system.
+ * Class FilesystemStorage is used to save statistics in a file system.
  */
-class Filesystem implements FilesystemInterface, StorageAdapterInterface
+class FilesystemStorage implements FilesystemStorageInterface, StorageAdapterInterface
 {
     /**
      * @var string The Permission message.
@@ -43,6 +47,13 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
     protected $viewcounterConfig;
 
     /**
+     * The File Stats Builder.
+     *
+     * @var FileStatsBuilder
+     */
+    protected $fileStatsBuilder;
+
+    /**
      * @var string The viewcounter directory.
      */
     protected $viewcounterDir = 'viewcounter';
@@ -53,24 +64,30 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
     protected $filename = 'stats';
 
     /**
-     * FileStorageAdapter constructor.
+     * FilesystemStorage constructor.
      *
      * @param $projectDir
      * @param ViewcounterConfig $viewcounterConfig
+     * @param FileStatsBuilder $fileStatsBuilder
      */
-    public function __construct($projectDir, ViewcounterConfig $viewcounterConfig)
+    public function __construct($projectDir, ViewcounterConfig $viewcounterConfig, FileStatsBuilder $fileStatsBuilder)
     {
         $this->projectDir = $projectDir;
         $this->viewcounterConfig = $viewcounterConfig;
+        $this->fileStatsBuilder = $fileStatsBuilder;
     }
 
     /**
      * Saves the statistics.
      *
-     * @param $stats
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
+     * @throws \ReflectionException
      */
-    public function save($stats)
+    public function save(ViewCounterInterface $viewcounter)
     {
+        $stats = $this->build($viewcounter);
+
         $stats = serialize($stats);
         $dirname = $this->getViewcounterDir();
         $filename = $this->getFullStatsFileName();
@@ -85,6 +102,24 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
             $this->fwrite($file, $stats);
             $this->fclose($file);
         }
+    }
+
+    /**
+     * Builds the statistics of the page.
+     *
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
+     * @return array                            The stats.
+     *
+     * @throws \ReflectionException
+     */
+    public function build(ViewCounterInterface $viewcounter): array
+    {
+        $contents = $this->loadContents();
+        $statBuilder = $this->fileStatsBuilder->build($contents, $viewcounter);
+        $stats = $statBuilder->getStats();
+
+        return $stats;
     }
 
     /**
@@ -104,7 +139,7 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
         try {
             $contents = file_get_contents($filename);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while loading the stats file: "%s" '.self::CHECK_PERMISSIONS_MSG.'. "%s"',
+            throw new IOException(sprintf('An error occurred while loading the stats file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"',
                 $this->getFullStatsFileName(), $exception->getMessage()));
         }
 
@@ -144,9 +179,9 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
     public function getFullStatsFileName(): string
     {
         $ext = $this->getStatsFileExtension();
-        $extension = null != $ext ? '.'.$ext : '';
+        $extension = null != $ext ? '.' . $ext : '';
 
-        return $this->getViewcounterDir().'/'.$this->getStatsFileName().$extension;
+        return $this->getViewcounterDir() . '/' . $this->getStatsFileName() . $extension;
     }
 
     /**
@@ -156,7 +191,7 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
      */
     public function getViewcounterDir(): string
     {
-        return $this->projectDir.'/var/'.$this->viewcounterDir;
+        return $this->projectDir . '/var/' . $this->viewcounterDir;
     }
 
     /**
@@ -171,7 +206,7 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
         try {
             mkdir($dirname, $mode, $recursive);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while attempting to create the directory: "%s" '.self::CHECK_PERMISSIONS_MSG.'. "%s"',
+            throw new IOException(sprintf('An error occurred while attempting to create the directory: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"',
                 $this->getViewcounterDir(), $exception->getMessage()));
         }
     }
@@ -189,7 +224,7 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
         try {
             $file = fopen($filename, $mode);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while attempting to open the file: "%s" '.self::CHECK_PERMISSIONS_MSG.'. "%s"',
+            throw new IOException(sprintf('An error occurred while attempting to open the file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"',
                 $this->getFullStatsFileName(), $exception->getMessage()));
         }
 
@@ -207,7 +242,7 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
         try {
             fwrite($file, $stats);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while attempting to write to file: "%s" '.self::CHECK_PERMISSIONS_MSG.'. "%s"',
+            throw new IOException(sprintf('An error occurred while attempting to write to file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"',
                 $this->getFullStatsFileName(), $exception->getMessage()));
         }
     }
@@ -222,7 +257,7 @@ class Filesystem implements FilesystemInterface, StorageAdapterInterface
         try {
             fclose($file);
         } catch (IOExceptionInterface $exception) {
-            throw new IOException(sprintf('An error occurred while attempting to close output file: "%s" '.self::CHECK_PERMISSIONS_MSG.'. "%s"',
+            throw new IOException(sprintf('An error occurred while attempting to close output file: "%s" ' . self::CHECK_PERMISSIONS_MSG . '. "%s"',
                 $this->getFullStatsFileName(), $exception->getMessage()));
         }
     }

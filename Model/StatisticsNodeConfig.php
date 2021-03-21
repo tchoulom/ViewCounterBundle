@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,17 +20,17 @@ namespace Tchoulom\ViewCounterBundle\Model;
 class StatisticsNodeConfig
 {
     /**
-     * @var mixed Allows to indicate if you want to use statistics.
+     * @var bool Is statistics enabled?.
      */
-    protected $useStats;
+    protected $isStatsEnabled;
 
     /**
-     * @var mixed The name of the statistics file.
+     * @var ?string The name of the statistics file.
      */
     protected $statsFileName;
 
     /**
-     * @var mixed The extension of the statistics file.
+     * @var ?string The extension of the statistics file.
      */
     protected $statsFileExtension;
 
@@ -41,31 +41,31 @@ class StatisticsNodeConfig
      */
     public function __construct(array $statsNode)
     {
-        $this->useStats = $statsNode['use_stats'];
+        $this->isStatsEnabled = $statsNode['enabled'];
         $this->statsFileName = $statsNode['stats_file_name'];
         $this->statsFileExtension = $statsNode['stats_file_extension'];
     }
 
     /**
-     * Gets the use_stats boolean value.
+     * Gets the enabled boolean value.
      *
-     * @return boolean
+     * @return bool Is stats enabled ?
      */
-    public function canUseStats()
+    public function isStatsEnabled(): bool
     {
-        return $this->useStats;
+        return $this->isStatsEnabled;
     }
 
     /**
-     * Sets the use_stats value.
+     * Sets the enabled value.
      *
-     * @param $useStats
+     * @param bool $isStatsEnabled
      *
-     * @return $this
+     * @return self
      */
-    public function setUseStats($useStats)
+    public function setIsStatsEnabled(bool $isStatsEnabled): self
     {
-        $this->useStats = $useStats;
+        $this->isStatsEnabled = $isStatsEnabled;
 
         return $this;
     }
@@ -73,9 +73,9 @@ class StatisticsNodeConfig
     /**
      * Gets the stats file name.
      *
-     * @return mixed
+     * @return string|null
      */
-    public function getStatsFileName()
+    public function getStatsFileName(): ?string
     {
         return $this->statsFileName;
     }
@@ -83,11 +83,11 @@ class StatisticsNodeConfig
     /**
      * Sets the stats file name.
      *
-     * @param $statsFileName
+     * @param string $statsFileName
      *
-     * @return $this
+     * @return self
      */
-    public function setStatsFileName($statsFileName)
+    public function setStatsFileName(string $statsFileName): self
     {
         $this->statsFileName = $statsFileName;
 
@@ -97,9 +97,9 @@ class StatisticsNodeConfig
     /**
      * Gets the stats file extension.
      *
-     * @return mixed
+     * @return string|null
      */
-    public function getStatsFileExtension()
+    public function getStatsFileExtension(): ?string
     {
         return $this->statsFileExtension;
     }
@@ -107,11 +107,11 @@ class StatisticsNodeConfig
     /**
      * Sets the stats file extension.
      *
-     * @param $statsFileExtension
+     * @param string $statsFileExtension
      *
-     * @return $this
+     * @return self
      */
-    public function setStatsFileExtension($statsFileExtension)
+    public function setStatsFileExtension(string $statsFileExtension): self
     {
         $this->statsFileExtension = $statsFileExtension;
 

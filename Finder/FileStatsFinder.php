@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Finder;
 
-use Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemInterface;
+use Tchoulom\ViewCounterBundle\Storage\Filesystem\FilesystemStorageInterface;
 use Tchoulom\ViewCounterBundle\Geolocation\City;
 use Tchoulom\ViewCounterBundle\Geolocation\Country;
 use Tchoulom\ViewCounterBundle\Geolocation\Region;
@@ -31,16 +31,16 @@ use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 use Tchoulom\ViewCounterBundle\Statistics\Second;
 
 /**
- * Class StatsFinder
+ * Class FileStatsFinder
  */
-class StatsFinder
+class FileStatsFinder
 {
     /**
-     * The Filesystem.
+     * The FilesystemStorage.
      *
-     * @var FilesystemInterface
+     * @var FilesystemStorageInterface
      */
-    protected $filesystem;
+    protected $filesystemStorage;
 
     /**
      * The stats contents.
@@ -50,13 +50,13 @@ class StatsFinder
     protected $stats = [];
 
     /**
-     * StatsFinder constructor.
-     *
-     * @param FilesystemInterface $filesystem
+     * FileStatsFinder constructor.
+     * 
+     * @param FilesystemStorageInterface $filesystemStorage
      */
-    public function __construct(FilesystemInterface $filesystem)
+    public function __construct(FilesystemStorageInterface $filesystemStorage)
     {
-        $this->filesystem = $filesystem;
+        $this->filesystemStorage = $filesystemStorage;
     }
 
     /**
@@ -777,7 +777,7 @@ class StatsFinder
      */
     public function loadContents()
     {
-        $this->stats = $this->filesystem->loadContents();
+        $this->stats = $this->filesystemStorage->loadContents();
 
         return $this->stats;
     }

@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -60,7 +60,7 @@ class TchoulomViewCounterExtensionTest extends BaseTest
      * tests postProcessError
      *
      * @expectedException \Tchoulom\ViewCounterBundle\Exception\RuntimeException
-     * @expectedExceptionMessage You must choose one of the following values: increment_each_view, unique_view, daily_view, hourly_view, weekly_view, monthly_view, yearly_view, view_per_minute, view_per_second.
+     * @expectedExceptionMessage You must choose one of the following values: on_refresh, unique_view, daily_view, hourly_view, weekly_view, monthly_view, yearly_view, view_per_minute, view_per_second.
      */
     public function testPostProcessError($configs = null)
     {

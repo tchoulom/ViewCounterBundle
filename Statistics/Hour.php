@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -132,16 +133,19 @@ class Hour
     /**
      * Builds the hour.
      *
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
      * @return self
      */
-    public function build(): self
+    public function build(ViewCounterInterface $viewcounter): self
     {
         $this->total++;
         $this->fullHour = Date::getFullHour();
 
-        $minute = $this->getMinute();
+        $minuteName = 'm' . $viewcounter->getViewDate()->format('i');
+        $minute = $this->getMinute($minuteName);
         $minuteName = strtolower($minute->getName());
-        $this->$minuteName = $minute->build();
+        $this->$minuteName = $minute->build($viewcounter);
 
         return $this;
     }

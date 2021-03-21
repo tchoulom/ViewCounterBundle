@@ -6,7 +6,7 @@
  * @package    TchoulomViewCounterBundle
  * @author     Original Author <tchoulomernest@yahoo.fr>
  *
- * (c) Ernest TCHOULOM <https://www.tchoulom.com/>
+ * (c) Ernest TCHOULOM
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Statistics;
 
+use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Util\Date;
 
 /**
@@ -131,17 +132,20 @@ class Day
     /**
      * Builds the day.
      *
+     * @param ViewCounterInterface $viewcounter The viewcounter entity.
+     *
      * @return self
      *
      * @throws \Exception
      */
-    public function build(): self
+    public function build(ViewCounterInterface $viewcounter): self
     {
         $this->total++;
-        $this->date = Date::getNowDate();
-        $hour = $this->getHour();
+        $this->date = $viewcounter->getViewDate();
+        $hourName = 'h' . $viewcounter->getViewDate()->format('H');
+        $hour = $this->getHour($hourName);
         $hourName = strtolower($hour->getName());
-        $this->$hourName = $hour->build();
+        $this->$hourName = $hour->build($viewcounter);
 
         return $this;
     }
@@ -156,7 +160,7 @@ class Day
     public function getHour(string $hourName = null): Hour
     {
         if (null == $hourName) {
-            $hourName = 'h'.Date::getHour();
+            $hourName = 'h' . Date::getHour();
         }
 
         $hour = $this->get($hourName);

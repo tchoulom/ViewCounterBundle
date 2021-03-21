@@ -2,69 +2,69 @@
 
 ###### Trick
 
-For Symfony 4 or 5, inject the service you want to use, instead of going through the container: $this->get('tchoulom.viewcounter.stats_finder');
+For Symfony 4 or 5, inject the service you want to use, instead of going through the container: $this->get('tchoulom.viewcounter.file_stats_finder');
 
 - Example:
 
 ```php
-use Tchoulom\ViewCounterBundle\Finder\StatsFinder:
+use Tchoulom\ViewCounterBundle\Finder\FileStatsFinder;
 
 /**
- * @var StatsFinder
+ * @var FileStatsFinder
  */
-protected $statsFinder;
+protected $fileStatsFinder;
 
 /**
- * @param StatsFinder $statsFinder
+ * @param FileStatsFinder $fileStatsFinder
  */
-public function __construct(StatsFinder $statsFinder)
+public function __construct(FileStatsFinder $fileStatsFinder)
 {
-    $this->statsFinder = $statsFinder;
+    $this->fileStatsFinder = $fileStatsFinder;
 }
 ```
 
-### The *StatsFinder* service
+### The *FileStatsFinder* service
 
-Use the **StatsFinder** service to get statistics of a web page :
+Use the **FileStatsFinder** service to get statistics of a web page :
 
 ```php
-   // The "statsFinder" service
-   $statsFinder = $this->get('tchoulom.viewcounter.stats_finder');
+   // The "fileStatsFinder" service
+   $fileStatsFinder = $this->get('tchoulom.viewcounter.file_stats_finder');
    
    // Get all statistical data
-   $contents = $statsFinder->loadContents();
+   $contents = $fileStatsFinder->loadContents();
    
    // Finds statistics by page
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Page
-   $page = $statsFinder->findByPage($article);
+   $page = $fileStatsFinder->findByPage($article);
     
    // Finds statistics by year (year number: 2019)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Year
-   $year = $statsFinder->findByYear($article, 2019);
+   $year = $fileStatsFinder->findByYear($article, 2019);
      
    // Finds statistics by month (month number: 1)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Month
-   $month = $statsFinder->findByMonth($article, 2019, 1);
+   $month = $fileStatsFinder->findByMonth($article, 2019, 1);
    
    // Finds statistics by week (week number: 3)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Week
-   $week = $statsFinder->findByWeek($article, 2019, 1, 3);
+   $week = $fileStatsFinder->findByWeek($article, 2019, 1, 3);
    
    // Finds statistics by day (name of the day: 'thursday')
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Day
-   $day = $statsFinder->findByDay($article, 2019, 1, 3, 'thursday');
+   $day = $fileStatsFinder->findByDay($article, 2019, 1, 3, 'thursday');
    
    // Finds statistics by hour (time name: 'h17' => between 17:00 and 17:59)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Hour
-   $hour = $statsFinder->findByHour($article, 2019, 1, 3, 'thursday', 'h17');
+   $hour = $fileStatsFinder->findByHour($article, 2019, 1, 3, 'thursday', 'h17');
    
    // Finds statistics by minute (the name of the minute: 'm49' => in the 49th minute)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Minute
-   $minute = $statsFinder->findByMinute($article, 2019, 1, 3, 'thursday', 'h17', 'm49');
+   $minute = $fileStatsFinder->findByMinute($article, 2019, 1, 3, 'thursday', 'h17', 'm49');
    
    // Finds statistics by second (the name of the second: 's19' => in the 19th second)
    // Returns an instance of Tchoulom\ViewCounterBundle\Statistics\Second
-   $second = $statsFinder->findBySecond($article, 2019, 1, 3, 'thursday', 'h17', 'm49', 's19');
+   $second = $fileStatsFinder->findBySecond($article, 2019, 1, 3, 'thursday', 'h17', 'm49', 's19');
    
 ```
 
@@ -74,7 +74,7 @@ You can also get statistical data of a web page by **year**, **month**, **week**
 
 ```php
    // Get the yearly statistics
-   $yearlyStats = $statsFinder->getYearlyStats($article); 
+   $yearlyStats = $fileStatsFinder->getYearlyStats($article); 
 ```
 
 Result:
@@ -94,7 +94,7 @@ In 2017, there were 47882376 views.
 
 ```php
    // Get the monthly statistics in 2019
-   $monthlyStats = $statsFinder->getMonthlyStats($article, 2019);
+   $monthlyStats = $fileStatsFinder->getMonthlyStats($article, 2019);
 ```
 
 Result:
@@ -114,7 +114,7 @@ In the month of June (month number 6) 2019, there were 845479 views.
 
 ```php
    // Get the weekly statistics of the month of August (month number 8) in 2019
-   $weeklyStats = $statsFinder->getWeeklylyStats($article, 2019, 8);
+   $weeklyStats = $fileStatsFinder->getWeeklylyStats($article, 2019, 8);
 ```
 
 Result:
@@ -134,7 +134,7 @@ In the week number 32 in august 2019, there were 183254 views.
 
 ```php
    // Get the daily statistics of the week number 33 in august 2019
-   $dailyStats = $statsFinder->getDailyStats($article, 2019, 8, 33);
+   $dailyStats = $fileStatsFinder->getDailyStats($article, 2019, 8, 33);
 ```
 
 Result:
@@ -156,7 +156,7 @@ On Wednesday of the week number 33 in august 2019, there were 16807 views.
 
 ```php
    // Get the hourly statistics for Thursday of the week number 33 in august 2019
-   $hourlyStats = $statsFinder->getHourlyStats($article, 2019, 8, 33, 'Thursday');
+   $hourlyStats = $fileStatsFinder->getHourlyStats($article, 2019, 8, 33, 'Thursday');
 ```
 
 Result:
@@ -182,7 +182,7 @@ On Thursday of the week number 33 of August (month number 8) 2019:
 
 ```php
    // Get the statistics per minute on Saturday of the week number 33 in august 2019 at 15h ('h15')
-   $statsPerMinute = $this->get('tchoulom.viewcounter.stats_finder')->getStatsPerMinute($article, 2019, 8, 33, 'Saturday', 'h15');
+   $statsPerMinute = $this->get('tchoulom.viewcounter.file_stats_finder')->getStatsPerMinute($article, 2019, 8, 33, 'Saturday', 'h15');
 ```
 
 Result:
@@ -208,7 +208,7 @@ On Saturday  of the week number 33 of August (month number 8) 2019 at 15h ('h15'
 
 ```php
    // Get the statistics per second on Saturday of the week number 33 in august 2019 at 15H49
-   $statsPerSecond = $this->get('tchoulom.viewcounter.stats_finder')->getStatsPerSecond($article, 2019, 8, 33, 'Saturday', 'h15', 'm49');
+   $statsPerSecond = $this->get('tchoulom.viewcounter.file_stats_finder')->getStatsPerSecond($article, 2019, 8, 33, 'Saturday', 'h15', 'm49');
 ```
 
 Result:
@@ -359,4 +359,4 @@ Result:
 
 * There are 44 views in the "Washington" city.
 
-The **StatsFinder** service provides other functions that you can browse.
+The **FileStatsFinder** service provides other functions that you can browse.
