@@ -299,8 +299,10 @@ The full path of the statistics file is ***var/viewcounter*** of your project.
 The Storage defines the service that will allow to store the statistical data.
 
 The **filesystem** engine allows to save the statistical data in a file.
+
 The **mongodb** engine allows to save the statistical data in a mongodb database.
 
+**filesystem :**
 
 ```yaml
 
@@ -309,6 +311,9 @@ The **mongodb** engine allows to save the statistical data in a mongodb database
         storage:
             engine: filesystem
 ```
+
+**mongodb :**
+
 You can choose to save your statistical data in a database such as **mongodb** :
 
 ```yaml
@@ -319,17 +324,13 @@ You can choose to save your statistical data in a database such as **mongodb** :
             engine: mongodb
 ```
 
+If you want to save your statistical data in a mongodb database, you just need to install a mongodb database and [edit the access configuration file to this database](https://symfony.com/doc/current/bundles/DoctrineMongoDBBundle/config.html).
+
+So your statistical data will be saved in the mongodb database.
+
+**A custom service :**
+
 You can also set a custom storage service:
-
-```yaml
-
-    tchoulom_view_counter:
-        ...
-        storage:
-            engine: app.service.storer
-```
-
-or
 
 ```yaml
 
