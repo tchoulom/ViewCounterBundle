@@ -35,10 +35,12 @@ or
    php bin/console tchoulom:viewcounter:stats:convert --cleanup=true
 ```
 
-- Add the "auto-approve" argument to skip approval questions:
+- Add the "auto-approve" option to skip approval questions:
 
 ```bash
-   php bin/console tchoulom:viewcounter:stats:convert --cleanup=true auto-approve
+   php bin/console tchoulom:viewcounter:stats:convert --cleanup=true --auto-approve=true
+   
+   By default, the value of the 'auto-approve' option is equal to false.
 ```
 
 This command can be automated via a cron task.
