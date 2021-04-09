@@ -36,7 +36,7 @@ You can delete the viewcounter data using the **ViewcounterCleanupCommand** comm
    php bin/console tchoulom:viewcounter:cleanup --max=5M
 ```
 
-- Add the "auto-approve" option to skip approval questions:
+- Add the 'auto-approve' option to skip approval questions:
 
 ```bash
    php bin/console tchoulom:viewcounter:cleanup --max=5M --auto-approve=true

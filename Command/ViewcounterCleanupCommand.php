@@ -91,7 +91,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
                             "M" => "month"
                             "y" => "year"
 
-                            bin/console tchoulom:viewcounter:stats:convert --auto-approve=true
+                            bin/console tchoulom:viewcounter:cleanup --auto-approve=true
                             
 
                             <comment>' . self::SEE_DOCUMENTATION_MSG . '</comment>'
