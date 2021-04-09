@@ -156,16 +156,18 @@ abstract class AbstractCommand extends Command
     }
 
     /**
-     * Check if the command can be approved, if not ask the question.
+     * Try to approve questions automatically.
      *
      * @param string $questionText The question
      * @param null $defaultAnswer The answer
      *
      * @return bool|mixed
      */
-    protected function canAutoApprove(string $questionText, $defaultAnswer = null)
+    protected function tryAutoApprove(string $questionText, $defaultAnswer = null)
     {
-        return self::AUTO_APPROVE === $this->input->getArgument(self::AUTO_APPROVE) ? self::AUTO_APPROVE_RESPONSE : $this->askQuestion(self::ASK_QUESTION_MSG);
+        return true == $this->input->getOption(self::AUTO_APPROVE) ?
+            self::AUTO_APPROVE_RESPONSE :
+            $this->askQuestion(self::ASK_QUESTION_MSG);
     }
 
     /**

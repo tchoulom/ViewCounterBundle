@@ -324,7 +324,10 @@ You can choose to save your statistical data in a database such as **mongodb** :
             engine: mongodb
 ```
 
-If you want to save your statistical data in a mongodb database, you just need to install a mongodb database and [edit the access configuration file to this database](https://symfony.com/doc/current/bundles/DoctrineMongoDBBundle/config.html).
+If you want to save your statistical data in a mongodb database, you just need to:
+   - install a mongodb server
+   - [install the doctrine/mongodb-odm-bundle bundle](https://packagist.org/packages/doctrine/mongodb-odm-bundle)
+   - [edit the access configuration file to this database](https://symfony.com/doc/current/bundles/DoctrineMongoDBBundle/config.html)
 
 So your statistical data will be saved in the mongodb database.
 

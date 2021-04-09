@@ -134,11 +134,11 @@ class MongoDBStorage implements DocumentStorageInterface, StorageAdapterInterfac
 
     /**
      * MongoDBStorage constructor.
-     *
-     * @param DocumentManager $dm
-     * @param GeolocatorAdapterInterface $geolocatorAdapter
+     * 
+     * @param DocumentManager|null $dm
+     * @param GeolocatorAdapterInterface $geolocator
      */
-    public function __construct(DocumentManager $dm, GeolocatorAdapterInterface $geolocator)
+    public function __construct(?DocumentManager $dm, GeolocatorAdapterInterface $geolocator)
     {
         $this->dm = $dm;
         $this->geolocator = $geolocator;

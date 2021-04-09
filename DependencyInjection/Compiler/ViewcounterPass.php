@@ -17,6 +17,7 @@ namespace Tchoulom\ViewCounterBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Tchoulom\ViewCounterBundle\TchoulomViewCounterBundle;
 
 /**
  * Class ViewcounterPass.
@@ -49,6 +50,12 @@ class ViewcounterPass implements CompilerPassInterface
 
             $statsConverterDefinition = $container->getDefinition('tchoulom.viewcounter.stats_converter');
             $statsConverterDefinition->replaceArgument(0, $storerDefinition);
+
+            if (TchoulomViewCounterBundle::MONGODB_STORAGE_ENGINE_NAME === $storageNode['engine']) {
+                $doctrineMongoDBODMDefinition = $container->getDefinition('doctrine_mongodb.odm.default_document_manager');
+                $mongoDBStorageDefinition = $container->getDefinition('tchoulom.viewcounter.mongodb_storage');
+                $mongoDBStorageDefinition->replaceArgument(0, $doctrineMongoDBODMDefinition);
+            }
         }
 
         if (isset($geolocationNode['geolocator_id'])) {

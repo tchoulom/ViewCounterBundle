@@ -43,4 +43,18 @@ class TchoulomViewCounterBundle extends Bundle
      * @var array
      */
     const SUPPORTED_STATS_KEYS = ['enabled', 'stats_file_name', 'stats_file_extension'];
+
+    /**
+     * The filesystem storage engine name.
+     *
+     * @var string
+     */
+    const FILESYSTEM_STORAGE_ENGINE_NAME = 'filesystem';
+
+    /**
+     * The mongodb storage engine name.
+     *
+     * @var string
+     */
+    const MONGODB_STORAGE_ENGINE_NAME = 'mongodb';
 }

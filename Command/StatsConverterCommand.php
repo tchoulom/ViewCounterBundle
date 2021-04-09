@@ -93,8 +93,15 @@ class StatsConverterCommand extends AbstractCommand
                                 By default the value of the 'cleanup' option is equal to true.
                                 "
                 ),
+                new InputOption(
+                    self::AUTO_APPROVE, null, InputOption::VALUE_OPTIONAL,
+                    "The argument 'auto-approve' allows interactive questions to be approved automatically.
+                               If the 'auto-approve' option is equal to true, interactive questions will be automatically approved.
+                               If the 'auto-approve' option is equal to false, interactive questions will not be automatically approved.
+                               By default the value of the 'auto-approve' option is equal to false.
+                              "
+                ),
             ))
-            ->addArgument(self::AUTO_APPROVE, InputArgument::OPTIONAL, "The argument 'auto-approve' allows interactive questions to be approved automatically.")
             ->setHelp('
                             Converts ViewCounter entities to statistical data.
 
@@ -103,7 +110,7 @@ class StatsConverterCommand extends AbstractCommand
                             bin/console tchoulom:viewcounter:stats:convert --cleanup=true
                             bin/console tchoulom:viewcounter:stats:convert --cleanup=false
                             bin/console tchoulom:viewcounter:stats:convert
-                            bin/console tchoulom:viewcounter:stats:convert auto-approve
+                            bin/console tchoulom:viewcounter:stats:convert --auto-approve=true
 
 
                             <comment>' . self::SEE_DOCUMENTATION_MSG . '</comment>'
@@ -133,7 +140,7 @@ class StatsConverterCommand extends AbstractCommand
     {
         $this->io->title(self::CONVERT_TO_STATS_MSG);
 
-        $confirmConvert = $this->canAutoApprove(self::ASK_QUESTION_MSG);
+        $confirmConvert = $this->tryAutoApprove(self::ASK_QUESTION_MSG);
 
         if (self::CONVERT_TO_STATS_CONFIRMED === $confirmConvert) {
             $this->io->writeln(self::CONVERTING_TO_STATS_DATA_MSG);

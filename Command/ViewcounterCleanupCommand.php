@@ -67,9 +67,18 @@ class ViewcounterCleanupCommand extends AbstractCommand
                                 If only this option is set, then the viewcounters records meeting this criteria will be deleted.
                                 "
                 ),
+                new InputOption(
+                    self::AUTO_APPROVE, null, InputOption::VALUE_OPTIONAL,
+                    "The argument 'auto-approve' allows interactive questions to be approved automatically.
+                               If the 'auto-approve' option is equal to true, interactive questions will be automatically approved.
+                               If the 'auto-approve' option is equal to false, interactive questions will not be automatically approved.
+                               By default the value of the 'auto-approve' option is equal to false.
+                              "
+                ),
             ))
-            ->addArgument('auto-approve', InputArgument::OPTIONAL, "The argument 'auto-approve' allows interactive questions to be approved automatically.")
             ->setHelp('
+                            bin/console tchoulom:viewcounter:cleanup --min=3y
+
                             Deletes viewcounter data from the database according to the given criteria.
 
                             Examples of date interval:
@@ -82,6 +91,8 @@ class ViewcounterCleanupCommand extends AbstractCommand
                             "M" => "month"
                             "y" => "year"
 
+                            bin/console tchoulom:viewcounter:stats:convert --auto-approve=true
+                            
 
                             <comment>' . self::SEE_DOCUMENTATION_MSG . '</comment>'
             );
@@ -131,7 +142,7 @@ class ViewcounterCleanupCommand extends AbstractCommand
             return self::FAILURE;
         }
 
-        $confirmCleanup = $this->canAutoApprove(self::ASK_QUESTION_MSG);
+        $confirmCleanup = $this->tryAutoApprove(self::ASK_QUESTION_MSG);
 
         if (self::CLEANUP_CONFIRMED === $confirmCleanup) {
             $this->io->writeln(self::DELETING_VIEWCOUNTER_DATA_MSG);
