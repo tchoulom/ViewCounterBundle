@@ -197,7 +197,8 @@ abstract class AbstractViewCounter
             $views = $this->getViews($page);
 
             $viewcounter->setIp($this->getClientIp());
-            $viewcounter = $this->counterManager->setProperty($viewcounter);
+            $property = $this->getProperty();
+            $viewcounter->setProperty($property);
             $viewcounter->setPage($page);
             $viewcounter->setViewDate(Date::getNowDate());
 
