@@ -49,6 +49,13 @@ abstract class ViewCounter implements ViewCounterInterface
     protected $viewDate;
 
     /**
+     * The property name.
+     *
+     * @var string
+     */
+    protected $property;
+
+    /**
      * Gets the ID
      *
      * @return integer
@@ -57,22 +64,6 @@ abstract class ViewCounter implements ViewCounterInterface
     {
         return $this->id;
     }
-
-    /**
-     * Gets the ViewCountable entity.
-     *
-     * @return ViewCountable The ViewCountable entity.
-     */
-    abstract public function getPage(): ViewCountable;
-
-    /**
-     * Sets the ViewCountable entity.
-     *
-     * @param ViewCountable $page The ViewCountable entity.
-     *
-     * @return self
-     */
-    abstract public function setPage(ViewCountable $page): ViewCounterInterface;
 
     /**
      * Gets the IP
@@ -89,7 +80,7 @@ abstract class ViewCounter implements ViewCounterInterface
      *
      * @param $ip
      *
-     * @return $this
+     * @return self
      */
     public function setIp($ip)
     {
@@ -113,12 +104,67 @@ abstract class ViewCounter implements ViewCounterInterface
      *
      * @param \DateTime $viewDate
      *
-     * @return $this
+     * @return self
      */
     public function setViewDate($viewDate)
     {
         $this->viewDate = $viewDate;
 
         return $this;
+    }
+
+    /**
+     * Sets the property name.
+     *
+     * @param string $property
+     *
+     * @return self
+     */
+    public function setProperty(string $property): self
+    {
+        $this->property = $property;
+
+        return $this;
+    }
+
+    /**
+     * Gets the property name.
+     *
+     * @return string
+     */
+    public function getProperty(): string
+    {
+        return $this->property;
+    }
+
+    /**
+     * Sets the page.
+     *
+     * @param ViewCountable $page
+     * @param string $property
+     *
+     * @return self
+     */
+    public function setPage(ViewCountable $page): self
+    {
+        $property = $this->getProperty();
+        $setPage = 'set' . ucfirst($property);
+        $this->$setPage($page);
+
+        return $this;
+    }
+
+    /**
+     * Gets the page.
+     *
+     * @return ViewCountable|null
+     */
+    public function getPage(): ?ViewCountable
+    {
+        $property = $this->getProperty();
+        $getPage = 'get' . ucfirst($property);
+        $page = $this->$getPage();
+
+        return $page;
     }
 }

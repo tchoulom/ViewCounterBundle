@@ -65,9 +65,9 @@ class StatsConverterCommand extends AbstractCommand
      */
     public function __construct(
         CounterManager $counterManager,
-        StatsManager $statsManager,
+        StatsManager   $statsManager,
         StatsConverter $statsConverter,
-        string $name = null
+        string         $name = null
     )
     {
         parent::__construct($counterManager, $statsManager, $name);
@@ -155,6 +155,7 @@ class StatsConverterCommand extends AbstractCommand
                 $progressBar->start();
 
                 foreach ($viewCounterData as $viewcounter) {
+                    $viewcounter = $this->counterManager->setProperty($viewcounter);
                     $this->statsConverter->convert($viewcounter);
                     $progressBar->advance();
                 }

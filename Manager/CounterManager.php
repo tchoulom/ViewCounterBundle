@@ -88,6 +88,11 @@ class CounterManager
         return $this->counterRepository->getProperty();
     }
 
+    public function getMappings()
+    {
+        return $this->counterRepository->getMappings();
+    }
+
     /**
      * Gets the Class.
      *
@@ -119,5 +124,28 @@ class CounterManager
     public function loadViewCounterData()
     {
         return $this->counterRepository->loadViewCounterData();
+    }
+
+    /**
+     * Sets the property.
+     *
+     * @param ViewCounterInterface $viewcounter
+     *
+     * @return ViewCounterInterface
+     */
+    public function setProperty(ViewCounterInterface $viewcounter): ViewCounterInterface
+    {
+        $this->loadMetadata($viewcounter);
+
+        foreach ($this->getMappings() as $mapping) {
+            $property = $mapping['fieldName'];
+            $viewcounter->setProperty($property);
+            if ($viewcounter->getPage() !== null) {
+                $viewcounter->setProperty($property);
+                break;
+            }
+        }
+
+        return $viewcounter;
     }
 }

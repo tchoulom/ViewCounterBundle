@@ -18,22 +18,6 @@ interface ViewCounterInterface
     public function getId();
 
     /**
-     * Gets the ViewCountable entity.
-     *
-     * @return ViewCountable The ViewCountable entity.
-     */
-    public function getPage(): ViewCountable;
-
-    /**
-     * Sets the ViewCountable entity.
-     *
-     * @param ViewCountable $page The ViewCountable entity.
-     *
-     * @return self
-     */
-    public function setPage(ViewCountable $page): self;
-
-    /**
      * Gets the IP
      *
      * @return text

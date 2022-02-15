@@ -173,30 +173,13 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
          * @ORM\JoinColumn(nullable=true)
          */
         private $article;
-    
-        /**
-         * Gets the Page (Article entity)
-         *
-         * @return ViewCountable
-         */
-        public function getPage(): ViewCountable
-        {
-            return $this->article;
-        }
-    
-        /**
-         * Set the Page (Article entity)
-         *
-         * @param ViewCountable $article
-         *
-         * @return ViewCounterInterface
-         */
-        public function setPage(ViewCountable $article): ViewCounterInterface
-        {
-            $this->article = $article;
-    
-            return $this;
-        }
+       
+      // Example of another relation to ViewCounter entity 
+//    /**
+//     * @ORM\ManyToOne(targetEntity="App\Entity\Product", cascade={"persist"})
+//     * @ORM\JoinColumn(nullable=true)
+//     */
+//    private $product;
     
         /**
          * Gets article
@@ -228,11 +211,11 @@ Update the doctrine relationship between the **ViewCounter** Entity and your **A
 ```
 ## Step 3: Configuration
 
-###### For symfony 4 or 5:
+###### For symfony version >=4 :
  - Create the file **config/packages/tchoulom_viewcounter.yaml**
  - Add the following viewcounter configuration in the **tchoulom_viewcounter.yaml** file.
 
-###### For version of symfony less than 4:
+###### For version of symfony version lower than 4 :
  - Add the following viewcounter configuration in the **app/config.yml** file.
 
 ##### viewcounter configuration:

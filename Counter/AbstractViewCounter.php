@@ -88,8 +88,8 @@ abstract class AbstractViewCounter
      * @param ViewcounterConfig $viewcounterConfig
      */
     public function __construct(
-        CounterManager $counterManager,
-        RequestStack $requestStack,
+        CounterManager    $counterManager,
+        RequestStack      $requestStack,
         ViewcounterConfig $viewcounterConfig
     )
     {
@@ -197,6 +197,7 @@ abstract class AbstractViewCounter
             $views = $this->getViews($page);
 
             $viewcounter->setIp($this->getClientIp());
+            $viewcounter = $this->counterManager->setProperty($viewcounter);
             $viewcounter->setPage($page);
             $viewcounter->setViewDate(Date::getNowDate());
 
