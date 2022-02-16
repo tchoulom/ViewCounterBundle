@@ -39,6 +39,11 @@ class Page
     protected $pageRef;
 
     /**
+     * @MongoDB\Field(type="string", name="class_ref")
+     */
+    protected $classRef;
+
+    /**
      * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Year", mappedBy="page", cascade={"persist", "remove"})
      */
     protected $years;
@@ -122,6 +127,30 @@ class Page
     public function setPageRef(int $pageRef): self
     {
         $this->pageRef = $pageRef;
+
+        return $this;
+    }
+
+    /**
+     * Gets ClassRef.
+     *
+     * @return string
+     */
+    public function getClassRef(): string
+    {
+        return $this->classRef;
+    }
+
+    /**
+     * Sets ClassRef.
+     *
+     * @param string $classRef
+     *
+     * @return self
+     */
+    public function setClassRef(string $classRef): self
+    {
+        $this->classRef = $classRef;
 
         return $this;
     }

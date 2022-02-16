@@ -180,7 +180,7 @@ class FileStatsBuilder
     {
         $page = $viewcounter->getPage();
         $this->contents = $contents;
-        $this->class = ReflectionExtractor::getClassNamePluralized($page);;
+        $this->class = ReflectionExtractor::getClassNamePluralized($page);
         $this->stats = $this->buildPage($page, $viewcounter);
 
         return $this;

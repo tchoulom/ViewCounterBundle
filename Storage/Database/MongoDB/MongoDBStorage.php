@@ -36,6 +36,7 @@ use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 use Tchoulom\ViewCounterBundle\Util\Date;
 use DateTimeInterface;
+use Tchoulom\ViewCounterBundle\Util\ReflectionExtractor;
 
 /**
  * Class MongoDBStorage is used to save statistics in a MongoDB via doctrine/mongodb-odm-bundle.
@@ -134,7 +135,7 @@ class MongoDBStorage implements DocumentStorageInterface, StorageAdapterInterfac
 
     /**
      * MongoDBStorage constructor.
-     * 
+     *
      * @param DocumentManager|null $dm
      * @param GeolocatorAdapterInterface $geolocator
      */
@@ -210,11 +211,13 @@ class MongoDBStorage implements DocumentStorageInterface, StorageAdapterInterfac
     public function buildPage(ViewCounterInterface $viewcounter): self
     {
         $pageRef = $viewcounter->getPage();
-        $page = $this->findOneBy(Page::class, ['pageRef' => $pageRef->getId()]);
+        $classRef = ReflectionExtractor::getClassName($pageRef);
+        $page = $this->findOneBy(Page::class, ['classRef' => $classRef, 'pageRef' => $pageRef->getId()]);
 
         if (!$page instanceof Page) {
             $page = new Page();
             $page->setPageRef($pageRef->getId());
+            $page->setClassRef($classRef);
             $this->dm->persist($page);
         }
 
