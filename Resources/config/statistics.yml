@@ -3,7 +3,7 @@ parameters:
     tchoulom.viewcounter.file_stats_builder.class: Tchoulom\ViewCounterBundle\Builder\FileStatsBuilder
     tchoulom.viewcounter.file_stats_finder.class: Tchoulom\ViewCounterBundle\Finder\FileStatsFinder
     tchoulom.viewcounter.stats_computer.class: Tchoulom\ViewCounterBundle\Compute\StatsComputer
-    tchoulom.viewcounter.stats_converter.class: Tchoulom\ViewCounterBundle\Etl\StatsConverter
+    tchoulom.viewcounter.stats_converter.class: Tchoulom\ViewCounterBundle\ETL\StatsConverter
 
 services:
     # Statistics
@@ -43,4 +43,4 @@ services:
     Tchoulom\ViewCounterBundle\Builder\FileStatsBuilder: '@tchoulom.viewcounter.file_stats_builder'
     Tchoulom\ViewCounterBundle\Finder\FileStatsFinder: '@tchoulom.viewcounter.file_stats_finder'
     Tchoulom\ViewCounterBundle\Compute\StatsComputer: '@tchoulom.viewcounter.stats_computer'
-    Tchoulom\ViewCounterBundle\Etl\StatsConverter: '@tchoulom.viewcounter.stats_converter'
+    Tchoulom\ViewCounterBundle\ETL\StatsConverter: '@tchoulom.viewcounter.stats_converter'

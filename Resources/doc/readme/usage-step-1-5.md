@@ -382,7 +382,7 @@ use App\Entity\ViewCounter;
 use Tchoulom\ViewCounterBundle\Counter\ViewCounter as Counter;
 ...
 
-// For Symfony 4 or 5, inject the ViewCounter service
+// For Symfony version >= 4, inject the ViewCounter service
 
 /**
  * @var Counter
@@ -408,7 +408,7 @@ public function __construct(Counter $viewCounter)
  {
     // Viewcounter
     $viewcounter = $this->get('tchoulom.viewcounter')->getViewCounter($article);
-    // For Symfony 4 or 5
+    // For Symfony version >= 4
     $viewcounter = $this->viewcounter->getViewCounter($article);
     
     $em = $this->getDoctrine()->getEntityManager();
@@ -439,7 +439,7 @@ You only need to save your **Article** Entity via the **'tchoulom.viewcounter'**
 
 use Tchoulom\ViewCounterBundle\Counter\ViewCounter as Counter;
 
-// For Symfony 4 or 5, inject the ViewCounter service
+// For Symfony version >= 4, inject the ViewCounter service
 
 /**
  * @var Counter
@@ -465,7 +465,8 @@ public function readAction(Request $request, Article $article)
 {
     // Saves the view
     $page = $this->get('tchoulom.viewcounter')->saveView($article);
-    // For Symfony 4 or 5
+    
+    // For Symfony version >= 4
     $page = $this->viewcounter->saveView($article);
     ...
 }

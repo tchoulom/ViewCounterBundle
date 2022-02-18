@@ -12,7 +12,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Tchoulom\ViewCounterBundle\Etl;
+namespace Tchoulom\ViewCounterBundle\ETL;
 
 use Tchoulom\ViewCounterBundle\Adapter\Storage\StorageAdapterInterface;
 use Tchoulom\ViewCounterBundle\Entity\ViewCounterInterface;

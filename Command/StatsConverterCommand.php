@@ -17,7 +17,7 @@ namespace Tchoulom\ViewCounterBundle\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Tchoulom\ViewCounterBundle\Etl\StatsConverter;
+use Tchoulom\ViewCounterBundle\ETL\StatsConverter;
 use Tchoulom\ViewCounterBundle\Manager\CounterManager;
 use Tchoulom\ViewCounterBundle\Manager\StatsManager;
 

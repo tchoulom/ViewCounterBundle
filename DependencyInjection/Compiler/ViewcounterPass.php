@@ -31,7 +31,7 @@ class ViewcounterPass implements CompilerPassInterface
     {
         $configs = $container->getExtensionConfig('tchoulom_view_counter');
 
-        $viewcounterNode = $configs[0]['view_counter'];;
+        $viewcounterNode = $configs[0]['view_counter'];
         $statsNode = $configs[0]['statistics'];
         $storageNode = $configs[0]['storage'] ?? null;
         $geolocationNode = $configs[0]['geolocation'] ?? null;

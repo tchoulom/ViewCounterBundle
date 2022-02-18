@@ -198,7 +198,7 @@ class StatsComputer
     }
 
     /**
-     * Count the number of values ​​in the statistical series.
+     * Count the number of values in the statistical series.
      *
      * @param array $stats
      *
