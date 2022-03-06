@@ -211,7 +211,7 @@ class MongoDBStorage implements DocumentStorageInterface, StorageAdapterInterfac
     public function buildPage(ViewCounterInterface $viewcounter): self
     {
         $pageRef = $viewcounter->getPage();
-        $classRef = ReflectionExtractor::getClassName($pageRef);
+        $classRef = ReflectionExtractor::getShortClassName($pageRef);
         $page = $this->findOneBy(Page::class, ['classRef' => $classRef, 'pageRef' => $pageRef->getId()]);
 
         if (!$page instanceof Page) {
