@@ -25,6 +25,8 @@ use Tchoulom\ViewCounterBundle\Model\ViewCountable;
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
  */
+#[ORM\MappedSuperclass]
+#[ORM\HasLifecycleCallbacks]
 abstract class ViewCounter implements ViewCounterInterface
 {
     /**
@@ -32,6 +34,9 @@ abstract class ViewCounter implements ViewCounterInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
     /**
@@ -39,6 +44,7 @@ abstract class ViewCounter implements ViewCounterInterface
      *
      * @ORM\Column(name="ip", type="text", nullable=false)
      */
+    #[ORM\Column(name: 'ip', type: 'text', nullable: false)]
     protected $ip;
 
     /**
@@ -46,6 +52,7 @@ abstract class ViewCounter implements ViewCounterInterface
      *
      * @ORM\Column(name="view_date", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: 'view_date', type: 'datetime', nullable: false)]
     protected $viewDate;
 
     /**
