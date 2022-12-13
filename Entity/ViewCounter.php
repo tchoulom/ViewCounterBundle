@@ -14,13 +14,14 @@
 
 namespace Tchoulom\ViewCounterBundle\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 
 /**
- * ViewCounter
+ * ViewCounter Entity
  *
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
@@ -48,7 +49,7 @@ abstract class ViewCounter implements ViewCounterInterface
     protected $ip;
 
     /**
-     * @var \DateTime
+     * @var DateTimeInterface
      *
      * @ORM\Column(name="view_date", type="datetime", nullable=false)
      */
@@ -99,7 +100,7 @@ abstract class ViewCounter implements ViewCounterInterface
     /**
      * Gets viewDate
      *
-     * @return \DateTime
+     * @return DateTimeInterface
      */
     public function getViewDate()
     {
@@ -109,11 +110,11 @@ abstract class ViewCounter implements ViewCounterInterface
     /**
      * Sets viewDate
      *
-     * @param \DateTime $viewDate
+     * @param DateTimeInterface $viewDate
      *
      * @return self
      */
-    public function setViewDate($viewDate)
+    public function setViewDate(DateTimeInterface $viewDate)
     {
         $this->viewDate = $viewDate;
 

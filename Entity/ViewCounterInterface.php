@@ -2,7 +2,7 @@
 
 namespace Tchoulom\ViewCounterBundle\Entity;
 
-
+use DateTimeInterface;
 use Tchoulom\ViewCounterBundle\Model\ViewCountable;
 
 /**
@@ -29,23 +29,23 @@ interface ViewCounterInterface
      *
      * @param $ip
      *
-     * @return $this
+     * @return self
      */
     public function setIp($ip);
 
     /**
      * Gets viewDate
      *
-     * @return \DateTime
+     * @return DateTimeInterface
      */
     public function getViewDate();
 
     /**
      * Sets viewDate
      *
-     * @param \DateTime $viewDate
+     * @param DateTimeInterface $viewDate
      *
-     * @return $this
+     * @return self
      */
-    public function setViewDate($viewDate);
+    public function setViewDate(DateTimeInterface $viewDate);
 }
