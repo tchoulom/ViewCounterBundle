@@ -18,33 +18,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/**
- * @MongoDB\Document(collection="continent", repositoryClass="Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\ContinentRepository")
- * @MongoDB\HasLifecycleCallbacks
- */
+#[MongoDB\Document(collection: 'continent', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\ContinentRepository')]
+#[MongoDB\HasLifecycleCallbacks]
 class Continent
 {
     use ViewTrait;
     use AuditTrait;
 
-    /**
-     * @MongoDB\Id
-     */
+    #[MongoDB\Id]
     private $id;
 
-    /**
-     * @MongoDB\Field(type="string")
-     */
+    #[MongoDB\Field(type: 'string')]
     protected $name;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageContinent", mappedBy="continent")
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageContinent', mappedBy: 'continent')]
     protected $pageContinents;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country", mappedBy="continent", cascade={"persist", "remove"})
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country', mappedBy: 'continent', cascade: ['persist', 'remove'])]
     protected $countries;
 
     /**

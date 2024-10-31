@@ -18,33 +18,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/**
- * @MongoDB\Document(collection="country", repositoryClass="Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\CountryRepository")
- * @MongoDB\HasLifecycleCallbacks
- */
+#[MongoDB\Document(collection: 'country', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\CountryRepository')]
+#[MongoDB\HasLifecycleCallbacks]
 class Country
 {
     use ViewTrait;
     use AuditTrait;
 
-    /**
-     * @MongoDB\Id
-     */
+    #[MongoDB\Id]
     private $id;
 
-    /**
-     * @MongoDB\Field(type="string")
-     */
+    #[MongoDB\Field(type: 'string')]
     protected $name;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageCountry", mappedBy="country")
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageCountry', mappedBy: 'country')]
     protected $pageCountries;
 
-    /**
-     * @MongoDB\ReferenceOne(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Continent", name="continent_id", inversedBy="countries")
-     */
+    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Continent', name: 'continent_id', inversedBy: 'countries')]
     protected $continent;
 
     /**

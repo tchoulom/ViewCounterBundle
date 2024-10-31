@@ -18,33 +18,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/**
- * @MongoDB\Document(collection="day", repositoryClass="Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\DayRepository")
- * @MongoDB\HasLifecycleCallbacks
- */
+#[MongoDB\Document(collection: 'day', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\DayRepository')]
+#[MongoDB\HasLifecycleCallbacks]
 class Day
 {
     use ViewTrait;
     use AuditTrait;
 
-    /**
-     * @MongoDB\Id
-     */
+    #[MongoDB\Id]
     private $id;
 
-    /**
-     * @MongoDB\Field(type="string")
-     */
+    #[MongoDB\Field(type: 'string')]
     protected $name;
 
-    /**
-     * @MongoDB\ReferenceOne(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Week", name="week_id", inversedBy="days")
-     */
+    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Week', name: 'week_id', inversedBy: 'days')]
     protected $week;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Hour", mappedBy="day", cascade={"persist", "remove"})
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Hour', mappedBy: 'day', cascade: ['persist', 'remove'])]
     protected $hours;
 
     /**

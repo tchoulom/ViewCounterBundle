@@ -18,29 +18,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/**
- * @MongoDB\Document(collection="week", repositoryClass="Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\WeekRepository")
- * @MongoDB\HasLifecycleCallbacks
- */
+#[MongoDB\Document(collection: 'week', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\WeekRepository')]
+#[MongoDB\HasLifecycleCallbacks]
 class Week
 {
     use NumberTrait;
     use ViewTrait;
     use AuditTrait;
 
-    /**
-     * @MongoDB\Id
-     */
+    #[MongoDB\Id]
     private $id;
 
-    /**
-     * @MongoDB\ReferenceOne(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Month", name="month_id", inversedBy="weeks")
-     */
+    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Month', name: 'month_id', inversedBy: 'weeks')]
     protected $month;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Day", mappedBy="week", cascade={"persist", "remove"})
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Day', mappedBy: 'week', cascade: ['persist', 'remove'])]
     protected $days;
 
     /**
