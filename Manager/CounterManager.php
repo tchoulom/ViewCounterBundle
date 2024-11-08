@@ -29,6 +29,11 @@ class CounterManager
     protected $counterRepository;
 
     /**
+     * @var RepositoryInterface
+     */
+    protected $metadata;
+
+    /**
      * CounterManager constructor.
      * @param RepositoryInterface $counterRepository
      */
