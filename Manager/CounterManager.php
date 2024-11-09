@@ -4,7 +4,7 @@
  * This file is part of the TchoulomViewCounterBundle package.
  *
  * @package    TchoulomViewCounterBundle
- * @author     Original Author <tchoulomernest@yahoo.fr>
+ * @author     Original Author <tchoulomernest@gmail.com>
  *
  * (c) Ernest TCHOULOM
  *
@@ -27,6 +27,11 @@ class CounterManager
      * @var RepositoryInterface
      */
     protected $counterRepository;
+
+    /**
+     * @var RepositoryInterface
+     */
+    protected $metadata;
 
     /**
      * CounterManager constructor.
