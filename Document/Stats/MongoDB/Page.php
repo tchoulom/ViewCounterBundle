@@ -19,48 +19,32 @@ use Doctrine\Common\Collections\Collection;
 use DateTimeInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/**
- * @MongoDB\Document(collection="page", repositoryClass="Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageRepository")
- * @MongoDB\HasLifecycleCallbacks
- */
+#[MongoDB\Document(collection: 'page', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageRepository')]
+#[MongoDB\HasLifecycleCallbacks]
 class Page
 {
     use ViewTrait;
     use AuditTrait;
 
-    /**
-     * @MongoDB\Id
-     */
+    #[MongoDB\Id]
     private $id;
 
-    /**
-     * @MongoDB\Field(type="integer", name="page_ref")
-     */
+    #[MongoDB\Field(type: 'integer', name: 'page_ref')]
     protected $pageRef;
 
-    /**
-     * @MongoDB\Field(type="string", name="class_ref")
-     */
+    #[MongoDB\Field(type: 'string', name: 'class_ref')]
     protected $classRef;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Year", mappedBy="page", cascade={"persist", "remove"})
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Year', mappedBy: 'page', cascade: ['persist', 'remove'])]
     protected $years;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageCountry", mappedBy="page")
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageCountry', mappedBy: 'page')]
     protected $pageCountries;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageContinent", mappedBy="page")
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageContinent', mappedBy: 'page')]
     protected $pageContinents;
 
-    /**
-     * @MongoDB\Field(type="date", name="view_date")
-     */
+    #[MongoDB\Field(type: 'date', name: 'view_date')]
     protected $viewDate;
 
     /**

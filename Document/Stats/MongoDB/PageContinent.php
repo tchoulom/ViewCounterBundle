@@ -18,28 +18,20 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/**
- * @MongoDB\Document(collection="pageContinent", repositoryClass="Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageContinentRepository")
- * @MongoDB\HasLifecycleCallbacks
- */
+#[MongoDB\Document(collection: 'pageContinent', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageContinentRepository')]
+#[MongoDB\HasLifecycleCallbacks]
 class PageContinent
 {
     use ViewTrait;
     use AuditTrait;
 
-    /**
-     * @MongoDB\Id
-     */
+    #[MongoDB\Id]
     private $id;
 
-    /**
-     * @MongoDB\ReferenceOne(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page", name="page_id", inversedBy="pageContinents", nullable=false)
-     */
+    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', name: 'page_id', inversedBy: 'pageContinents', nullable: false)]
     protected $page;
 
-    /**
-     * @MongoDB\ReferenceOne(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Continent", name="continent_id", inversedBy="pageContinents", nullable=false)
-     */
+    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Continent', name: 'continent_id', inversedBy: 'pageContinents', nullable: false)]
     protected $continent;
 
     /**

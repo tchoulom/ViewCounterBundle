@@ -18,33 +18,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/**
- * @MongoDB\Document(collection="PageCountry", repositoryClass="Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageCountryRepository")
- * @MongoDB\HasLifecycleCallbacks
- */
+#[MongoDB\Document(collection: 'PageCountry', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageCountryRepository')]
+#[MongoDB\HasLifecycleCallbacks]
 class PageCountry
 {
     use ViewTrait;
     use AuditTrait;
 
-    /**
-     * @MongoDB\Id
-     */
+    #[MongoDB\Id]
     private $id;
 
-    /**
-     * @MongoDB\ReferenceOne(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page", name="page_id", inversedBy="pageCountries", nullable=false)
-     */
+    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', name: 'page_id', inversedBy: 'pageCountries', nullable: false)]
     protected $page;
 
-    /**
-     * @MongoDB\ReferenceOne(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country", name="country_id", inversedBy="pageCountries", nullable=false)
-     */
+    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country', name: 'country_id', inversedBy: 'pageCountries', nullable: false)]
     protected $country;
 
-    /**
-     * @MongoDb\ReferenceMany(targetDocument="Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Region", mappedBy="country", cascade={"persist", "remove"})
-     */
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Region', mappedBy: 'country', cascade: ['persist', 'remove'])]
     protected $regions;
 
     /**

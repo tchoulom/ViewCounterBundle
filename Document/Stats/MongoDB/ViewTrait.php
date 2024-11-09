@@ -23,9 +23,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  */
 trait ViewTrait
 {
-    /**
-     * @MongoDB\Field(type="integer")
-     */
+    #[MongoDB\Field(type: 'integer')]
     protected $views = 0;
 
     /**

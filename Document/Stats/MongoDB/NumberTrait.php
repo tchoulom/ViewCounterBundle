@@ -21,9 +21,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  */
 trait NumberTrait
 {
-    /**
-     * @MongoDB\Field(type="integer")
-     */
+    #[MongoDB\Field(type: 'integer')]
     protected $number;
 
     /**
