@@ -24,14 +24,14 @@ interface ViewCountable
      *
      * @return integer
      */
-    public function getId();
+    public function getId(): ?int;
 
     /**
      * Get $views
      *
      * @return integer
      */
-    public function getViews();
+    public function getViews(): ?int;
 
     /**
      * Set $views
@@ -40,5 +40,5 @@ interface ViewCountable
      *
      * @return $this
      */
-    public function setViews($views);
+    public function setViews($views): static;
 }
