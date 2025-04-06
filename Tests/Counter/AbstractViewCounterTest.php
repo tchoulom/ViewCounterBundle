@@ -64,6 +64,7 @@ class AbstractViewCounterTest extends BaseTest
     /**
      * Setup the fixtures.
      */
+    #[\Override]
     protected function setUp()
     {
         parent::setUp();
@@ -87,6 +88,7 @@ class AbstractViewCounterTest extends BaseTest
     /**
      * tearDown
      */
+    #[\Override]
     public function tearDown()
     {
         $this->viewDate = null;

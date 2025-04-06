@@ -55,9 +55,9 @@ abstract class BaseTest extends TestCase
      *
      * @throws \ReflectionException
      */
-    public function invokeMethod($object, $methodName, array $arguments = array())
+    public function invokeMethod($object, $methodName, array $arguments = [])
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $reflection = new \ReflectionClass($object::class);
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

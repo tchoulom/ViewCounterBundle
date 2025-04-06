@@ -13,7 +13,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Tchoulom\\ViewCounterBundle\\": ""
+            "Tchoulom\\ViewCounterBundle\\": "src"
         },
         "exclude-from-classmap": [
             "/Tests/"
@@ -24,7 +24,10 @@
         "symfony/framework-bundle": "^6.0|^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": ">5.7"
+        "phpunit/phpunit": ">5.7",
+        "rector/rector": "^2.0",
+        "doctrine/orm": "^3.3",
+        "doctrine/mongodb-odm": "^2.10"
     },
     "minimum-stability": "stable"
 }

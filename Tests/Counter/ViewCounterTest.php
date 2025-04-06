@@ -25,6 +25,7 @@ class ViewCounterTest extends AbstractViewCounterTest
     /**
      * Setup the fixtures.
      */
+    #[\Override]
     protected function setUp()
     {
         parent::setUp();
@@ -33,6 +34,7 @@ class ViewCounterTest extends AbstractViewCounterTest
     /**
      * tearDown
      */
+    #[\Override]
     public function tearDown()
     {
     }

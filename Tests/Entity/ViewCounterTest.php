@@ -25,6 +25,7 @@ class ViewCounterTest extends BaseTest
     /**
      * Setup the fixtures.
      */
+    #[\Override]
     protected function setUp()
     {
         parent::setUp();
@@ -33,6 +34,7 @@ class ViewCounterTest extends BaseTest
     /**
      * tearDown
      */
+    #[\Override]
     public function tearDown()
     {
         parent::tearDown();

@@ -27,6 +27,7 @@ class TchoulomViewCounterExtensionTest extends BaseTest
     /**
      * Setup the fixtures.
      */
+    #[\Override]
     protected function setUp()
     {
         parent::setUp();
@@ -37,6 +38,7 @@ class TchoulomViewCounterExtensionTest extends BaseTest
     /**
      * tearDown
      */
+    #[\Override]
     public function tearDown()
     {
         parent::tearDown();
