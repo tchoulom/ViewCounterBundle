@@ -17,6 +17,7 @@ namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 #[MongoDB\Document(collection: 'continent', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\ContinentRepository')]
 #[MongoDB\HasLifecycleCallbacks]
@@ -28,13 +29,13 @@ class Continent
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field(type: 'string')]
+    #[MongoDB\Field(type: Type::STRING)]
     protected $name;
 
     #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageContinent', mappedBy: 'continent')]
     protected $pageContinents;
 
-    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country', mappedBy: 'continent', cascade: ['persist', 'remove'])]
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country', cascade: ['persist', 'remove'], mappedBy: 'continent')]
     protected $countries;
 
     /**

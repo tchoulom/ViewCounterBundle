@@ -15,15 +15,16 @@
 namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 /**
  * Trait ViewTrait
- * 
+ *
  * @package Tchoulom\ViewCounterBundle\Document\Stats\MongoDB
  */
 trait ViewTrait
 {
-    #[MongoDB\Field(type: 'integer')]
+    #[MongoDB\Field(type: Type::INT)]
     protected $views = 0;
 
     /**

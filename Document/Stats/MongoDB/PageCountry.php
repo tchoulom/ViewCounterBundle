@@ -28,13 +28,13 @@ class PageCountry
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', name: 'page_id', inversedBy: 'pageCountries', nullable: false)]
+    #[MongoDB\ReferenceOne(name: 'page_id', nullable: false, targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', inversedBy: 'pageCountries')]
     protected $page;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country', name: 'country_id', inversedBy: 'pageCountries', nullable: false)]
+    #[MongoDB\ReferenceOne(name: 'country_id', nullable: false, targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Country', inversedBy: 'pageCountries')]
     protected $country;
 
-    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Region', mappedBy: 'country', cascade: ['persist', 'remove'])]
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Region', cascade: ['persist', 'remove'], mappedBy: 'country')]
     protected $regions;
 
     /**

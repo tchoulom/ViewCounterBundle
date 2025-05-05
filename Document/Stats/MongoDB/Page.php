@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTimeInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 #[MongoDB\Document(collection: 'page', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageRepository')]
 #[MongoDB\HasLifecycleCallbacks]
@@ -29,13 +30,13 @@ class Page
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field(type: 'integer', name: 'page_ref')]
+    #[MongoDB\Field(name: 'page_ref', type: Type::INT)]
     protected $pageRef;
 
-    #[MongoDB\Field(type: 'string', name: 'class_ref')]
+    #[MongoDB\Field(name: 'class_ref', type: Type::STRING)]
     protected $classRef;
 
-    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Year', mappedBy: 'page', cascade: ['persist', 'remove'])]
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Year', cascade: ['persist', 'remove'], mappedBy: 'page')]
     protected $years;
 
     #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageCountry', mappedBy: 'page')]
@@ -44,7 +45,7 @@ class Page
     #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageContinent', mappedBy: 'page')]
     protected $pageContinents;
 
-    #[MongoDB\Field(type: 'date', name: 'view_date')]
+    #[MongoDB\Field(name: 'view_date', type: Type::DATE)]
     protected $viewDate;
 
     /**

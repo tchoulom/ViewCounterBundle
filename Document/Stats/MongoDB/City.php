@@ -15,9 +15,8 @@
 
 namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 #[MongoDB\Document(collection: 'city', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\CityRepository')]
 #[MongoDB\HasLifecycleCallbacks]
@@ -29,10 +28,10 @@ class City
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field(type: 'string')]
+    #[MongoDB\Field(type: Type::STRING)]
     protected $name;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Region', name: 'region_id', inversedBy: 'cities')]
+    #[MongoDB\ReferenceOne(name: 'region_id', targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Region', inversedBy: 'cities')]
     protected $region;
 
     /**

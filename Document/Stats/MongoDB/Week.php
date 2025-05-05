@@ -29,10 +29,10 @@ class Week
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Month', name: 'month_id', inversedBy: 'weeks')]
+    #[MongoDB\ReferenceOne(name: 'month_id', targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Month', inversedBy: 'weeks')]
     protected $month;
 
-    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Day', mappedBy: 'week', cascade: ['persist', 'remove'])]
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Day', cascade: ['persist', 'remove'], mappedBy: 'week')]
     protected $days;
 
     /**

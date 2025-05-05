@@ -17,16 +17,17 @@ namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 /**
  * Trait AuditTrait
  */
 trait AuditTrait
 {
-    #[MongoDB\Field(type: 'date', name: 'created_at')]
+    #[MongoDB\Field(name: 'created_at', type: Type::DATE)]
     protected $createdAt;
 
-    #[MongoDB\Field(type: 'date', name: 'updated_at')]
+    #[MongoDB\Field(name: 'updated_at', type: Type::DATE)]
     protected $updatedAt;
 
     #[MongoDB\PrePersist]

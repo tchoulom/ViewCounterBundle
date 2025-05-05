@@ -15,13 +15,14 @@
 namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 /**
  * Trait NumberTrait
  */
 trait NumberTrait
 {
-    #[MongoDB\Field(type: 'integer')]
+    #[MongoDB\Field(type: Type::INT)]
     protected $number;
 
     /**

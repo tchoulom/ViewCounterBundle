@@ -17,6 +17,7 @@ namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 #[MongoDB\Document(collection: 'region', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\RegionRepository')]
 #[MongoDB\HasLifecycleCallbacks]
@@ -28,13 +29,13 @@ class Region
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field(type: 'string')]
+    #[MongoDB\Field(type: Type::STRING)]
     protected $name;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageCountry', name: 'page_country_id', inversedBy: 'regions')]
+    #[MongoDB\ReferenceOne(name: 'page_country_id', targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\PageCountry', inversedBy: 'regions')]
     protected $pageCountry;
 
-    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\City', mappedBy: 'region', cascade: ['persist', 'remove'])]
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\City', cascade: ['persist', 'remove'], mappedBy: 'region')]
     protected $cities;
 
     /**

@@ -14,8 +14,6 @@
 
 namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 #[MongoDB\Document(collection: 'pageContinent', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\PageContinentRepository')]
@@ -28,10 +26,10 @@ class PageContinent
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', name: 'page_id', inversedBy: 'pageContinents', nullable: false)]
+    #[MongoDB\ReferenceOne(name: 'page_id', nullable: false, targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', inversedBy: 'pageContinents')]
     protected $page;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Continent', name: 'continent_id', inversedBy: 'pageContinents', nullable: false)]
+    #[MongoDB\ReferenceOne(name: 'continent_id', nullable: false, targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Continent', inversedBy: 'pageContinents')]
     protected $continent;
 
     /**

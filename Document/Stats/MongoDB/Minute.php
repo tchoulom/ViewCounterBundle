@@ -17,6 +17,7 @@ namespace Tchoulom\ViewCounterBundle\Document\Stats\MongoDB;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 #[MongoDB\Document(collection: 'minute', repositoryClass: 'Tchoulom\ViewCounterBundle\Repository\Stats\MongoDB\MinuteRepository')]
 #[MongoDB\HasLifecycleCallbacks]
@@ -28,13 +29,13 @@ class Minute
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\Field(type: 'string')]
+    #[MongoDB\Field(type: Type::STRING)]
     protected $name;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Hour', name: 'hour_id', inversedBy: 'minutes')]
+    #[MongoDB\ReferenceOne(name: 'hour_id', targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Hour', inversedBy: 'minutes')]
     protected $hour;
 
-    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Second', mappedBy: 'minute', cascade: ['persist', 'remove'])]
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Second', cascade: ['persist', 'remove'], mappedBy: 'minute')]
     protected $seconds;
 
     /**

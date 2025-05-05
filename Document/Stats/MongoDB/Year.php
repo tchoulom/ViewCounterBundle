@@ -29,10 +29,10 @@ class Year
     #[MongoDB\Id]
     private $id;
 
-    #[MongoDB\ReferenceOne(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', name: 'page_id', inversedBy: 'years')]
+    #[MongoDB\ReferenceOne(name: 'page_id', targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Page', inversedBy: 'years')]
     protected $page;
 
-    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Month', mappedBy: 'year', cascade: ['persist', 'remove'])]
+    #[MongoDb\ReferenceMany(targetDocument: 'Tchoulom\ViewCounterBundle\Document\Stats\MongoDB\Month', cascade: ['persist', 'remove'], mappedBy: 'year')]
     protected $months;
 
     /**
