@@ -50,6 +50,11 @@ This bundle can also be used to draw a graphical representation of statistical d
    - [Command](Resources/doc/readme/tools-command-cleanup.md#command)
      - [Cleanup ViewCounter data](Resources/doc/readme/tools-command-cleanup.md#cleanup-viewcounter-data)
      - [Converts ViewCounter entities to statistical data](Resources/doc/readme/tools-command-stats-converter.md#converts-viewcounter-entities-to-statistical-data)
+- [Powered by Brainveris AI](#powered-by-brainveris-ai)
+  - [From your ViewCounter metrics to strategic decisions](#from-your-viewcounter-metrics-to-strategic-decisions)
+  - [More than a tool: a partner in your AI journey](#more-than-a-tool-a-partner-in-your-ai-journey)
+  - [Stay connected](#stay-connected)
+  - [Get started](#get-started)
 - [Original Credits](#original-credits)
 - [License](#license)
 
@@ -62,6 +67,63 @@ This bundle can also be used to draw a graphical representation of statistical d
 # Documentation
 
 [The ViewCounter documentation](https://github.com/tchoulom/ViewCounterBundle)
+
+# Powered by Brainveris AI
+
+<a href="https://brainveris.ai"><img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/brainveris/brainveris-hero.png" alt="Brainveris AI — French AI-augmented strategic intelligence platform" align="center" /></a>
+
+**[Brainveris AI](https://brainveris.ai)** is a **French AI-augmented strategic intelligence platform**.
+
+Upload any strategic document — whatever its size (**100, 500, 1,000 pages or more, with no limit**) — such as an **annual report**, a **business plan**, an **audit** or a **market study**, and automatically generate a **complete ~80-page strategic report in under 10 minutes**:
+
+- **Executive Summary**
+- **SWOT**
+- **PESTEL**
+- **Competitive analysis**
+- **Actionable recommendations**
+- **KPIs**
+- **Roadmap**
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/brainveris/brainveris-workflow.png" alt="How Brainveris AI works: upload any document and get an ~80-page strategic report in under 10 minutes" align="center" />
+
+## From your ViewCounter metrics to strategic decisions
+
+This bundle already captures rich viewership metrics and statistical data — **yearly, monthly, weekly, daily, hourly, per-minute and per-second** views, together with **geolocation** data by **country, region and city**.
+
+**Brainveris AI can analyze and exploit these very metrics** to turn them into a meaningful, decision-ready strategic report. In other words, the data you collect with the ViewCounter Bundle becomes real strategic value — audience trends, geographic reach, actionable recommendations and a data-driven roadmap.
+
+<img src="https://raw.githubusercontent.com/tchoulom/ViewCounterBundle/master/Resources/doc/images/brainveris/brainveris-viewcounter.png" alt="From ViewCounter metrics to a Brainveris AI strategic intelligence report" align="center" />
+
+## More than a tool: a partner in your AI journey
+
+> But the platform is only a gateway. Beyond the tool, Brainveris supports companies more broadly on strategic AI consulting, digital transformation and the automation of their business processes through AI — because giving AI a framework is not just a matter of tooling, it is an organizational project.
+
+## Stay connected
+
+We regularly publish articles on **strategic AI consulting**, **digital transformation** and the **automation of business processes through AI**. Follow Brainveris AI to stay up to date across our social networks:
+
+- 🌐 **Website** — [https://brainveris.ai](https://brainveris.ai)
+- 💼 **LinkedIn** — [https://www.linkedin.com/company/brainveris](https://www.linkedin.com/company/brainveris)
+- 𝕏 **X (Twitter)** — [https://x.com/ErnestTchoulom](https://x.com/ErnestTchoulom)
+- 📘 **Facebook** · 📸 **Instagram** · ▶️ **YouTube** *(and more)*
+
+## Get started
+
+See Brainveris AI in action on your own documents.
+
+- 📅 **Demo availability:** every **Monday, Friday, Saturday and Sunday, 10:00–20:00 (Paris time)**
+- 👉 **Book a demo:** [https://cal.com/brainveris/30min](https://cal.com/brainveris/30min) — or via [https://brainveris.ai](https://brainveris.ai)
+- 🚀 **Create your account:** [https://brainveris.ai/auth/register](https://brainveris.ai/auth/register)
+
+---
+
+**Dr Ernest TCHOULOM**<br>
+Doctor in Business Administration (DBA) — specializing in Artificial Intelligence<br>
+Founder – Brainveris<br>
+📱 +33 6 29 34 13 02<br>
+🌐 [https://brainveris.ai](https://brainveris.ai)
+
+---
 
 # Original Credits
 
