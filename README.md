@@ -103,24 +103,16 @@ This bundle already captures rich viewership metrics and statistical data — **
 We regularly publish articles on **strategic AI consulting**, **digital transformation** and the **automation of business processes through AI**. Follow Brainveris AI to stay up to date across our social networks:
 
 - 🌐 **Website** — [https://brainveris.ai](https://brainveris.ai)
-- 💼 **LinkedIn** — [https://www.linkedin.com/company/brainveris](https://www.linkedin.com/company/brainveris)
-- 𝕏 **X (Twitter)** — [https://x.com/ErnestTchoulom](https://x.com/ErnestTchoulom)
-- 📘 **Facebook** · 📸 **Instagram** · ▶️ **YouTube** *(and more)*
 
 ## Get started
 
 See Brainveris AI in action on your own documents.
 
-- 📅 **Demo availability:** every **Monday, Friday, Saturday and Sunday, 10:00–20:00 (Paris time)**
-- 👉 **Book a demo:** [https://cal.com/brainveris/30min](https://cal.com/brainveris/30min) — or via [https://brainveris.ai](https://brainveris.ai)
 - 🚀 **Create your account:** [https://brainveris.ai/auth/register](https://brainveris.ai/auth/register)
 
 ---
 
-**Dr Ernest TCHOULOM**<br>
-Doctor in Business Administration (DBA) — specializing in Artificial Intelligence<br>
-Founder – Brainveris<br>
-📱 +33 6 29 34 13 02<br>
+📧 [contact@brainveris.ai](mailto:contact@brainveris.ai)<br>
 🌐 [https://brainveris.ai](https://brainveris.ai)
 
 ---
